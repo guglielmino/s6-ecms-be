@@ -8,7 +8,7 @@ build:
   only:
     - master
   script:
+    - export IMG_VERSION=`cat package.json |grep version|cut -d ':' -f 2| sed 's/[" ,]//g'`
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
-    - docker build -t registry.gitlab.com/smart-office-iot/iot-project-server .
-    - export IMG_VERSION=`docker run registry.gitlab.com/smart-office-iot/iot-project-server cat package.json |grep version|cut -d ':' -f 2| sed 's/[" ,]//g'`
+    - docker build -t registry.gitlab.com/smart-office-iot/iot-project-server:$IMG_VERSION .
     - docker push registry.gitlab.com/smart-office-iot/iot-project-server:$IMG_VERSION
