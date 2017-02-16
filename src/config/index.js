@@ -1,6 +1,11 @@
 'use strict';
 
-require('dotenv').config();
+try {
+	require('dotenv').config();
+}
+catch(err) {
+    console.log(`Error loading .env file ${err}`);
+}
 
 [
     'NODE_ENV',
