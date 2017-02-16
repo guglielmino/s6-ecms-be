@@ -17,13 +17,12 @@ require('dotenv').config();
     }
 });
 
-
 const config = {
     env: process.env.NODE_ENV,
     logger: {
         level: process.env.LOG_LEVEL || 'debug',
         path: process.env.LOG_PATH || `${__dirname}/../logs/app.log`,
-        enabled: process.env.BOOLEAN ? process.env.BOOLEAN.toLowerCase() === 'true' : false,
+        enabled: process.env.LOG_ENABLED ? process.env.LOG_ENABLED.toLowerCase() === 'true' : false,
         sentry: {
             enabled: process.env.SENTRY_ENABLED ? process.env.SENTRY_ENABLED.toLowerCase() === 'true' : false,
             dsn: process.env.SENTRY_DSN

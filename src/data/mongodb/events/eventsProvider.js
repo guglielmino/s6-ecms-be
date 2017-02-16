@@ -1,103 +1,155 @@
-import { DataProvider } from '../data';
-import ISODate from 'mongodb';
+import {DataProvider} from '../data';
 
 const EventsProvider = function ({
-    db,
-    collectionName
+	db,
+	collectionName
 }) {
 
-    return {
+	/**
+	 * Return the filter used in MongoDB query for handling events of a specific day
+	 */
+	function getDayFilter(fieldName, date) {
+		const startOfTheDay = new Date(date.getTime());
+		startOfTheDay.setHours(0);
+		startOfTheDay.setMinutes(0);
+		startOfTheDay.setSeconds(0);
 
-        /**
-         * Returns all events belonging to the gateways passed as parameter
-         */
-        getEvents: function (gateways) {
-            return new Promise((resolve, reject) => {
-                db.collection(collectionName, (err, col) => {
-                    if (err) {
-                        reject(err);
-                    }
+		const endOfTheDay = new Date(date.getTime());
+		endOfTheDay.setHours(23);
+		endOfTheDay.setMinutes(59);
+		endOfTheDay.setSeconds(59);
 
-                    col.find({
-                            GatewayId: {
-                                $in: gateways
-                            }
-                        })
-                        .toArray((err, docs) => {
-                            if (err) {
-                                reject(err);
-                            } else {
-                                resolve(docs);
-                            }
-                        });
-                });
-            });
-        },
+		let ret = {};
+		ret[fieldName] = {
+			$gte: startOfTheDay,
+			$lte: endOfTheDay
+		};
 
-        /**
-         * Returns stats about energy consuption for one o more gateway in a specified date
-         */
-        getEnergyStats: function (gateways, date) {
-            const startOfTheDay = new Date(date.getTime());
-            startOfTheDay.setHours(0);
-            startOfTheDay.setMinutes(0);
-            startOfTheDay.setSeconds(0);
+		return ret;
+	}
 
-            const endOfTheDay = new Date(date.getTime());
-            endOfTheDay.setHours(23);
-            endOfTheDay.setMinutes(59);
-            endOfTheDay.setSeconds(59);
+	return {
 
-            return new Promise((resolve, reject) => {
-                db.collection(collectionName, (err, col) => {
-                    if (err) {
-                        reject(err);
-                    }
+		/**
+		 * Returns all events belonging to the gateways passed as parameter
+		 */
+		getEvents: function (gateways) {
+			return new Promise((resolve, reject) => {
+				db.collection(collectionName, (err, col) => {
+					if (err) {
+						reject(err);
+					}
 
-                    col.aggregate([{
-                        $match: {
-                            $and: [{
-                                    GatewayId: {
-                                        $in: gateways
-                                    }
-                                },
-                                {
-                                    "Payload.Time": {
-                                        $gte: startOfTheDay,
-                                        $lte: endOfTheDay
-                                    }
-                                }
-                            ]
-                        }
+					col.find({
+						GatewayId: {
+							$in: gateways
+						}
+					})
+						.toArray((err, docs) => {
+							if (err) {
+								reject(err);
+							} else {
+								resolve(docs);
+							}
+						});
+				});
+			});
+		},
 
-                    }, {
-                        $group: {
-                            _id: null,
-                            Current: {
-                                $sum: "$Payload.Current"
-                            },
-                            Power: {
-                                $sum: "$Payload.Factor"
-                            }
-                        }
-                    }]).toArray((err, docs) => {
-                        if (err) {
-                            reject(err);
-                        } else {
-                            resolve(docs);
-                        }
-                    });
-                });
-            });
-        }
+		/**
+		 * Returns stats about energy consumption for one o more gateway in a specified date
+		 */
+		getEnergyStats: function (gateways, date, hourly) {
 
-    }
-}
+			return new Promise((resolve, reject) => {
+				db.collection(collectionName, (err, col) => {
+					if (err) {
+						reject(err);
+					}
+
+					col.aggregate([{
+						$match: {
+							$and: [{
+								GatewayId: {
+									$in: gateways
+								}
+							},
+								getDayFilter("Payload.Time", date)
+							]
+						}
+
+					}, {
+						$group: {
+							_id: hourly ? { $hour: "$Payload.Time" } : null,
+							Current: {
+								$sum: "$Payload.Current"
+							},
+							Power: {
+								$sum: "$Payload.Factor"
+							}
+						}
+					}]).toArray((err, docs) => {
+						if (err) {
+							reject(err);
+						} else {
+							resolve(docs);
+						}
+					});
+				});
+			});
+		},
+
+
+		// Aggregate per hours
+		// db.events.aggregate({ "$group": { _id: { $hour: "$Payload.Time" }, current: { "$sum" : "$Payload.Current" } }})
+
+		getEnergyStatsByHours: function (gateways, date) {
+			return new Promise((resolve, reject) => {
+				db.collection(collectionName, (err, col) => {
+					if (err) {
+						reject(err);
+					}
+
+					col.aggregate([
+						{
+						$match: {
+							$and: [{
+								GatewayId: {
+									$in: gateways
+								}
+							},
+								getDayFilter("Payload.Time", date)
+							]
+						}
+
+					},
+						{
+						$group: {
+							_id:  { $hour: "$Payload.Time" },
+							Current: {
+								$sum: "$Payload.Current"
+							},
+							Power: {
+								$sum: "$Payload.Factor"
+							}
+						}
+					}]).toArray((err, docs) => {
+						if (err) {
+							reject(err);
+						} else {
+							resolve(docs);
+						}
+					});
+				});
+			});
+		}
+	}
+};
 
 export default function (db) {
-    const params = {
-        db,
-        collectionName: 'events'
-    };
-    return Object.assign({}, DataProvider(params), EventsProvider(params));
+	const params = {
+		db,
+		collectionName: 'events'
+	};
+	return Object.assign({}, DataProvider(params), EventsProvider(params));
 }
