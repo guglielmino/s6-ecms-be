@@ -8,9 +8,11 @@ import RoleCheck from './middleware/roles-middleware';
 
 import Events from './events';
 import Stats from './stats';
+import HourlyStats from './stats/hourly';
 import Gateways from './gateways';
 import Devices from './devices';
 import Alerts from './alerts';
+
 
 export default function (config, providers) {
     const { host, port } = config.server;
@@ -21,6 +23,7 @@ export default function (config, providers) {
 
     // API routes
     app.use('/api/events', Events(AuthCheck, RoleCheck, providers));
+		app.use('/api/stats/hourly', HourlyStats(AuthCheck, RoleCheck, providers));
     app.use('/api/stats', Stats(AuthCheck, RoleCheck, providers));
 	  app.use('/api/gateways', Gateways(AuthCheck, RoleCheck, providers));
 	  app.use('/api/devices', Devices(AuthCheck, RoleCheck, providers));

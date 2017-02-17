@@ -1,15 +1,10 @@
 'use strict';
 
 const transformStat = (stat) => {
-  let res = {
+  return {
     current: stat.Current,
 		power: stat.Power
   };
-
-  if(stat._id) {
-    res["hour"] = stat._id;
-  }
-  return res;
-}
+};
 
 export { transformStat };

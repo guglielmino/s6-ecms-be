@@ -13,13 +13,12 @@ export default function (AuthCheck, RoleCheck, { eventProvider }) {
         const date = getDate(req);
         const gateways = req.user.app_metadata.gateways;
         const reqGateway = req.params.gateway;
-        const hourly = req.query.hourly;
 
         if(gateways.indexOf(reqGateway) == -1) 
             res.sendStatus(204);
 
         eventProvider
-            .getEnergyStats([reqGateway], date, hourly || false)
+            .getEnergyStats([reqGateway], date, false)
             .then(stat => {
                 res.json(stat.map(s => transformStat(s)));
             })
@@ -30,11 +29,10 @@ export default function (AuthCheck, RoleCheck, { eventProvider }) {
     router.get('/energy/', [AuthCheck()], function (req, res) {
         const date = getDate(req);
         const gateways = req.user.app_metadata.gateways;
-			  const hourly = req.query.hourly;
         console.log(`calling with ${gateways} ${date}`);
 
         eventProvider
-            .getEnergyStats(gateways, date, hourly || false)
+            .getEnergyStats(gateways, date, false)
             .then(stat => {
                 res.json(stat.map(s => transformStat(s)));
             })
