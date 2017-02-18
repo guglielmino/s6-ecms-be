@@ -10,6 +10,41 @@ export default function (AuthCheck, RoleCheck, { alertProvider }) {
 
 	const router = express.Router();
 
+	/**
+	 * @swagger
+	 * definitions:
+	 *   Alert:
+	 *     properties:
+	 *       gateway:
+	 *         type: string
+	 *       date:
+	 *         type: string
+	 *       deviceId:
+	 *         type: string
+	 *       message:
+	 *         type: string
+	 *       read:
+	 *         type: string
+   */
+
+
+	/**
+	 * @swagger
+	 * /api/alerts:
+	 *   get:
+	 *     tags:
+	 *      - Alerts
+	 *     description: Returns alerts for the devices belonging to requesting user
+	 *     produces:
+	 *      - application/json
+	 *     responses:
+	 *       200:
+	 *         description: alerts
+	 *         schema:
+	 *           type: array
+	 *           items:
+	 *             $ref: '#/definitions/Alert'
+	 */
 	router.get('/', [AuthCheck()], function (req, res) {
 
 		const date = getDate(req);

@@ -10,6 +10,48 @@ export default function (AuthCheck, RoleCheck, { deviceProvider }) {
 
 	const router = express.Router();
 
+	/**
+	 * @swagger
+	 * definitions:
+	 *   Device:
+	 *     properties:
+	 *       name:
+	 *         type: string
+	 *       deviceId:
+	 *         type: string
+	 */
+
+	/**
+	 * @swagger
+	 * parameters:
+	 *   gateway:
+	 *     name: gateway
+	 *     in: path
+	 *     description: gateway internal code
+	 *     type: string
+	 *     required: true
+	 */
+
+
+	/**
+	 * @swagger
+	 * /api/devices/{gateway}:
+	 *   parameters:
+	 *     - $ref: '#/parameters/gateway'
+	 *   get:
+	 *     tags:
+	 *      - Devices
+	 *     description: Returns devices belonging to the specified gateway
+	 *     produces:
+	 *      - application/json
+	 *     responses:
+	 *       200:
+	 *         description: alerts
+	 *         schema:
+	 *           type: array
+	 *           items:
+	 *             $ref: '#/definitions/Device'
+	 */
 	router.get('/:gateway', [AuthCheck()], function (req, res) {
 
 		const date = getDate(req);

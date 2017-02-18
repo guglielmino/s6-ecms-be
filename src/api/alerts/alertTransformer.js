@@ -7,7 +7,7 @@ const transformAlert = (alert)  => {
 		gateway: alert.gateway,
 		date: alert.date,
 		deviceId: alert.deviceId,
-		mesage: alert.message,
+		message: alert.message,
 		read: alert.read
 	}
 };
