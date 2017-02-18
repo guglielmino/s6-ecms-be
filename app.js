@@ -31,7 +31,7 @@ database.connect()
 
 		getEventObservable(pub$)
 			.subscribe((event) => {
-				eventProvider.add(event);
+				providers.eventProvider.add(event);
 			});
 
 		const connection$ = socket.fromEvent('connection');
