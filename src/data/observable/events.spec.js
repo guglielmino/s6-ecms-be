@@ -47,7 +47,7 @@ describe('event processor', () => {
     });
 
 
-    it('should emith nothing if the event is uknown', (done) => {
+    it('should emit nothing if the event is unknown', (done) => {
 
         const rawPayloads = [{
             channel: "events",

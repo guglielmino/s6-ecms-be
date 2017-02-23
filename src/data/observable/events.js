@@ -1,5 +1,7 @@
 import Rx from 'rxjs';
 import ISODate from 'mongodb';
+import energyMapper from './mappers/energyMapper';
+import infoMapper from './mappers/infoMapper';
 
 import { 
     EVENT_TYPE_ENERGY,
@@ -17,25 +19,15 @@ function getEventObservable(pubnub$) {
         .map(e => {
             switch (e.Type) {
                 case EVENT_TYPE_ENERGY:
-                    return translateEnergyPayload(e);
+                    return energyMapper(e);
+                case EVENT_TYPE_INFO:
+                    return infoMapper(e);
             }
 
-            throw new Error(`Event unknow ${e.Type}`);
+            throw new Error(`Event unknown ${e.Type}`);
         });
 }
 
-function translateEnergyPayload(e) { 
-    return { ...e,
-        Payload: {
-            ...e.Payload,
-            Current: parseFloat(e.Payload.Current),
-            Yesterday: parseFloat(e.Payload.Yesterday),
-            Today: parseFloat(e.Payload.Today),
-            Factor: parseFloat(e.Payload.Factor),
-            Time: new Date(e.Payload.Time)
-        }
-    };
-}
 
 export  {
     getEventObservable
