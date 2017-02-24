@@ -40,6 +40,7 @@ describe('info message mapper', () => {
 				Version: "1.2.3",
 				FallbackTopic: "sonoffback",
 				GroupTopic: "sonoff",
+				DeviceId: "2d:5f:22:99:73:d5",
 				Topic: "cmnd/sonoff"
 			}
 		};
@@ -48,6 +49,29 @@ describe('info message mapper', () => {
 
 		result.Payload.commands.length.should.be.eq(1);
 		result.Payload.commands[0].power.should.be.eq('mqtt:cmnd/sonoff/POWER')
+	});
+
+
+	it('should map all required fields in result object Payload', () => {
+		let rawPayload = {
+			GatewayId: "testGateway",
+			Type: EVENT_TYPE_INFO,
+			Payload: {
+				AppName: SONOFF_POW,
+				Version: "1.2.3",
+				FallbackTopic: "sonoffback",
+				GroupTopic: "sonoff",
+				DeviceId: "2d:5f:22:99:73:d5",
+				Topic: "cmnd/sonoff"
+			}
+		};
+
+		let result = infoMapper(rawPayload);
+
+		result.Payload.gateway.should.be.eq("testGateway");
+		result.Payload.topic.should.be.eq("cmnd/sonoff");
+		result.Payload.deviceType.should.be.eq(SONOFF_POW);
+		result.Payload.deviceId.should.be.eq("2d:5f:22:99:73:d5");
 	});
 
 });

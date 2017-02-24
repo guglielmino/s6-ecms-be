@@ -2,7 +2,7 @@
 
 import Rx from 'rxjs';
 import config from './src/config';
-import {EVENTS_TYPES, PUBNUB_EVENTS_CHANNEL} from './consts';
+import * as consts from './consts';
 import {getEventObservable} from './src/data/observable/events';
 
 import {Database} from './src/data/mongodb/data';
@@ -17,6 +17,8 @@ import socketServer from './src/socketServer';
 import pubnubHub from './src/pubnubHub';
 import api from './src/api';
 
+import MessageMediator from './src/messageMediator';
+
 const database = Database(config);
 database.connect()
 	.then(db => {
@@ -27,11 +29,18 @@ database.connect()
 		const expressServer = api(config, providers);
 
 		const socket = socketServer(expressServer);
-		const pub$ = pnub.fromChannel(PUBNUB_EVENTS_CHANNEL);
+		const pub$ = pnub.fromChannel(consts.PUBNUB_EVENTS_CHANNEL);
+
+		const messageMediator = MessageMediator();
+		messageMediator.addHandler(consts.EVENT_TYPE_ENERGY, providers.eventProvider.add);
+		messageMediator.addHandler(consts.EVENT_TYPE_INFO, ({Payload}) => { providers.deviceProvider.add(Payload) });
 
 		getEventObservable(pub$)
 			.subscribe((event) => {
-				providers.eventProvider.add(event);
+				const processor = messageMediator.process(event);
+				if(processor) {
+					processor(event);
+				}
 			});
 
 		const connection$ = socket.fromEvent('connection');
@@ -39,6 +48,7 @@ database.connect()
 			.subscribe(conn => `Connection ${conn}`);
 	})
 	.catch(err => console.log(err));
+
 
 
 function bootstrapDataProvider(db) {

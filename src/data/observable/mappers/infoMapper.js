@@ -16,9 +16,12 @@ function commandPerDevice(appName, topic) {
 
 
 export default function infoMapper(e) {
-	return { ...e,
+	return {
+		Type: e.Type,
 		Payload: {
-			...e.Payload,
+			gateway: e.GatewayId,
+			topic: e.Payload.Topic,
+			deviceType: e.Payload.AppName,
 			deviceId: e.Payload.DeviceId || '00:00:00:00:00:00',
 			commands: commandPerDevice(e.Payload.AppName, e.Payload.Topic)
 		}

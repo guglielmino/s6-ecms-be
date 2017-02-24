@@ -29,6 +29,4 @@ function getEventObservable(pubnub$) {
 }
 
 
-export  {
-    getEventObservable
-}
+export  { getEventObservable };
