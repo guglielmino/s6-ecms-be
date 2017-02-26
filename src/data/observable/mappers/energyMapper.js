@@ -6,7 +6,9 @@ export default function energyMapper(e) {
 			Yesterday: parseFloat(e.Payload.Yesterday),
 			Today: parseFloat(e.Payload.Today),
 			Factor: parseFloat(e.Payload.Factor),
-			Time: new Date(e.Payload.Time)
+			Time: new Date(e.Payload.Time),
+			Power: new parseFloat(e.Payload.Power),
+			created: new Date()
 		}
 	};
 }
