@@ -6,6 +6,14 @@ const GatewaysProvider = function ({
 	collectionName
 }) {
 
+	db.collection(collectionName, (err, col) => {
+		col.createIndex('code', { unique: true, background: true, dropDups: true, w: 1 }, (err, ids) => {
+			if(err) {
+				throw err;
+			}
+		});
+	});
+
 	return {
 
 		/**

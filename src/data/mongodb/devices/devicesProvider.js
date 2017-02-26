@@ -6,6 +6,14 @@ const DevicesProvider = function ({
 	collectionName
 }) {
 
+	db.collection(collectionName, (err, col) => {
+		col.createIndex('deviceId', { unique: true, background: true, dropDups: true, w: 1 }, (err, ids) => {
+			if(err) {
+				throw err;
+			}
+		});
+	});
+
 	return {
 
 		/**
@@ -33,9 +41,6 @@ const DevicesProvider = function ({
 				});
 			});
 		},
-
-
-
 	}
 }
 
