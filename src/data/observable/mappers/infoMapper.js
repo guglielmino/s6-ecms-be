@@ -20,7 +20,6 @@ export default function infoMapper(e) {
 		Type: e.Type,
 		Payload: {
 			gateway: e.GatewayId,
-			topic: e.Payload.Topic,
 			deviceType: e.Payload.AppName,
 			deviceId: e.Payload.DeviceId || '00:00:00:00:00:00',
 			commands: commandPerDevice(e.Payload.AppName, e.Payload.Topic)
