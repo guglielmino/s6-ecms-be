@@ -20,9 +20,11 @@ export default function infoMapper(e) {
 		Type: e.Type,
 		Payload: {
 			gateway: e.GatewayId,
+			swVersion: e.Payload.Version,
 			deviceType: e.Payload.AppName,
 			deviceId: e.Payload.DeviceId || '00:00:00:00:00:00',
-			commands: commandPerDevice(e.Payload.AppName, e.Payload.Topic)
+			commands: commandPerDevice(e.Payload.AppName, e.Payload.Topic),
+			created: new Date()
 		}
 	};
 }
