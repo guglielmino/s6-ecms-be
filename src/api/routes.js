@@ -14,11 +14,11 @@ import Alerts from './alerts';
 module.exports = function(app, providers){
 	const AuthCheck = JwtCheck(config.auth0);
 
-	app.use('/api/events', Events(AuthCheck, RoleCheck, providers));
+	Events(app, AuthCheck, RoleCheck, providers);
 	app.use('/api/stats/hourly', HourlyStats(AuthCheck, RoleCheck, providers));
 	app.use('/api/stats', Stats(AuthCheck, RoleCheck, providers));
 	app.use('/api/gateways', Gateways(AuthCheck, RoleCheck, providers));
-	app.use('/api/devices', Devices(AuthCheck, RoleCheck, providers));
+	Devices(app, AuthCheck, RoleCheck, providers);
 	app.use('/api/alerts', Alerts(AuthCheck, RoleCheck, providers));
 
 };

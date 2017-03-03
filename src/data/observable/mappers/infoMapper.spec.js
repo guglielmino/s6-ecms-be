@@ -69,7 +69,6 @@ describe('info message mapper', () => {
 		let result = infoMapper(rawPayload);
 
 		result.Payload.gateway.should.be.eq("testGateway");
-		result.Payload.topic.should.be.eq("cmnd/sonoff");
 		result.Payload.deviceType.should.be.eq(SONOFF_POW);
 		result.Payload.deviceId.should.be.eq("2d:5f:22:99:73:d5");
 	});

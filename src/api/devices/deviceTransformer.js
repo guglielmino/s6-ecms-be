@@ -4,7 +4,8 @@ const transformDevice = (device) => {
 	return {
 		name: device.name,
 		deviceId: device.deviceId,
-		type: device.deviceType
+		type: device.deviceType,
+		version: device.swVersion
 	}
 };
 

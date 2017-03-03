@@ -2,55 +2,57 @@
 
 import chai from 'chai';
 import sinon from 'sinon';
-import request from 'supertest';
+import supertest from 'supertest';
+
+import { FakeAuthMiddleware } from '../test-helper';
 
 import Devices from './';
-import Server from '../';
-import App from '../express-setup';
+import express from 'express';
 
 chai.should();
 const expect = chai.expect;
 
-const Auth = () => () => (req, res, next) => {
-	next();
-};
+describe('Devices API endpoints', () => {
+	let request;
 
-
-describe('devices API endpoints', () => {
-
-	let server;
 	let app;
-	let deviceProvider = {};
 
-	beforeEach((done) => {
-		app = App();
-		app.use('/api/devices', Devices(Auth, Auth, { deviceProvider }));
-
-		server = Server(
-			{ server: { host: '0.0.0.0', port: 8901 } },
-			app
-		);
-
-		done();
+	beforeEach(() => {
+		app = express();
+		request = supertest(app);
 	});
-
-	afterEach((done) => {
-
-		server.close(done);
-
-	});
-
 
 	it('should returns devices with required fields', (done) => {
+		const deviceProvider = {};
+		Devices(app, FakeAuthMiddleware(['samplegw']), null, { deviceProvider });
 
-		deviceProvider.getDevices = sinon.stub().returns(Promise.resolve({
-			name: 'Sample',
-			deviceType: 'Sonoff Pow Module'
-		}));
+		deviceProvider
+			.getDevices = sinon
+			.stub()
+			.returns(Promise.resolve([{
+					name: 'Sample',
+					deviceId: '00:11:22:33:44:55',
+					deviceType: 'Sonoff Pow Module',
+					swVersion: '1.0'
+				}])
+			);
 
-		request(server)
-			.get('/api/devices/SampleGateway')
-			.expect(200, done);
+		request
+			.get('/api/devices/samplegw')
+			.expect(200, function (err, res) {
+				if (err) {
+					done(err);
+				}
+				else {
+					let response = res.body;
+					response.length.should.be.eq(1);
+					response[0].name.should.be.eq('Sample');
+					response[0].deviceId.should.be.eq('00:11:22:33:44:55');
+					response[0].type.should.be.eq('Sonoff Pow Module');
+					response[0].version.should.be.eq('1.0');
+					done();
+				}
+			});
 	});
 
 });

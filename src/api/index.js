@@ -1,13 +1,7 @@
 'use strict';
 
-import expSetup from './express-setup';
-import routes from  './routes';
-
-export default function (config, providers) {
+export default function (config, app) {
 	const { host, port } = config.server;
-	const app = expSetup();
-
-	routes(app, providers);
 
 	// Default error handler
 	app.use(function (err, req, res, next) {

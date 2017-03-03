@@ -5,10 +5,15 @@
   "main": "app.js",
   "scripts": {
     "start": "babel-node app.js",
+    "lint": "eslint ./ --cache --ignore-pattern .gitignore",
     "dev": "nodemon --exec npm run start -- app.js",
     "test": "mocha --compilers js:babel-core/register --recursive src/**/*.spec.js",
     "test:watch": "npm run test -- --watch"
+
   },
+  "precommit": [
+    "test"
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -50,6 +55,8 @@
     "eslint": "^3.13.1",
     "mocha": "^3.2.0",
     "nodemon": "^1.11.0",
-    "sinon": "^1.17.7"
+    "pre-commit": "^1.2.2",
+    "sinon": "^1.17.7",
+    "supertest": "^3.0.0"
   }
 }

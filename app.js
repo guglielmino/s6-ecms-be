@@ -15,9 +15,14 @@ import  { EventsProvider,
 
 import socketServer from './src/socketServer';
 import pubnubHub from './src/pubnubHub';
+
+import expSetup from './src/api/express-setup';
+import swaggerSetup from './src/api/swagger-setup';
+import routes from './src/api/routes';
 import api from './src/api';
 
 import MessageMediator from './src/messageMediator';
+
 
 const database = Database(config);
 database.connect()
@@ -26,7 +31,10 @@ database.connect()
 
 		const providers = bootstrapDataProvider(db);
 
-		const expressServer = api(config, providers);
+		const app = expSetup();
+		swaggerSetup(app);
+		const appRoutes = routes(app, providers);
+		const expressServer = api(config, app);
 
 		const socket = socketServer(expressServer);
 		const pub$ = pnub.fromChannel(consts.PUBNUB_EVENTS_CHANNEL);
