@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Fill user data in request object to simulate action of
  * real JWT Auth middleware
@@ -8,17 +6,13 @@
  * @returns {function(): function(*, *, *)}
  * @constructor
  */
-const FakeAuthMiddleware = (userGateways) => {
-
-	return () => (req, res, next) => {
-		req.user = {
-			app_metadata: {
-				gateways: userGateways
-			}
-		};
-
-		next();
-	};
+const FakeAuthMiddleware = userGateways => () => (req, res, next) => {
+  req.user = { // eslint-disable-line no-param-reassign
+    app_metadata: {
+      gateways: userGateways,
+    },
+  };
+  next();
 };
 
-export { FakeAuthMiddleware };
+export { FakeAuthMiddleware }; // eslint-disable-line import/prefer-default-export

@@ -1,18 +1,19 @@
-'use strict';
+import logger from '../common/logger';
 
 export default function (config, app) {
-	const { host, port } = config.server;
+  const { host, port } = config.server;
 
-	// Default error handler
-	app.use(function (err, req, res, next) {
-		console.log("API error " + err);
-		res.sendStatus(500);
-		next();
-	});
+  // Default error handler
+  app.use((err, req, res, next) => {
+    logger.log('error', `API error ${err}`);
+    res.sendStatus(500);
+    next(err);
+  });
 
+  const server = require('http') // eslint-disable-line global-require
+    .createServer(app);
 
-	const server = require('http').createServer(app);
-	server.listen(port);
-	console.log(`Listening on http://${host}:${port}`);
-	return server;
+  server.listen(port);
+  logger.log('info', `Listening on http://${host}:${port}`);
+  return server;
 }

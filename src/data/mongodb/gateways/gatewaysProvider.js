@@ -1,55 +1,51 @@
 import { DataProvider } from '../data';
 
 
-const GatewaysProvider = function ({
-	db,
-	collectionName
-}) {
+const GatewaysProvider = ({ db, collectionName }) => {
+  db.collection(collectionName, (err, col) => {
+    col.createIndex('code', { unique: true, background: true, dropDups: true, w: 1 }, (error) => {
+      if (error) {
+        throw error;
+      }
+    });
+  });
 
-	db.collection(collectionName, (err, col) => {
-		col.createIndex('code', { unique: true, background: true, dropDups: true, w: 1 }, (err, ids) => {
-			if(err) {
-				throw err;
-			}
-		});
-	});
+  return {
 
-	return {
+    /**
+     * Returns gateways objects having code passed in gateways array
+     */
+    getGateways(gateways) {
+      return new Promise((resolve, reject) => {
+        db.collection(collectionName, (err, col) => {
+          if (err) {
+            reject(err);
+          }
 
-		/**
-		 * Returns gateways objects having code passed in gateways array
-		 */
-		getGateways: function (gateways) {
-			return new Promise((resolve, reject) => {
-				db.collection(collectionName, (err, col) => {
-					if (err) {
-						reject(err);
-					}
-
-						col.find({
-						code: {
-							$in: gateways
-						}
-					})
-						.toArray((err, docs) => {
-							if (err) {
-								reject(err);
-							} else {
-								resolve(docs);
-							}
-						});
-				});
-			});
-		}
+          col.find({
+            code: {
+              $in: gateways,
+            },
+          })
+            .toArray((error, docs) => {
+              if (error) {
+                reject(error);
+              } else {
+                resolve(docs);
+              }
+            });
+        });
+      });
+    },
 
 
-	}
-}
+  };
+};
 
 export default function (db) {
-	const params = {
-		db,
-		collectionName: 'gateways'
-	};
-	return Object.assign({}, DataProvider(params), GatewaysProvider(params));
+  const params = {
+    db,
+    collectionName: 'gateways',
+  };
+  return Object.assign({}, DataProvider(params), GatewaysProvider(params));
 }

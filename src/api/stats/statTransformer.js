@@ -1,10 +1,8 @@
-'use strict';
 
-const transformStat = (stat) => {
-  return {
-    current: stat.Current,
-		power: stat.Power
-  };
-};
 
-export { transformStat };
+const transformStat = stat => ({
+  current: stat.Current,
+  power: stat.Power,
+});
+
+export { transformStat }; // eslint-disable-line import/prefer-default-export

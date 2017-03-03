@@ -1,5 +1,5 @@
 /**
- * Message types to whom identify a message as a event to be stored 
+ * Message types to whom identify a message as a event to be stored
  */
 export const EVENT_TYPE_ENERGY = 'ENERGY';
 export const EVENT_TYPE_INFO = 'INFO';

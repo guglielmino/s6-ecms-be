@@ -5,13 +5,13 @@
   "main": "app.js",
   "scripts": {
     "start": "babel-node app.js",
-    "lint": "eslint ./ --cache --ignore-pattern .gitignore",
+    "lint": "eslint ./ --cache --ignore-pattern .gitignore --ignore-pattern *.spec.js --ignore-pattern *.e2e.js",
     "dev": "nodemon --exec npm run start -- app.js",
     "test": "mocha --compilers js:babel-core/register --recursive src/**/*.spec.js",
     "test:watch": "npm run test -- --watch"
-
   },
   "precommit": [
+    "lint",
     "test"
   ],
   "keywords": [],
@@ -52,7 +52,10 @@
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-2": "^6.22.0",
     "chai": "^3.5.0",
-    "eslint": "^3.13.1",
+    "eslint": "^3.16.1",
+    "eslint-config-airbnb-base": "^11.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jasmine": "^2.2.0",
     "mocha": "^3.2.0",
     "nodemon": "^1.11.0",
     "pre-commit": "^1.2.2",
