@@ -1,7 +1,11 @@
+import Rx from 'rxjs';
 import config from './src/config';
 import * as consts from './consts';
 import logger from './src/common/logger';
-import { getEventObservable } from './src/data/observable/events';
+import {
+  getPNEventObservable,
+  getEmitterEventObservable,
+} from './src/data/observable/events';
 
 import { Database } from './src/data/mongodb/data';
 import {
@@ -11,6 +15,7 @@ import {
   AlertsProdiver,
 } from './src/data/mongodb/';
 
+import emitter from './src/emitter';
 import socketServer from './src/socketServer';
 import pubnubHub from './src/pubnubHub';
 
@@ -43,6 +48,7 @@ database.connect()
     const expressServer = api(config, app);
 
     const socket = socketServer(expressServer);
+
     const pub$ = pnub.fromChannel(consts.PUBNUB_EVENTS_CHANNEL);
 
     const messageMediator = MessageMediator();
@@ -51,13 +57,16 @@ database.connect()
       providers.deviceProvider.add(Payload);
     });
 
-    getEventObservable(pub$)
-      .subscribe((event) => {
-        const processor = messageMediator.process(event);
-        if (processor) {
-          processor(event);
-        }
-      });
+    Rx.Observable.merge(getPNEventObservable(pub$), getEmitterEventObservable(emitter))
+      .subscribe(
+        (event) => {
+          const processor = messageMediator.process(event);
+          if (processor) {
+            processor(event);
+          }
+        },
+        error => logger.log('error', error),
+      );
 
     const connection$ = socket.fromEvent('connection');
     connection$

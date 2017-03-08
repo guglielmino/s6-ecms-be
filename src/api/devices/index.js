@@ -73,5 +73,6 @@ export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
       });
   });
 
+
   return router;
 }

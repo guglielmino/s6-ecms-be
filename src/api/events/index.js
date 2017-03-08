@@ -1,6 +1,8 @@
 
 
 import express from 'express';
+
+import emitter from '../../emitter';
 import logger from '../../common/logger';
 import { transformEvent } from './eventTransformer';
 import { getDate } from '../api-utils';
@@ -14,7 +16,7 @@ export default function (app, AuthCheck, RoleCheck, { eventProvider }) {
   /**
    * @swagger
    * definitions:
-   *   Event:
+   *   EnergyEvent:
    *     properties:
    *       yesterday:
    *         type: number
@@ -31,6 +33,25 @@ export default function (app, AuthCheck, RoleCheck, { eventProvider }) {
 
   /**
    * @swagger
+   * definitions:
+   *   InfoEvent:
+   *     properties:
+   *       yesterday:
+   *         type: number
+   *         description: yesterday consumption
+   *       today:
+   *         type: number
+   *       period:
+   *         type: number
+   *       voltage:
+   *         type: number
+   *       time:
+   *         type: string
+   */
+
+
+  /**
+   * @swagger
    * parameters:
    *   gateway:
    *     name: gateway
@@ -43,7 +64,7 @@ export default function (app, AuthCheck, RoleCheck, { eventProvider }) {
 
   /**
    * @swagger
-   * /api/events/{gateway}:
+   * /api/events/energy/{gateway}:
    *   parameters:
    *     - $ref: '#/parameters/gateway'
    *   get:
@@ -58,7 +79,7 @@ export default function (app, AuthCheck, RoleCheck, { eventProvider }) {
    *         schema:
    *           type: array
    *           items:
-   *             $ref: '#/definitions/Event'
+   *             $ref: '#/definitions/EnergyEvent'
    */
   router.get('/energy/:gateway', [AuthCheck()], (req, res) => {
     const date = getDate(req);
@@ -82,7 +103,7 @@ export default function (app, AuthCheck, RoleCheck, { eventProvider }) {
 
   /**
    * @swagger
-   * /api/events/:
+   * /api/events/energy:
    *   get:
    *     tags:
    *      - Events
@@ -95,7 +116,7 @@ export default function (app, AuthCheck, RoleCheck, { eventProvider }) {
    *         schema:
    *           type: array
    *           items:
-   *             $ref: '#/definitions/Event'
+   *             $ref: '#/definitions/EnergyEvent'
    */
   router.get('/energy/', [AuthCheck()], (req, res) => {
     const date = getDate(req);
@@ -110,6 +131,32 @@ export default function (app, AuthCheck, RoleCheck, { eventProvider }) {
         logger.log('error', err);
         res.sendStatus(500);
       });
+  });
+
+  /**
+   * @swagger
+   * /api/events/info/{gateway}:
+   *   parameters:
+   *     - $ref: '#/parameters/gateway'
+   *   post:
+   *     tags:
+   *      - Events
+   *     description: Store the Info event received from gateway,
+   *                  Info event carries data about device (id, name, ...)
+   *     produces:
+   *      - application/json
+   *     responses:
+   *       201:
+   *         description: Created
+   */
+  router.post('/', (req, res) => {
+    try {
+      emitter.emit('event', req.body);
+      res.sendStatus(201);
+    } catch (e) {
+      logger.log('error', e);
+      res.sendStatus(500);
+    }
   });
 
   return router;

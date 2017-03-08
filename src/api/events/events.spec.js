@@ -77,4 +77,20 @@ describe('Events API endpoints', () => {
         }
       });
   });
+
+  it('should call post for a result event', (done) => {
+    const deviceProvider = {};
+    Events(app, FakeAuthMiddleware(['samplegw']), null, { deviceProvider });
+
+    request
+      .post('/api/events/')
+      .send({ name: 'a device' })
+      .expect(201, (err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          done();
+        }
+      });
+  });
 });
