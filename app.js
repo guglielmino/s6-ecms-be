@@ -13,6 +13,7 @@ import {
   GatewaysProvider,
   DevicesProvider,
   AlertsProdiver,
+  StatsProvider,
 } from './src/data/mongodb/';
 
 import emitter from './src/emitter';
@@ -24,6 +25,7 @@ import swaggerSetup from './src/api/swagger-setup';
 import routes from './src/api/routes';
 import api from './src/api';
 
+import EventsProcessor from './src/events/eventProcessor';
 import MessageMediator from './src/messageMediator';
 
 function bootstrapDataProvider(db) {
@@ -32,6 +34,7 @@ function bootstrapDataProvider(db) {
     gatewayProvider: GatewaysProvider(db),
     deviceProvider: DevicesProvider(db),
     alertProvider: AlertsProdiver(db),
+    statsProvider: StatsProvider(db),
   };
 }
 
@@ -51,13 +54,19 @@ database.connect()
 
     const pub$ = pnub.fromChannel(consts.PUBNUB_EVENTS_CHANNEL);
 
-    const messageMediator = MessageMediator();
-    messageMediator.addHandler(consts.EVENT_TYPE_ENERGY, providers.eventProvider.add);
-    messageMediator.addHandler(consts.EVENT_TYPE_INFO, ({ Payload }) => {
-      providers.deviceProvider.add(Payload);
-    });
+    const eventsProcessor = EventsProcessor(providers);
 
-    Rx.Observable.merge(getPNEventObservable(pub$), getEmitterEventObservable(emitter))
+    const messageMediator = MessageMediator();
+    messageMediator.addHandler(consts.EVENT_TYPE_ENERGY, eventsProcessor.processEnergyEvent);
+    messageMediator.addHandler(consts.EVENT_TYPE_INFO, eventsProcessor.processInfoEvent);
+    /*
+     messageMediator.addHandler(consts.EVENT_TYPE_INFO, ({ Payload }) => {
+     providers.deviceProvider.add(Payload);
+     });
+     */
+
+    Rx.Observable
+      .merge(getPNEventObservable(pub$), getEmitterEventObservable(emitter))
       .subscribe(
         (event) => {
           const processor = messageMediator.process(event);
