@@ -21,8 +21,8 @@ export default function (app) {
       './src/api/devices/index.js',
       './src/api/events/index.js',
       './src/api/gateways/index.js',
-      './src/api/stats/index.js',
-      './src/api/stats/hourly/index.js'],
+      './src/api/stats/hourly/index.js',
+      './src/api/stats/daily/index.js'],
   };
 
   const swaggerSpec = swaggerJSDoc(options);

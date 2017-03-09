@@ -1,23 +1,24 @@
 
 
 import express from 'express';
-import logger from '../../common/logger';
-import { getDate } from '../api-utils';
-import { transformStat } from './statTransformer';
+import logger from '../../../common/logger';
+import { getDate } from '../../api-utils';
+import { transformDailyStat } from './dailyStatTransformer';
 
-export default function (app, AuthCheck, RoleCheck, { eventProvider }) {
+export default function (app, AuthCheck, RoleCheck, { dailyStatsProvider }) {
   const router = express.Router();
-
-  app.use('/api/stats', router);
-
+  app.use('/api/stats/daily', router);
   /**
    * @swagger
    * definitions:
-   *   Stat:
+   *   DailyStat:
    *     properties:
-   *       current:
-   *         type: number
-   *       power:
+   *       date:
+   *         type: string
+   *       gateway:
+   *         type: string
+   *         description: could be empty for aggregate stats
+   *       value:
    *         type: number
    */
 
@@ -34,13 +35,14 @@ export default function (app, AuthCheck, RoleCheck, { eventProvider }) {
 
   /**
    * @swagger
-   * /api/stats/energy/{gateway}:
+   * /api/stats/daily/{gateway}:
    *   parameters:
    *     - $ref: '#/parameters/gateway'
    *   get:
    *     tags:
    *      - Stats
-   *     description: Returns stats about day consumption about devices benonging to gateway
+   *     description: Returns daily stats about day consumption of devices
+   *                  belonging to the specified gateway
    *     parameters:
    *      - name: date
    *        description: requested stats date
@@ -54,9 +56,9 @@ export default function (app, AuthCheck, RoleCheck, { eventProvider }) {
    *         schema:
    *           type: array
    *           items:
-   *             $ref: '#/definitions/Stat'
+   *             $ref: '#/definitions/HourlyStat'
    */
-  router.get('/energy/:gateway', [AuthCheck()], (req, res) => {
+  router.get('/:gateway', [AuthCheck()], (req, res) => {
     const date = getDate(req);
     const gateways = req.user.app_metadata.gateways;
     const reqGateway = req.params.gateway;
@@ -66,10 +68,10 @@ export default function (app, AuthCheck, RoleCheck, { eventProvider }) {
       return;
     }
 
-    eventProvider
-      .getEnergyStats([reqGateway], date, false)
+    dailyStatsProvider
+      .getDailyStat([reqGateway], date)
       .then((stat) => {
-        res.json(stat.map(s => transformStat(s)));
+        res.json(stat.map(s => transformDailyStat(s)));
       })
       .catch((err) => {
         logger.log('error', err);
@@ -79,11 +81,12 @@ export default function (app, AuthCheck, RoleCheck, { eventProvider }) {
 
   /**
    * @swagger
-   * /api/stats/energy/:
+   * /api/stats/daily/:
    *   get:
    *     tags:
    *      - Stats
-   *     description: Returns stats about day consumption, data of alla gateway are aggregated
+   *     description: Returns daily stats about day consumption of devices
+   *                  belonging to all the user's gateways
    *     parameters:
    *      - name: date
    *        description: requested stats date
@@ -97,16 +100,16 @@ export default function (app, AuthCheck, RoleCheck, { eventProvider }) {
    *         schema:
    *           type: array
    *           items:
-   *             $ref: '#/definitions/Stat'
+   *             $ref: '#/definitions/HourlyStat'
    */
-  router.get('/energy/', [AuthCheck()], (req, res) => {
+  router.get('/', [AuthCheck()], (req, res) => {
     const date = getDate(req);
     const gateways = req.user.app_metadata.gateways;
 
-    eventProvider
-      .getEnergyStats(gateways, date, false)
+    dailyStatsProvider
+      .getEvents(gateways, date)
       .then((stat) => {
-        res.json(stat.map(s => transformStat(s)));
+        res.json(stat.map(e => transformDailyStat(e)));
       })
       .catch((err) => {
         logger.log('error', err);

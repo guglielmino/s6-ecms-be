@@ -1,5 +1,21 @@
 import { DataProvider } from '../data';
 
+/**
+ * Hourly stats are stored by convention in the event date
+ * with time set to the original hour O'clock.
+ * For example if event date is 12/03/2017 21:34:23.234Z the stat's date
+ * will be  12/03/2017 21:34:00.000Z
+ * @param date
+ * @returns {Date}
+ */
+const getRefDateTime = (date) => {
+  const dayDate = new Date(date.getTime());
+  dayDate.setMinutes(0);
+  dayDate.setSeconds(0);
+  dayDate.setMilliseconds(0);
+  return dayDate;
+};
+
 const HourlyStatsProvider = ({ db, collectionName }) => {
   db.collection(collectionName, (err, col) => {
     col.createIndex({ date: 1, gateway: 1, deviceId: 1 },
@@ -13,10 +29,7 @@ const HourlyStatsProvider = ({ db, collectionName }) => {
 
   return {
     updateHourlyStat({ date, gateway, deviceId, power }) {
-      const dayDate = new Date(date.getTime());
-      dayDate.setMinutes(0);
-      dayDate.setSeconds(0);
-      dayDate.setMilliseconds(0);
+      const dayDate = getRefDateTime(date);
 
       return new Promise((resolve, reject) => {
         db.collection(collectionName, (err, col) => {
@@ -43,8 +56,68 @@ const HourlyStatsProvider = ({ db, collectionName }) => {
       });
     },
 
+    getHourlyStatByDevice(date, gateway, deviceId) {
+      const dayDate = getRefDateTime(date);
+
+      return new Promise((resolve, reject) => {
+        db.collection(collectionName, (err, col) => {
+          if (err) {
+            reject(err);
+          }
+
+          col.find({
+            date: dayDate,
+            gateway,
+            deviceId,
+          })
+            .toArray((error, docs) => {
+              if (error) {
+                reject(error);
+              } else {
+                resolve(docs);
+              }
+            });
+        });
+      });
+    },
+
+    getHourlyStat(date, gateways) {
+      const dayDate = getRefDateTime(date);
+
+      return new Promise((resolve, reject) => {
+        db.collection(collectionName, (err, col) => {
+          if (err) {
+            reject(err);
+          }
+
+          col.aggregate([{
+            $match: {
+              $and: [
+                { gateway: { $in: gateways } },
+                { date: { $eq: dayDate } },
+              ],
+            },
+          }, {
+            $group: {
+              _id: { $hour: '$date' },
+              power: {
+                $sum: '$power',
+              },
+            },
+          }])
+            .toArray((error, docs) => {
+              if (error) {
+                reject(error);
+              } else {
+                resolve(docs);
+              }
+            });
+        });
+      });
+    },
   };
 };
+
 
 export default function (db) {
   const params = {

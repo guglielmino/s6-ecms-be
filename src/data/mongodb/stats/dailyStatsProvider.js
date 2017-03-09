@@ -56,7 +56,7 @@ const DailyStatsProvider = ({ db, collectionName }) => {
       });
     },
 
-    getDailyStat(date, gateway) {
+    getDailyStat(date, gateways) {
       const dayDate = getRefDate(date);
       return new Promise((resolve, reject) => {
         db.collection(collectionName, (err, col) => {
@@ -64,10 +64,21 @@ const DailyStatsProvider = ({ db, collectionName }) => {
             reject(err);
           }
 
-          col.find({
-            date: dayDate,
-            gateway
-          })
+          col.aggregate([{
+            $match: {
+              $and: [
+                { gateway: { $in: gateways } },
+                { date: { $eq: dayDate } },
+              ],
+            },
+          }, {
+            $group: {
+              _id: '$date',
+              today: {
+                $sum: '$today',
+              },
+            },
+          }])
             .toArray((error, docs) => {
               if (error) {
                 reject(error);

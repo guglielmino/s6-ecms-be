@@ -1,6 +1,6 @@
 const transformHourlyStat = stat => ({
-  current: stat.Current,
-  power: stat.Power,
+  deviceId: stat.deviceId ? stat.deviceId : '',
+  power: stat.power,
   hour: stat._id, // eslint-disable-line no-underscore-dangle
 });
 
