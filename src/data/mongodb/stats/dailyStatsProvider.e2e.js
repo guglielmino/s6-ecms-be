@@ -3,7 +3,7 @@ import chai from 'chai';
 import sinon from 'sinon';
 
 import { Database } from '../data';
-import StatsProvider from './statsProvider';
+import DailyStatsProvider from './dailyStatsProvider';
 
 chai.should();
 const expect = chai.expect;
@@ -21,7 +21,7 @@ describe('statsProvider', () => {
     database.connect()
       .then((db) => {
         const value = Math.random();
-        subject = StatsProvider(db);
+        subject = DailyStatsProvider(db);
         subject
           .updateDailyStat({
             date: new Date(),

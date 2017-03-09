@@ -1,6 +1,6 @@
 import { DataProvider } from '../data';
 
-const StatsProvider = ({ db, collectionName }) => {
+const DailyStatsProvider = ({ db, collectionName }) => {
   db.collection(collectionName, (err, col) => {
     col.createIndex({ date: 1, gateway: 1 },
       { unique: true, background: true, dropDups: true, w: 1 },
@@ -50,7 +50,7 @@ const StatsProvider = ({ db, collectionName }) => {
 export default function (db) {
   const params = {
     db,
-    collectionName: 'stats',
+    collectionName: 'dailyStats',
   };
-  return Object.assign({}, DataProvider(params), StatsProvider(params));
+  return Object.assign({}, DataProvider(params), DailyStatsProvider(params));
 }
