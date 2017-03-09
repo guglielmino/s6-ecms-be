@@ -13,7 +13,8 @@ import {
   GatewaysProvider,
   DevicesProvider,
   AlertsProdiver,
-  StatsProvider,
+  DailyStatsProvider,
+  HourlyStatsProvider,
 } from './src/data/mongodb/';
 
 import emitter from './src/emitter';
@@ -34,7 +35,8 @@ function bootstrapDataProvider(db) {
     gatewayProvider: GatewaysProvider(db),
     deviceProvider: DevicesProvider(db),
     alertProvider: AlertsProdiver(db),
-    statsProvider: StatsProvider(db),
+    dailyStatsProvider: DailyStatsProvider(db),
+    hourlyStatsProvider: HourlyStatsProvider(db),
   };
 }
 

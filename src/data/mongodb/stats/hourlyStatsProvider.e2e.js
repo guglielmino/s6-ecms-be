@@ -2,12 +2,12 @@ import chai from 'chai';
 import sinon from 'sinon';
 
 import { Database } from '../data';
-import DailyStatsProvider from './dailyStatsProvider';
+import HourlyStatsProvider from './hourlyStatsProvider';
 
 chai.should();
 const expect = chai.expect;
 
-describe('daily statistics provider', () => {
+describe('hourly statistics provider', () => {
   let subject;
 
   it('should add stats data', (done) => {
@@ -17,15 +17,20 @@ describe('daily statistics provider', () => {
       },
     });
 
+    const randomHourDate = new Date();
+    randomHourDate.setHours((Math.random() * 3));
+    console.log(`randome hour ${randomHourDate}`);
+
     database.connect()
       .then((db) => {
         const value = Math.random();
-        subject = DailyStatsProvider(db);
+        subject = HourlyStatsProvider(db);
         subject
-          .updateDailyStat({
-            date: new Date(),
+          .updateHourlyStat({
+            date: randomHourDate,
             gateway: 'test_gateway',
-            today: value,
+            deviceId: '11:22:33:44:55:66',
+            power: 12.3,
           })
           .then((res) => {
             res.should.be.true;

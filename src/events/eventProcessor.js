@@ -6,17 +6,22 @@ export default function (providers) {
       logger.log('info', `processEnergyEvent ${JSON.stringify(event)}`);
       providers.eventProvider.add(event);
 
-      providers.statsProvider.add({
+      providers.dailyStatsProvider.updateDailyStat({
         date: event.Payload.Time,
         gateway: event.GatewayId,
         today: event.Payload.Today,
       });
+
+      providers.hourlyStatsProvider.updateHourlyStat({
+        date: event.Payload.Time,
+        gateway: event.GatewayId,
+        deviceId: event.Payload.DeviceId,
+        power: event.Payload.Power,
+      });
     },
     processInfoEvent: (event) => {
       logger.log('info', `processInfoEvent ${JSON.stringify(event)}`);
-      // Every event is stored in events collection
       providers.eventProvider.add(event);
-      // Info event means devices info
       providers.deviceProvider.add(event.Payload);
     },
   };
