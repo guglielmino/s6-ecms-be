@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="dfc938d1-392f-442b-a93b-4fa535f5bf86" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/data/mongodb/stats/hourlyStatsProvider.e2e.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/data/mongodb/stats/hourlyStatsProvider.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.js" afterPath="$PROJECT_DIR$/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/mongodb/index.js" afterPath="$PROJECT_DIR$/src/data/mongodb/index.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/mongodb/stats/dailyStatsProvider.e2e.js" afterPath="$PROJECT_DIR$/src/data/mongodb/stats/dailyStatsProvider.e2e.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/events/eventProcessor.js" afterPath="$PROJECT_DIR$/src/events/eventProcessor.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/mongodb/stats/dailyStatsProvider.js" afterPath="$PROJECT_DIR$/src/data/mongodb/stats/dailyStatsProvider.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -46,7 +41,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="eventProcessor.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="eventProcessor.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/events/eventProcessor.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="330">
@@ -59,21 +54,31 @@
       <file leaf-file-name="dailyStatsProvider.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/data/mongodb/stats/dailyStatsProvider.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" column="24" lean-forward="false" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="24" />
+            <state relative-caret-position="450">
+              <caret line="67" column="26" lean-forward="false" selection-start-line="67" selection-start-column="26" selection-end-line="67" selection-end-column="26" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="dailyStatsProvider.e2e.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="dailyStatsProvider.e2e.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/data/mongodb/stats/dailyStatsProvider.e2e.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="24" column="26" lean-forward="false" selection-start-line="24" selection-start-column="11" selection-end-line="24" selection-end-column="26" />
+            <state relative-caret-position="519">
+              <caret line="62" column="0" lean-forward="false" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
               <folding>
                 <element signature="e#0#24#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="eventsProvider.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/data/mongodb/events/eventsProvider.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="489">
+              <caret line="52" column="6" lean-forward="true" selection-start-line="31" selection-start-column="3" selection-end-line="52" selection-end-column="6" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -192,13 +197,13 @@
         <option value="$PROJECT_DIR$/src/events/eventProcessor.spec.js" />
         <option value="$PROJECT_DIR$/src/data/mongodb/stats/statsProvider.js" />
         <option value="$PROJECT_DIR$/src/data/mongodb/stats/statsProvider.e2e.js" />
-        <option value="$PROJECT_DIR$/src/data/mongodb/stats/dailyStatsProvider.js" />
         <option value="$PROJECT_DIR$/src/data/mongodb/stats/hourlyStatsProvider.js" />
-        <option value="$PROJECT_DIR$/src/data/mongodb/stats/dailyStatsProvider.e2e.js" />
         <option value="$PROJECT_DIR$/src/data/mongodb/index.js" />
         <option value="$PROJECT_DIR$/app.js" />
         <option value="$PROJECT_DIR$/src/data/mongodb/stats/hourlyStatsProvider.e2e.js" />
         <option value="$PROJECT_DIR$/src/events/eventProcessor.js" />
+        <option value="$PROJECT_DIR$/src/data/mongodb/stats/dailyStatsProvider.js" />
+        <option value="$PROJECT_DIR$/src/data/mongodb/stats/dailyStatsProvider.e2e.js" />
       </list>
     </option>
   </component>
@@ -349,6 +354,58 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="stats" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="iot-project-server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="iot-project-server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="data" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mongodb" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gateways" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="iot-project-server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="iot-project-server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="data" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mongodb" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="events" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -518,12 +575,12 @@
       <workItem from="1488289013487" duration="280000" />
       <workItem from="1488289431625" duration="10792000" />
       <workItem from="1488539078485" duration="19082000" />
-      <workItem from="1488789374408" duration="24303000" />
+      <workItem from="1488789374408" duration="24850000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="123326000" />
+    <option name="totallyTimeSpent" value="123873000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1157" height="989" extended-state="0" />
@@ -564,7 +621,7 @@
           <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="11" />
+      <option name="time" value="12" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -896,14 +953,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/mongodb/events/eventsProvider.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-30">
-          <caret line="10" column="32" lean-forward="true" selection-start-line="7" selection-start-column="4" selection-end-line="10" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/data/mongodb/devices/devicesProvider.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
@@ -936,14 +985,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/mongodb/stats/dailyStatsProvider.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="24" lean-forward="false" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/data/mongodb/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -958,16 +999,6 @@
           <caret line="38" column="23" lean-forward="false" selection-start-line="38" selection-start-column="4" selection-end-line="38" selection-end-column="23" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/data/mongodb/stats/dailyStatsProvider.e2e.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="24" column="26" lean-forward="false" selection-start-line="24" selection-start-column="11" selection-end-line="24" selection-end-column="26" />
-          <folding>
-            <element signature="e#0#24#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -990,11 +1021,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/mongodb/events/eventsProvider.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="489">
+          <caret line="52" column="6" lean-forward="true" selection-start-line="31" selection-start-column="3" selection-end-line="52" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/events/eventProcessor.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
           <caret line="22" column="8" lean-forward="true" selection-start-line="22" selection-start-column="8" selection-end-line="22" selection-end-column="8" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/mongodb/stats/dailyStatsProvider.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="67" column="26" lean-forward="false" selection-start-line="67" selection-start-column="26" selection-end-line="67" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/data/mongodb/stats/dailyStatsProvider.e2e.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="519">
+          <caret line="62" column="0" lean-forward="false" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#24#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

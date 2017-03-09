@@ -1,5 +1,21 @@
 import { DataProvider } from '../data';
 
+/**
+ * Daily stats are stored by convention with the event's date
+ * and the time set to 00:00:00:000. This function normalize the
+ * passed date to the reference one
+ * @param date
+ */
+const getRefDate = (date) => {
+  const dayDate = new Date(date.getTime());
+  dayDate.setHours(0);
+  dayDate.setMinutes(0);
+  dayDate.setSeconds(0);
+  dayDate.setMilliseconds(0);
+  return dayDate;
+};
+
+
 const DailyStatsProvider = ({ db, collectionName }) => {
   db.collection(collectionName, (err, col) => {
     col.createIndex({ date: 1, gateway: 1 },
@@ -13,11 +29,7 @@ const DailyStatsProvider = ({ db, collectionName }) => {
 
   return {
     updateDailyStat({ date, gateway, today }) {
-      const dayDate = new Date(date.getTime());
-      dayDate.setHours(0);
-      dayDate.setMinutes(0);
-      dayDate.setSeconds(0);
-      dayDate.setMilliseconds(0);
+      const dayDate = getRefDate(date);
 
       return new Promise((resolve, reject) => {
         db.collection(collectionName, (err, col) => {
@@ -44,6 +56,28 @@ const DailyStatsProvider = ({ db, collectionName }) => {
       });
     },
 
+    getDailyStat(date, gateway) {
+      const dayDate = getRefDate(date);
+      return new Promise((resolve, reject) => {
+        db.collection(collectionName, (err, col) => {
+          if (err) {
+            reject(err);
+          }
+
+          col.find({
+            date: dayDate,
+            gateway
+          })
+            .toArray((error, docs) => {
+              if (error) {
+                reject(error);
+              } else {
+                resolve(docs);
+              }
+            });
+        });
+      });
+    },
   };
 };
 
