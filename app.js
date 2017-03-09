@@ -61,11 +61,6 @@ database.connect()
     const messageMediator = MessageMediator();
     messageMediator.addHandler(consts.EVENT_TYPE_ENERGY, eventsProcessor.processEnergyEvent);
     messageMediator.addHandler(consts.EVENT_TYPE_INFO, eventsProcessor.processInfoEvent);
-    /*
-     messageMediator.addHandler(consts.EVENT_TYPE_INFO, ({ Payload }) => {
-     providers.deviceProvider.add(Payload);
-     });
-     */
 
     Rx.Observable
       .merge(getPNEventObservable(pub$), getEmitterEventObservable(emitter))

@@ -35,6 +35,17 @@ export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
 
   /**
    * @swagger
+   * parameters:
+   *   deviceId:
+   *     name: deviceId
+   *     in: path
+   *     description: deviceId (device mac address)
+   *     type: string
+   *     required: true
+   */
+
+  /**
+   * @swagger
    * /api/devices/{gateway}:
    *   parameters:
    *     - $ref: '#/parameters/gateway'
@@ -52,7 +63,6 @@ export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
    *           items:
    *             $ref: '#/definitions/Device'
    */
-
   router.get('/:gateway', [AuthCheck()], (req, res) => {
     const gateways = req.user.app_metadata.gateways;
     const reqGateway = req.params.gateway;
@@ -73,6 +83,25 @@ export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
       });
   });
 
+  /**
+   * @swagger
+   * /api/devices/{gateway}/{deviceId}/power:
+   *   parameters:
+   *     - $ref: '#/parameters/gateway'
+   *     - $ref: '#/parameters/deviceId'
+   *   post:
+   *     tags:
+   *      - Devices
+   *     description: Turn on/off a device
+   *     produces:
+   *      - application/json
+   *     responses:
+   *       200:
+   *         description: done
+   */
+  router.post('/:gateway/:device/power', [AuthCheck()], (req, res) => {
+    res.sendStatus(200);
+  });
 
   return router;
 }

@@ -135,7 +135,7 @@ export default function (app, AuthCheck, RoleCheck, { eventProvider }) {
 
   /**
    * @swagger
-   * /api/events/info/{gateway}:
+   * /api/events/{gateway}:
    *   parameters:
    *     - $ref: '#/parameters/gateway'
    *   post:

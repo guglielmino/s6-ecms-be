@@ -56,7 +56,7 @@ export default function (app, AuthCheck, RoleCheck, { dailyStatsProvider }) {
    *         schema:
    *           type: array
    *           items:
-   *             $ref: '#/definitions/HourlyStat'
+   *             $ref: '#/definitions/DailyStat'
    */
   router.get('/:gateway', [AuthCheck()], (req, res) => {
     const date = getDate(req);
@@ -100,7 +100,7 @@ export default function (app, AuthCheck, RoleCheck, { dailyStatsProvider }) {
    *         schema:
    *           type: array
    *           items:
-   *             $ref: '#/definitions/HourlyStat'
+   *             $ref: '#/definitions/DailyStat'
    */
   router.get('/', [AuthCheck()], (req, res) => {
     const date = getDate(req);
