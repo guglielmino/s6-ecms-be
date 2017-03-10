@@ -1,5 +1,3 @@
-
-
 export default function messageMediator() {
   const messageHandlers = [];
 
@@ -9,10 +7,8 @@ export default function messageMediator() {
     },
     process: (message) => {
       if (Object.keys(messageHandlers).indexOf(message.Type) !== -1) {
-        return messageHandlers[message.Type];
+        messageHandlers[message.Type](message);
       }
-
-      return null;
     },
   };
 }

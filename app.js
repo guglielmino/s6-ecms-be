@@ -67,9 +67,6 @@ database.connect()
       .subscribe(
         (event) => {
           const processor = messageMediator.process(event);
-          if (processor) {
-            processor(event);
-          }
         },
         error => logger.log('error', error),
       );

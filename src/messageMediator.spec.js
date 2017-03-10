@@ -14,8 +14,8 @@ describe('message mediator', () => {
     fnInfo;
 
   beforeEach(() => {
-    fnEnergy = () => { };
-    fnInfo = () => { };
+    fnEnergy = sinon.stub();
+    fnInfo = sinon.stub();
     subject = messageMediator();
     subject.addHandler(consts.EVENT_TYPE_ENERGY, fnEnergy);
     subject.addHandler(consts.EVENT_TYPE_INFO, fnInfo);
@@ -23,18 +23,19 @@ describe('message mediator', () => {
 
   it('should process EVENT_TYPE_ENERGY message', () => {
     const fn = subject.process({ Type: consts.EVENT_TYPE_ENERGY });
-    fn.should.be.eq(fnEnergy);
-    fn.should.be.not.eq(fnInfo);
+    fnEnergy.calledOnce.should.be.true;
+    fnInfo.called.should.be.false;
   });
 
   it('should process EVENT_TYPE_INFO message', () => {
-    const fn = subject.process({ Type: consts.EVENT_TYPE_INFO });
-    fn.should.be.not.eq(fnEnergy);
-    fn.should.be.eq(fnInfo);
+    subject.process({ Type: consts.EVENT_TYPE_INFO });
+    fnInfo.calledOnce.should.be.true;
+    fnEnergy.called.should.be.false;
   });
 
   it('should do nothing for an unknown message type', () => {
-    const fn = subject.process({ Type: 'FAKE_EVENT' });
-    expect(fn).to.be.null;
+    subject.process({ Type: 'FAKE_EVENT' });
+    fnEnergy.called.should.be.false;
+    fnInfo.called.should.be.false;
   });
 });
