@@ -39,8 +39,9 @@ describe('event processor', () => {
       const res$ = getPNEventObservable(ob$);
 
       res$.subscribe((res) => {
-        res.Payload.Current.should.be.eq(8.37);
-        res.Payload.Time.should.be.a('Date');
+
+        res.Payload.DeviceId.should.be.eq('tele/sonoff/TELEMETRY');
+        res.Payload.Time.should.be.eq('2017-01-27T08:46:13.723Z');
         done();
       });
     });
@@ -101,25 +102,10 @@ describe('event processor', () => {
 
       getEmitterEventObservable(eventEmitter)
         .subscribe((res) => {
-          res.Payload.Current.should.be.eq(8.37);
-          res.Payload.Time.should.be.a('Date');
+          res.Payload.Current.should.be.eq('8.37');
+          res.Payload.Time.should.be.eq('2017-01-27T08:46:13.723Z');
           done();
         });
-
-      eventEmitter.emit('event', sampleEvent);
-    });
-
-    it('should throw for an unknow event', (done) => {
-      const sampleEvent = {
-        name: 'fakeEvent',
-      };
-
-      getEmitterEventObservable(eventEmitter)
-        .subscribe(
-          x => console.log('onNext: %s', x),
-          e => done(),
-          () => console.log('onCompleted'),
-        );
 
       eventEmitter.emit('event', sampleEvent);
     });

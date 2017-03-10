@@ -26,6 +26,9 @@ import swaggerSetup from './src/api/swagger-setup';
 import routes from './src/api/routes';
 import api from './src/api';
 
+
+import infoMapper from './src/data/observable/mappers/infoMapper';
+import energyMapper from './src/data/observable/mappers/energyMapper';
 import EventsProcessor from './src/events/eventProcessor';
 import MessageMediator from './src/messageMediator';
 
@@ -59,14 +62,18 @@ database.connect()
     const eventsProcessor = EventsProcessor(providers);
 
     const messageMediator = MessageMediator();
-    messageMediator.addHandler(consts.EVENT_TYPE_ENERGY, eventsProcessor.processEnergyEvent);
-    messageMediator.addHandler(consts.EVENT_TYPE_INFO, eventsProcessor.processInfoEvent);
+    messageMediator.addHandler(msg => msg.Type === consts.EVENT_TYPE_ENERGY,
+      msg => eventsProcessor.processEnergyEvent(energyMapper(msg)));
+    messageMediator.addHandler(msg => msg.Type === consts.EVENT_TYPE_INFO,
+      msg => eventsProcessor.processInfoEvent(infoMapper(msg)));
+    messageMediator.addHandler(msg => msg.type === consts.APPEVENT_TYPE_POWER,
+      msg => console.log(msg));
 
     Rx.Observable
       .merge(getPNEventObservable(pub$), getEmitterEventObservable(emitter))
       .subscribe(
         (event) => {
-          const processor = messageMediator.process(event);
+          messageMediator.process(event);
         },
         error => logger.log('error', error),
       );

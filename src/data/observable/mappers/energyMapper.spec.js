@@ -12,7 +12,7 @@ chai.should();
 const expect = chai.expect;
 
 describe('energy message mapper', () => {
-  it('should ma', () => {
+  it('should map all required fields in result object Payload', () => {
     const rawPayload = {
       GatewayId: 'testGateway',
       Type: EVENT_TYPE_ENERGY,

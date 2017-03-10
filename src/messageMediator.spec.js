@@ -1,5 +1,3 @@
-
-
 import chai from 'chai';
 import sinon from 'sinon';
 import * as consts from '../consts';
@@ -17,24 +15,22 @@ describe('message mediator', () => {
     fnEnergy = sinon.stub();
     fnInfo = sinon.stub();
     subject = messageMediator();
-    subject.addHandler(consts.EVENT_TYPE_ENERGY, fnEnergy);
-    subject.addHandler(consts.EVENT_TYPE_INFO, fnInfo);
   });
 
-  it('should process EVENT_TYPE_ENERGY message', () => {
-    const fn = subject.process({ Type: consts.EVENT_TYPE_ENERGY });
+  it('should call the function matching the predicate', () => {
+    subject.addHandler(msg => msg.Type === consts.EVENT_TYPE_ENERGY, fnEnergy);
+    subject.addHandler(msg => msg.Type === consts.EVENT_TYPE_INFO, fnInfo);
+
+    subject.process({ Type: consts.EVENT_TYPE_ENERGY, Payload: "test energy payload" });
     fnEnergy.calledOnce.should.be.true;
     fnInfo.called.should.be.false;
   });
 
-  it('should process EVENT_TYPE_INFO message', () => {
-    subject.process({ Type: consts.EVENT_TYPE_INFO });
-    fnInfo.calledOnce.should.be.true;
-    fnEnergy.called.should.be.false;
-  });
+  it('should do nothing when no predicate matches', () => {
+    subject.addHandler(msg => msg.Type === consts.EVENT_TYPE_ENERGY, fnEnergy);
+    subject.addHandler(msg => msg.Type === consts.EVENT_TYPE_INFO, fnInfo);
 
-  it('should do nothing for an unknown message type', () => {
-    subject.process({ Type: 'FAKE_EVENT' });
+    subject.process({ Name: "fake object" });
     fnEnergy.called.should.be.false;
     fnInfo.called.should.be.false;
   });

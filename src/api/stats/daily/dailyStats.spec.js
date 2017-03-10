@@ -29,7 +29,7 @@ describe('DailyStats API endpoints', () => {
       .stub()
       .returns(Promise.resolve(
         [{
-          date: date,
+          _id: date,
           gateway: 'gwtest',
           today: 120.0,
         }]),

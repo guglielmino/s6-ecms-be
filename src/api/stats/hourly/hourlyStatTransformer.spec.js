@@ -16,7 +16,7 @@ describe('hourly stat transformer', () => {
     });
 
     res.hour.should.be.eq(12);
-    res.power.should.be.eq(0);
+    res.power.should.be.eq(12.4);
     res.deviceId.should.be.eq('');
     Object.keys(res).length.should.be.eq(3);
   });

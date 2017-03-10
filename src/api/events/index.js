@@ -1,12 +1,9 @@
-
-
 import express from 'express';
 
 import emitter from '../../emitter';
 import logger from '../../common/logger';
 import { transformEvent } from './eventTransformer';
 import { getDate } from '../api-utils';
-
 
 export default function (app, AuthCheck, RoleCheck, { eventProvider }) {
   const router = express.Router();
@@ -48,7 +45,6 @@ export default function (app, AuthCheck, RoleCheck, { eventProvider }) {
    *       time:
    *         type: string
    */
-
 
   /**
    * @swagger

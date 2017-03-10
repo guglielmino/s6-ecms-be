@@ -2,13 +2,13 @@ export default function messageMediator() {
   const messageHandlers = [];
 
   return {
-    addHandler: (messageType, handler) => {
-      messageHandlers[messageType] = handler;
+    addHandler: (predicate, handler) => {
+      messageHandlers.push({ predicate, fn: handler });
     },
     process: (message) => {
-      if (Object.keys(messageHandlers).indexOf(message.Type) !== -1) {
-        messageHandlers[message.Type](message);
-      }
+      messageHandlers
+        .filter(o => o.predicate(message))
+        .map(p => p.fn(message));
     },
   };
 }

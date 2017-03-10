@@ -7,7 +7,7 @@
     "start": "babel-node app.js",
     "lint": "eslint ./ --cache --ignore-pattern .gitignore --ignore-pattern *.spec.js --ignore-pattern *.e2e.js",
     "dev": "nodemon --exec npm run start -- app.js",
-    "test": "mocha --compilers js:babel-core/register --recursive src/**/*.spec.js",
+    "test": "mocha --compilers js:babel-core/register --recursive 'src/**/*.spec.js'",
     "test:watch": "npm run test -- --watch"
   },
   "precommit": [

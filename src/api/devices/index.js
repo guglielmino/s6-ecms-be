@@ -1,6 +1,8 @@
 import express from 'express';
+import emitter from '../../emitter';
 import logger from '../../common/logger';
 import { transformDevice } from './deviceTransformer';
+import * as consts from '../../../consts';
 
 export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
   const router = express.Router();
@@ -85,10 +87,26 @@ export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
 
   /**
    * @swagger
+   * definitions:
+   *   PowerPayload:
+   *     properties:
+   *       state:
+   *         type: string
+   *         description: state of the device, should be "on" or "off"
+   */
+
+  /**
+   * @swagger
    * /api/devices/{gateway}/{deviceId}/power:
    *   parameters:
    *     - $ref: '#/parameters/gateway'
    *     - $ref: '#/parameters/deviceId'
+   *     - name: state
+   *       in: body
+   *       description: The pet JSON you want to post
+   *       schema:
+   *         $ref: '#/definitions/PowerPayload'
+   *       required: true
    *   post:
    *     tags:
    *      - Devices
@@ -99,8 +117,17 @@ export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
    *       200:
    *         description: done
    */
-  router.post('/:gateway/:device/power', [AuthCheck()], (req, res) => {
-    res.sendStatus(200);
+  router.post('/:gateway/:device/power', [], (req, res) => {
+    const reqGateway = req.params.gateway;
+    const reqDevice = req.params.device;
+
+    try {
+      emitter.emit('event', { ...req.body, gateway: reqGateway, deviceId: reqDevice, type: consts.APPEVENT_TYPE_POWER });
+      res.sendStatus(200);
+    } catch (e) {
+      logger.log('error', e);
+      res.sendStatus(500);
+    }
   });
 
   return router;
