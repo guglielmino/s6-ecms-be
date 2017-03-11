@@ -69,7 +69,7 @@ export default function (app, AuthCheck, RoleCheck, { dailyStatsProvider }) {
     }
 
     dailyStatsProvider
-      .getDailyStat([reqGateway], date)
+      .getDailyStat(date, [reqGateway])
       .then((stat) => {
         res.json(stat.map(s => transformDailyStat(s)));
       })
@@ -107,7 +107,7 @@ export default function (app, AuthCheck, RoleCheck, { dailyStatsProvider }) {
     const gateways = req.user.app_metadata.gateways;
 
     dailyStatsProvider
-      .getEvents(gateways, date)
+      .getDailyStat(date, gateways)
       .then((stat) => {
         res.json(stat.map(e => transformDailyStat(e)));
       })

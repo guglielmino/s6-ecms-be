@@ -69,7 +69,7 @@ export default function (app, AuthCheck, RoleCheck, { hourlyStatsProvider }) {
     }
 
     hourlyStatsProvider
-      .getHourlyStat([reqGateway], date)
+      .getHourlyStat(date, [reqGateway])
       .then((stat) => {
         res.json(stat.map(s => transformHourlyStat(s)));
       })
@@ -106,7 +106,7 @@ export default function (app, AuthCheck, RoleCheck, { hourlyStatsProvider }) {
     const gateways = req.user.app_metadata.gateways;
 
     hourlyStatsProvider
-      .getHourlyStat(gateways, date)
+      .getHourlyStat(date, gateways)
       .then((stat) => {
         res.json(stat.map(s => transformHourlyStat(s)));
       })

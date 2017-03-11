@@ -9,7 +9,7 @@ import { DataProvider } from '../data';
  * @returns {Date}
  */
 const getRefDateTime = (date) => {
-  const dayDate = new Date(date.getTime());
+  const dayDate = new Date(date);
   dayDate.setMinutes(0);
   dayDate.setSeconds(0);
   dayDate.setMilliseconds(0);

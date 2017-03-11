@@ -49,7 +49,7 @@ database.connect()
     messageMediator.addHandler(msg => msg.Type === consts.EVENT_TYPE_INFO,
       msg => eventsProcessor.processInfoEvent(infoMapper(msg)));
     messageMediator.addHandler(msg => msg.type === consts.APPEVENT_TYPE_POWER,
-      msg => logger.log('info', msg));
+      msg => logger.log('info', msg)); // TODO: push on pubnub the power swith request
     messageMediator.addHandler(msg => msg.Type === consts.EVENT_POWER_STATUS,
       msg => eventsProcessor.processPowerStatus(powerMapper(msg)));
 
