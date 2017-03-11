@@ -8,14 +8,7 @@ import {
 } from './src/data/observable/events';
 
 import { Database } from './src/data/mongodb/data';
-import {
-  EventsProvider,
-  GatewaysProvider,
-  DevicesProvider,
-  AlertsProdiver,
-  DailyStatsProvider,
-  HourlyStatsProvider,
-} from './src/data/mongodb/';
+import bootstrapDataProvider from './src/bootstrap/dataProviders';
 
 import emitter from './src/emitter';
 import socketServer from './src/socketServer';
@@ -26,26 +19,15 @@ import swaggerSetup from './src/api/swagger-setup';
 import routes from './src/api/routes';
 import api from './src/api';
 
-
 import infoMapper from './src/data/observable/mappers/infoMapper';
 import energyMapper from './src/data/observable/mappers/energyMapper';
 import EventsProcessor from './src/events/eventProcessor';
 import MessageMediator from './src/messageMediator';
 
-function bootstrapDataProvider(db) {
-  return {
-    eventProvider: EventsProvider(db),
-    gatewayProvider: GatewaysProvider(db),
-    deviceProvider: DevicesProvider(db),
-    alertProvider: AlertsProdiver(db),
-    dailyStatsProvider: DailyStatsProvider(db),
-    hourlyStatsProvider: HourlyStatsProvider(db),
-  };
-}
-
 const database = Database(config);
 database.connect()
   .then((db) => {
+    console.log('start');
     const pnub = pubnubHub(config.pubnub);
 
     const providers = bootstrapDataProvider(db);
