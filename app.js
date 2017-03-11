@@ -21,13 +21,13 @@ import api from './src/api';
 
 import infoMapper from './src/data/observable/mappers/infoMapper';
 import energyMapper from './src/data/observable/mappers/energyMapper';
+import powerMapper from './src/data/observable/mappers/powerMapper';
 import EventsProcessor from './src/events/eventProcessor';
 import MessageMediator from './src/messageMediator';
 
 const database = Database(config);
 database.connect()
   .then((db) => {
-    console.log('start');
     const pnub = pubnubHub(config.pubnub);
 
     const providers = bootstrapDataProvider(db);
@@ -49,7 +49,9 @@ database.connect()
     messageMediator.addHandler(msg => msg.Type === consts.EVENT_TYPE_INFO,
       msg => eventsProcessor.processInfoEvent(infoMapper(msg)));
     messageMediator.addHandler(msg => msg.type === consts.APPEVENT_TYPE_POWER,
-      msg => console.log(msg));
+      msg => logger.log('info', msg));
+    messageMediator.addHandler(msg => msg.Type === consts.EVENT_POWER_STATUS,
+      msg => eventsProcessor.processPowerStatus(powerMapper(msg)));
 
     Rx.Observable
       .merge(getPNEventObservable(pub$), getEmitterEventObservable(emitter))

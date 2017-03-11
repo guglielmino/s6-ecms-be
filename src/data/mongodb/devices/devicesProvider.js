@@ -37,6 +37,29 @@ const DevicesProvider = ({ db, collectionName }) => {
         });
       });
     },
+
+    /**
+     * Find the device having specified name in power command
+     * @param topic
+     */
+    findByPowerCommand(topicName) {
+      return new Promise((resolve, reject) => {
+        db.collection(collectionName, (err, col) => {
+          if (err) {
+            reject(err);
+          }
+
+          col.find({ 'commands.power': `mqtt:cmnd/${topicName}/POWER` })
+            .toArray((error, docs) => {
+              if (error) {
+                reject(error);
+              } else {
+                resolve(docs[0]);
+              }
+            });
+        });
+      });
+    },
   };
 };
 

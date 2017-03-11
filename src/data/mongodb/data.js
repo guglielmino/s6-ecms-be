@@ -38,6 +38,26 @@ const DataProvider = ({ db, collectionName }) => ({
       });
     });
   },
+
+  update(obj, newObj) {
+    return new Promise((resolve, reject) => {
+      db.collection(collectionName, (err, col) => {
+        if (err) {
+          reject(err);
+        }
+
+        col.updateOne({ _id: obj._id },  // eslint-disable-line no-underscore-dangle
+          newObj,
+          (error, r) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(r.insertedCount);
+            }
+          });
+      });
+    });
+  },
 });
 
 

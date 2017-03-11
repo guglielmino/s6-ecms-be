@@ -24,5 +24,24 @@ export default function (providers) {
       providers.eventProvider.add(event);
       providers.deviceProvider.add(event.Payload);
     },
+    processPowerStatus: (event) => {
+      logger.log('info', `processPowerStatus ${JSON.stringify(event)}`);
+      providers.eventProvider.add(event);
+
+      const topicParts = event.Payload.Topic.split('/');
+      let topicName = '';
+      if (topicParts.length > 1) {
+        topicName = topicParts[1];
+      }
+
+      providers.deviceProvider
+        .findByPowerCommand(topicName)
+        .then((res) => {
+          providers
+            .deviceProvider
+            .update(res, { ...res, status: { power: event.Payload.Power } });
+        })
+        .catch(err => logger.log('error', err));
+    },
   };
 }
