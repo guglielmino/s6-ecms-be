@@ -6,13 +6,11 @@ const MOTOR_CAC = 'Motor C/AC Module'; // iTead Motor Clockwise/Anticlockwise
 const ELECTRO_DRAGON = 'ElectroDragon Module'; // Electro Dragon Wifi IoT Relay Board Based on ESP8266
 
 function commandPerDevice(appName, topic) {
-  const ret = [];
+  let ret = {};
 
   switch (appName) {
     case SONOFF_POW:
-      ret.push({
-        power: `mqtt:${topic}/POWER`,
-      });
+      ret = Object.assign({}, { power: `mqtt:${topic}/POWER` });
       break;
     default:
       ret.empty();

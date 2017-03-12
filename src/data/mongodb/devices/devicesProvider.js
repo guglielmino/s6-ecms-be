@@ -1,4 +1,4 @@
-import { DataProvider } from '../data';
+import {DataProvider} from '../data';
 
 const DevicesProvider = ({ db, collectionName }) => {
   db.collection(collectionName, (err, col) => {
@@ -50,6 +50,24 @@ const DevicesProvider = ({ db, collectionName }) => {
           }
 
           col.find({ 'commands.power': `mqtt:cmnd/${topicName}/POWER` })
+            .toArray((error, docs) => {
+              if (error) {
+                reject(error);
+              } else {
+                resolve(docs[0]);
+              }
+            });
+        });
+      });
+    },
+    findByDeviceId(deviceId) {
+      return new Promise((resolve, reject) => {
+        db.collection(collectionName, (err, col) => {
+          if (err) {
+            reject(err);
+          }
+
+          col.find({ deviceId: deviceId })
             .toArray((error, docs) => {
               if (error) {
                 reject(error);

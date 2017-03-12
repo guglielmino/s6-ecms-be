@@ -48,8 +48,26 @@ database.connect()
       msg => eventsProcessor.processEnergyEvent(energyMapper(msg)));
     messageMediator.addHandler(msg => msg.Type === consts.EVENT_TYPE_INFO,
       msg => eventsProcessor.processInfoEvent(infoMapper(msg)));
+
+    // TODO: Refactor PubNub message handling
     messageMediator.addHandler(msg => msg.type === consts.APPEVENT_TYPE_POWER,
-      msg => logger.log('info', msg)); // TODO: push on pubnub the power swith request
+      (msg) => {
+
+        providers
+          .deviceProvider
+          .findByDeviceId(msg.deviceId)
+          .then((dev) => {
+            console.log(`publish on pnub ${JSON.stringify(msg)} - ${JSON.stringify(dev)}`);
+            pnub.publish(msg.gateway, {
+              type: 'MQTT',
+              payload: {
+                topic: dev.commands.power.replace('mqtt:', ''),
+                value: msg.state,
+              },
+            });
+          });
+      });
+
     messageMediator.addHandler(msg => msg.Type === consts.EVENT_POWER_STATUS,
       msg => eventsProcessor.processPowerStatus(powerMapper(msg)));
 
