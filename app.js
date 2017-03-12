@@ -52,12 +52,10 @@ database.connect()
     // TODO: Refactor PubNub message handling
     messageMediator.addHandler(msg => msg.type === consts.APPEVENT_TYPE_POWER,
       (msg) => {
-
         providers
           .deviceProvider
           .findByDeviceId(msg.deviceId)
           .then((dev) => {
-            console.log(`publish on pnub ${JSON.stringify(msg)} - ${JSON.stringify(dev)}`);
             pnub.publish(msg.gateway, {
               type: 'MQTT',
               payload: {

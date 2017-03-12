@@ -6,6 +6,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.js" afterPath="$PROJECT_DIR$/app.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/mongodb/devices/devicesProvider.js" afterPath="$PROJECT_DIR$/src/data/mongodb/devices/devicesProvider.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/observable/mappers/infoMapper.js" afterPath="$PROJECT_DIR$/src/data/observable/mappers/infoMapper.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/data/observable/mappers/infoMapper.spec.js" afterPath="$PROJECT_DIR$/src/data/observable/mappers/infoMapper.spec.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -26,8 +27,8 @@
       <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="51" column="45" lean-forward="false" selection-start-line="51" selection-start-column="45" selection-end-line="51" selection-end-column="45" />
+            <state relative-caret-position="120">
+              <caret line="57" column="26" lean-forward="false" selection-start-line="57" selection-start-column="26" selection-end-line="57" selection-end-column="26" />
               <folding>
                 <element signature="e#0#22#0" expanded="true" />
               </folding>
@@ -35,7 +36,17 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name=".env" pinned="false" current-in-tab="true">
+      <file leaf-file-name="infoMapper.spec.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/data/observable/mappers/infoMapper.spec.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="121">
+              <caret line="49" column="27" lean-forward="false" selection-start-line="49" selection-start-column="27" selection-end-line="49" selection-end-column="27" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".env" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.env">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
@@ -68,11 +79,11 @@
       <file leaf-file-name="devicesProvider.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/data/mongodb/devices/devicesProvider.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="48">
-              <caret line="62" column="4" lean-forward="false" selection-start-line="62" selection-start-column="4" selection-end-line="62" selection-end-column="4" />
+            <state relative-caret-position="166">
+              <caret line="69" column="29" lean-forward="false" selection-start-line="69" selection-start-column="29" selection-end-line="69" selection-end-column="29" />
               <folding>
-                <element signature="e#447#922#0" expanded="false" />
-                <element signature="e#1105#1499#0" expanded="false" />
+                <element signature="e#449#924#0" expanded="false" />
+                <element signature="e#1107#1501#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -139,7 +150,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/api/stats/statTransformer.js" />
         <option value="$PROJECT_DIR$/src/api/api-utils.js" />
         <option value="$PROJECT_DIR$/src/api/alerts/index.js" />
         <option value="$PROJECT_DIR$/src/api/gateways/index.js" />
@@ -190,6 +200,7 @@
         <option value="$PROJECT_DIR$/src/data/observable/mappers/infoMapper.js" />
         <option value="$PROJECT_DIR$/src/data/mongodb/devices/devicesProvider.js" />
         <option value="$PROJECT_DIR$/app.js" />
+        <option value="$PROJECT_DIR$/src/data/observable/mappers/infoMapper.spec.js" />
       </list>
     </option>
   </component>
@@ -534,12 +545,12 @@
       <workItem from="1489235867928" duration="233000" />
       <workItem from="1489236257259" duration="8657000" />
       <workItem from="1489327148994" duration="5000" />
-      <workItem from="1489327176000" duration="2408000" />
+      <workItem from="1489327176000" duration="2738000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="153075000" />
+    <option name="totallyTimeSpent" value="153405000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="106" y="23" width="1063" height="777" extended-state="0" />
@@ -552,7 +563,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32934782" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.38700566" sideWeight="0.4832" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.38700566" sideWeight="0.4832" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -627,31 +638,39 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="10" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/data/mongodb/devices/devicesProvider.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="48">
-          <caret line="62" column="4" lean-forward="false" selection-start-line="62" selection-start-column="4" selection-end-line="62" selection-end-column="4" />
+        <state relative-caret-position="166">
+          <caret line="69" column="29" lean-forward="false" selection-start-line="69" selection-start-column="29" selection-end-line="69" selection-end-column="29" />
           <folding>
-            <element signature="e#447#922#0" expanded="false" />
-            <element signature="e#1105#1499#0" expanded="false" />
+            <element signature="e#449#924#0" expanded="false" />
+            <element signature="e#1107#1501#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="51" column="45" lean-forward="false" selection-start-line="51" selection-start-column="45" selection-end-line="51" selection-end-column="45" />
+        <state relative-caret-position="120">
+          <caret line="57" column="26" lean-forward="false" selection-start-line="57" selection-start-column="26" selection-end-line="57" selection-end-column="26" />
           <folding>
             <element signature="e#0#22#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.env">
+    <entry file="file://$PROJECT_DIR$/src/data/observable/mappers/infoMapper.spec.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="10" selection-end-column="28" />
+        <state relative-caret-position="121">
+          <caret line="49" column="27" lean-forward="false" selection-start-line="49" selection-start-column="27" selection-end-line="49" selection-end-column="27" />
           <folding />
         </state>
       </provider>

@@ -46,8 +46,8 @@ describe('info message mapper', () => {
 
     const result = infoMapper(rawPayload);
 
-    result.Payload.commands.length.should.be.eq(1);
-    result.Payload.commands[0].power.should.be.eq('mqtt:cmnd/sonoff/POWER');
+    Object.keys(result.Payload.commands).length.should.be.eq(1);
+    result.Payload.commands.power.should.be.eq('mqtt:cmnd/sonoff/POWER');
   });
 
 

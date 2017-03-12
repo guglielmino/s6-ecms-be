@@ -1,4 +1,4 @@
-import {DataProvider} from '../data';
+import { DataProvider } from '../data';
 
 const DevicesProvider = ({ db, collectionName }) => {
   db.collection(collectionName, (err, col) => {
@@ -67,7 +67,7 @@ const DevicesProvider = ({ db, collectionName }) => {
             reject(err);
           }
 
-          col.find({ deviceId: deviceId })
+          col.find({ deviceId })
             .toArray((error, docs) => {
               if (error) {
                 reject(error);
