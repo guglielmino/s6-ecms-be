@@ -10,9 +10,9 @@ import { DataProvider } from '../data';
  */
 const getRefDateTime = (date) => {
   const dayDate = new Date(date);
-  dayDate.setMinutes(0);
-  dayDate.setSeconds(0);
-  dayDate.setMilliseconds(0);
+  dayDate.setUTCMinutes(0);
+  dayDate.setUTCSeconds(0);
+  dayDate.setUTCMilliseconds(0);
   return dayDate;
 };
 

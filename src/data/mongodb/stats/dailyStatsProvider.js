@@ -7,11 +7,11 @@ import { DataProvider } from '../data';
  * @param date
  */
 const getRefDate = (date) => {
-  const dayDate = new Date(date);
-  dayDate.setHours(0);
-  dayDate.setMinutes(0);
-  dayDate.setSeconds(0);
-  dayDate.setMilliseconds(0);
+  const dayDate = new Date(date.getTime());
+  dayDate.setUTCHours(0);
+  dayDate.setUTCMinutes(0);
+  dayDate.setUTCSeconds(0);
+  dayDate.setUTCMilliseconds(0);
   return dayDate;
 };
 
@@ -58,6 +58,7 @@ const DailyStatsProvider = ({ db, collectionName }) => {
 
     getDailyStat(date, gateways) {
       const dayDate = getRefDate(date);
+
       return new Promise((resolve, reject) => {
         db.collection(collectionName, (err, col) => {
           if (err) {
