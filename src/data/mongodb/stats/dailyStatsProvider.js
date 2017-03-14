@@ -40,7 +40,7 @@ const DailyStatsProvider = ({ db, collectionName }) => {
           col.updateOne(
             { date: dayDate, gateway },
             {
-              $inc: { today },
+              $set: { today },
             },
             { upsert: true },
             (error, r) => {
@@ -75,9 +75,7 @@ const DailyStatsProvider = ({ db, collectionName }) => {
           }, {
             $group: {
               _id: '$date',
-              today: {
-                $sum: '$today',
-              },
+              today: { $sum: '$today' },
             },
           }])
             .toArray((error, docs) => {

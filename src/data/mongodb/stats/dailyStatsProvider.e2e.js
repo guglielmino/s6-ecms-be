@@ -55,7 +55,7 @@ describe('daily statistics provider', () => {
       .catch(err => done(err));
   });
 
-  it('should get all daily events', (done) => {
+  it('should get daily stats for many gateways', (done) => {
     const todayDate = new Date();
     const value = Math.random();
     subject = DailyStatsProvider(db);
@@ -66,10 +66,11 @@ describe('daily statistics provider', () => {
         today: 100,
       })
       .then(() => {
+        todayDate.setUTCHours(todayDate.getUTCHours() + 2);
         return subject
           .updateDailyStat({
             date: todayDate,
-            gateway: 'test_gateway1',
+            gateway: 'test_gateway2',
             today: 25.4,
           });
       })
@@ -80,6 +81,39 @@ describe('daily statistics provider', () => {
       .then((res) => {
         res.length.should.be.gte(1);
         res[0].today.should.be.eq(125.4);
+        done();
+      })
+      .catch(err => done(err));
+  });
+
+
+  it('should get last daily compsumption', (done) => {
+    const todayDate = new Date();
+
+    const value = Math.random();
+    subject = DailyStatsProvider(db);
+    subject
+      .updateDailyStat({
+        date: todayDate,
+        gateway: 'test_gateway1',
+        today: 23.45,
+      })
+      .then(() => {
+        todayDate.setUTCHours(todayDate.getUTCHours() + 2);
+        return subject
+          .updateDailyStat({
+            date: todayDate,
+            gateway: 'test_gateway1',
+            today: 25.4,
+          });
+      })
+      .then(() => {
+        return subject
+          .getDailyStat(todayDate, ['test_gateway1']);
+      })
+      .then((res) => {
+        res.length.should.be.gte(1);
+        res[0].today.should.be.eq(25.4);
         done();
       })
       .catch(err => done(err));
