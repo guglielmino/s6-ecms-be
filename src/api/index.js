@@ -5,8 +5,12 @@ export default function (config, app) {
 
   // Default error handler
   app.use((err, req, res, next) => {
-    logger.log('error', `API error ${err}`);
-    res.sendStatus(500);
+    console.log(JSON.stringify(err));
+    if (err.name === 'UnauthorizedError') {
+      res.status(401).send(err.message);
+    } else {
+      res.sendStatus(500);
+    }
     next(err);
   });
 
