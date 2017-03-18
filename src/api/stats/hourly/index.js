@@ -5,6 +5,17 @@ import logger from '../../../common/logger';
 import { getDate } from '../../api-utils';
 import { transformHourlyStat } from './hourlyStatTransformer';
 
+function getHourlyDates(date) {
+  const todayHours = [];
+  date.setUTCHours(7);
+  while (date.getUTCHours() < 23) {
+    date.setUTCHours(date.getUTCHours() + 1);
+    todayHours.push(new Date(date));
+  }
+
+  return todayHours;
+}
+
 export default function (app, AuthCheck, RoleCheck, { hourlyStatsProvider }) {
   const router = express.Router();
   app.use('/api/stats/hourly', router);
@@ -69,7 +80,7 @@ export default function (app, AuthCheck, RoleCheck, { hourlyStatsProvider }) {
     }
 
     hourlyStatsProvider
-      .getHourlyStat(date, [reqGateway])
+      .getHourlyStat(getHourlyDates(date), [reqGateway])
       .then((stat) => {
         res.json(stat.map(s => transformHourlyStat(s)));
       })
@@ -106,7 +117,7 @@ export default function (app, AuthCheck, RoleCheck, { hourlyStatsProvider }) {
     const gateways = req.user.app_metadata.gateways;
 
     hourlyStatsProvider
-      .getHourlyStat(date, gateways)
+      .getHourlyStat(getHourlyDates(date), gateways)
       .then((stat) => {
         res.json(stat.map(s => transformHourlyStat(s)));
       })

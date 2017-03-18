@@ -1,7 +1,7 @@
 import chai from 'chai';
 import sinon from 'sinon';
 
-import { Database } from '../data';
+import ConnectDb from '../test_helper';
 import DailyStatsProvider from './dailyStatsProvider';
 
 chai.should();
@@ -12,31 +12,15 @@ describe('daily statistics provider', () => {
   let db;
 
   beforeEach((done) => {
-    const database = Database({
-      mongo: {
-        uri: 'mongodb://iot-user:iot-user-pwd@ds161518.mlab.com:61518/iot-project',
-      },
+
+    ConnectDb('dailyStats', (err, _db) => {
+      if (err) {
+        done(err);
+      }
+
+      db = _db;
+      done();
     });
-
-    database.connect()
-      .then((_db) => {
-        db = _db;
-        db.collection('dailyStats', (err, col) => {
-          if (err) {
-            done(err);
-          }
-
-          col.drop((err) => {
-            if (err) {
-              done(err);
-            }
-            else {
-
-              done();
-            }
-          });
-        });
-      });
   });
 
   it('should add stats data', (done) => {

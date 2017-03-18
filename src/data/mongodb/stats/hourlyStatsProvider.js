@@ -40,7 +40,7 @@ const HourlyStatsProvider = ({ db, collectionName }) => {
           col.updateOne(
             { date: dayDate, gateway, deviceId },
             {
-              $inc: { power },
+              $set: { power },
             },
             { upsert: true },
             (error, r) => {
@@ -81,8 +81,8 @@ const HourlyStatsProvider = ({ db, collectionName }) => {
       });
     },
 
-    getHourlyStat(date, gateways) {
-      const dayDate = getRefDateTime(date);
+    getHourlyStat(dates, gateways) {
+      const dayDates = dates.map(d => getRefDateTime(d));
 
       return new Promise((resolve, reject) => {
         db.collection(collectionName, (err, col) => {
@@ -94,7 +94,7 @@ const HourlyStatsProvider = ({ db, collectionName }) => {
             $match: {
               $and: [
                 { gateway: { $in: gateways } },
-                { date: { $eq: dayDate } },
+                { date: { $in: dayDates } },
               ],
             },
           }, {
