@@ -1,7 +1,7 @@
 import chai from 'chai';
 import sinon from 'sinon';
 
-import {Database} from '../data';
+import ConnectDb from '../test_helper';
 import DevicesProvider from './devicesProvider';
 
 chai.should();
@@ -12,27 +12,32 @@ describe('devicesProvider', () => {
   let db;
 
   beforeEach((done) => {
-      const database = Database({
-        mongo: {
-          uri: 'mongodb://iot-user:iot-user-pwd@ds161518.mlab.com:61518/iot-project',
-        },
-      });
+    ConnectDb('devices', (err, _db) => {
+      if (err) {
+        done(err);
+      }
 
-      database.connect()
-        .then((_db) => {
-          db = _db;
-          done();
-        })
-        .catch(err => done(err));
-
+      db = _db;
+      done();
     });
+  });
 
   it('should returns array of devices', (done) => {
     subject = DevicesProvider(db);
-    subject
-      .getDevices(['zara1'])
+
+    subject.add({
+      gateway: 'zara1',
+      swVersion: '1.2.3',
+      deviceType: 'Sonoff Pow Module',
+      deviceId: 'bb:36:41:9f:d1:ea',
+      commands: {
+        power: 'mqtt:cmnd/sonoff/POWER',
+      },
+      created: new Date(),
+    })
+      .then(res => subject.getDevices(['zara1']))
       .then((res) => {
-        res.length.should.be.eq(2);
+        res.length.should.be.eq(1);
         done();
       })
       .catch(err => done(err));
@@ -40,15 +45,22 @@ describe('devicesProvider', () => {
 
   it('should return the device having the requested name in power command topic', (done) => {
     subject = DevicesProvider(db);
-    subject
-      .findByPowerCommand('sonoff')
+
+    subject.add({
+      gateway: 'zara1',
+      swVersion: '1.2.3',
+      deviceType: 'Sonoff Pow Module',
+      deviceId: 'bb:36:41:9f:d1:ea',
+      commands: {
+        power: 'mqtt:cmnd/sonoff/POWER',
+      },
+      created: new Date(),
+    })
+      .then(res => subject.findByPowerCommand('sonoff'))
       .then((res) => {
-        res.commands.length.should.be.eq(1);
-        res.commands[0].power.should.be.eq('mqtt:cmnd/sonoff/POWER');
+        res.commands.power.should.be.eq('mqtt:cmnd/sonoff/POWER');
         done();
       })
       .catch(err => done(err));
-
   });
-})
-;
+});
