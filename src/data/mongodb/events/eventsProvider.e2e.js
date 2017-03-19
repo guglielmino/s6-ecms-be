@@ -58,7 +58,7 @@ describe('eventsProvider', () => {
         name: 'TestEvent',
       })
       .then((res) => {
-        res.should.be.eq(1);
+        res.inserted.should.be.eq(1);
         done();
       })
       .catch(err => done(err));

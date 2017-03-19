@@ -1,4 +1,4 @@
-import MongoClient from 'mongodb';
+import MongoClient, { ObjectId } from 'mongodb';
 
 const Database = (config) => {
   if (!config.mongo.uri) {
@@ -32,7 +32,7 @@ const DataProvider = ({ db, collectionName }) => ({
           if (error) {
             reject(error);
           } else {
-            resolve(r.insertedCount);
+            resolve({ inserted: r.insertedCount, id: r.insertedId });
           }
         });
       });
@@ -40,19 +40,51 @@ const DataProvider = ({ db, collectionName }) => ({
   },
 
   update(obj, newObj) {
+    return this.updateById(obj._id, newObj); // eslint-disable-line no-underscore-dangle
+  },
+
+  updateById(id, newObj) {
     return new Promise((resolve, reject) => {
       db.collection(collectionName, (err, col) => {
         if (err) {
           reject(err);
         }
 
-        col.updateOne({ _id: obj._id },  // eslint-disable-line no-underscore-dangle
+        let _id = id; // eslint-disable-line no-underscore-dangle
+        if (typeof id === 'string' || id instanceof String) {
+          _id = ObjectId(id);
+        }
+
+        col.updateOne({ _id },  // eslint-disable-line no-underscore-dangle
           newObj,
+          {
+            upsert: true,
+          },
           (error, r) => {
             if (error) {
               reject(error);
             } else {
-              resolve(r.insertedCount);
+              const resp = JSON.parse(r);
+              resolve(resp.ok);
+            }
+          });
+      });
+    });
+  },
+
+  getById(id) {
+    return new Promise((resolve, reject) => {
+      db.collection(collectionName, (err, col) => {
+        if (err) {
+          reject(err);
+        }
+
+        col.findOne({ _id: ObjectId(id) }, // eslint-disable-line no-underscore-dangle
+          (error, obj) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(obj);
             }
           });
       });
