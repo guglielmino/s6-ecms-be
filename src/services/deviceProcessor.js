@@ -1,3 +1,17 @@
+import logger from '../common/logger';
+
 /**
- * Created by fabrizio on 18/03/17.
+ * Processes the info event creating a device in the storage
+ * @param providers
+ * @constructor
  */
+const DeviceProcessor = providers => ({
+  process: (event) => {
+    logger.log('debug', `device processor ${JSON.stringify(event)}`);
+
+     // Payload.deviceId
+    providers.deviceProvider.add(event.Payload);
+  },
+});
+
+export default DeviceProcessor;

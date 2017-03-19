@@ -9,6 +9,7 @@ import {
 
 import { Database } from './src/data/mongodb/data';
 import bootstrapDataProvider from './src/bootstrap/dataProviders';
+import BootstapEventsChain from './src/bootstrap/eventsChain';
 
 import emitter from './src/emitter';
 import socketServer from './src/socketServer';
@@ -18,12 +19,6 @@ import expSetup from './src/api/express-setup';
 import swaggerSetup from './src/api/swagger-setup';
 import routes from './src/api/routes';
 import api from './src/api';
-
-import infoMapper from './src/data/observable/mappers/infoMapper';
-import energyMapper from './src/data/observable/mappers/energyMapper';
-import powerMapper from './src/data/observable/mappers/powerMapper';
-import EventsProcessor from './src/events/eventProcessor';
-import MessageMediator from './src/messageMediator';
 
 const database = Database(config);
 database.connect()
@@ -41,39 +36,13 @@ database.connect()
 
     const pub$ = pnub.fromChannel(consts.PUBNUB_EVENTS_CHANNEL);
 
-    const eventsProcessor = EventsProcessor(providers);
-
-    const messageMediator = MessageMediator();
-    messageMediator.addHandler(msg => msg.Type === consts.EVENT_TYPE_ENERGY,
-      msg => eventsProcessor.processEnergyEvent(energyMapper(msg)));
-    messageMediator.addHandler(msg => msg.Type === consts.EVENT_TYPE_INFO,
-      msg => eventsProcessor.processInfoEvent(infoMapper(msg)));
-
-    // TODO: Refactor PubNub message handling
-    messageMediator.addHandler(msg => msg.type === consts.APPEVENT_TYPE_POWER,
-      (msg) => {
-        providers
-          .deviceProvider
-          .findByDeviceId(msg.deviceId)
-          .then((dev) => {
-            pnub.publish(msg.gateway, {
-              type: 'MQTT',
-              payload: {
-                topic: dev.commands.power.replace('mqtt:', ''),
-                value: msg.state,
-              },
-            });
-          });
-      });
-
-    messageMediator.addHandler(msg => msg.Type === consts.EVENT_POWER_STATUS,
-      msg => eventsProcessor.processPowerStatus(powerMapper(msg)));
+    const eventsChain = BootstapEventsChain(providers, pnub);
 
     Rx.Observable
       .merge(getPNEventObservable(pub$), getEmitterEventObservable(emitter))
       .subscribe(
         (event) => {
-          messageMediator.process(event);
+          eventsChain.handle(event);
         },
         error => logger.log('error', error),
       );

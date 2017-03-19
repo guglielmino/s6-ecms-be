@@ -1,8 +1,14 @@
 import logger from '../common/logger';
 
-const DeviceProcessor = providers => ({
+/**
+ * Process power status change message coming from devices
+ * updating their status on database
+ * @param providers
+ * @constructor
+ */
+const PowerProcessor = providers => ({
   process: (event) => {
-    logger.log('info', `device processor ${event}`);
+    logger.log('debug', `power processor ${JSON.stringify(event)}`);
 
     const topicParts = event.Payload.Topic.split('/');
     let topicName = '';
@@ -21,4 +27,4 @@ const DeviceProcessor = providers => ({
   },
 });
 
-export default DeviceProcessor;
+export default PowerProcessor;

@@ -1,9 +1,18 @@
-const EventAppender = (eventProvider) => {
-  return {
-    process: (event) => {
-      eventProvider.add(event);
-    },
-  };
-};
+import logger from '../common/logger';
 
-export default EventAppender;
+/**
+ * Store the event coming from gateway "as is"
+ * @param providers
+ * @constructor
+ */
+const EventProcessor = providers => ({
+  process: (event) => {
+    logger.log('debug', `event processor ${JSON.stringify(event)}`);
+
+    providers
+      .eventProvider
+      .add(event);
+  },
+});
+
+export default EventProcessor;
