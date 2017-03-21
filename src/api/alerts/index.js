@@ -25,16 +25,15 @@ export default function (app, AuthCheck, RoleCheck, { alertProvider }) {
    *         type: string
    */
 
-
   /**
    * @swagger
-   * /api/alerts/{gateway}
+   * /api/alerts/{gateway}:
    *   parameters:
    *     - $ref: '#/parameters/gateway'
    *   get:
    *     tags:
    *      - Alerts
-   *     description: Returns alerts for the devices belonging to passed gateway
+   *     description: Returns alerts for the devices belonging to requesting user
    *     produces:
    *      - application/json
    *     responses:
