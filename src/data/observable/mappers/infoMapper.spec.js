@@ -71,4 +71,23 @@ describe('info message mapper', () => {
     result.Payload.deviceType.should.be.eq(SONOFF_POW);
     result.Payload.deviceId.should.be.eq('2d:5f:22:99:73:d5');
   });
+
+  it('should map name of device', () => {
+    const rawPayload = {
+      GatewayId: 'testGateway',
+      Type: EVENT_TYPE_INFO,
+      Payload: {
+        AppName: SONOFF_POW,
+        Version: '1.2.3',
+        FallbackTopic: 'sonoffback',
+        GroupTopic: 'sonoff',
+        DeviceId: '2d:5f:22:99:73:d5',
+        Topic: 'cmnd/myname',
+      },
+    };
+
+    const result = infoMapper(rawPayload);
+
+    result.Payload.name.should.be.eq('myname');
+  });
 });

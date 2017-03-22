@@ -7,14 +7,24 @@ const expect = chai.expect;
 
 describe('DeviceProcessor', () => {
   let subject;
+  let deviceProvider;
 
   beforeEach(() => {
-    subject = new DeviceProcessor({});
+    deviceProvider = {};
+    subject = new DeviceProcessor({ deviceProvider });
   });
 
-  it('', () => {
+  it('should call add in device provider', () => {
+    deviceProvider.add = sinon.stub();
+    const event = {
+      Type: 'ENERGY',
+      Payload: {
+        something: 'here',
+      },
+    };
 
-
+    subject.process(event);
+    deviceProvider.add
+      .calledOnce.should.be.true;
   });
-
 });

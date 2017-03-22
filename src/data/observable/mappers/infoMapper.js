@@ -20,11 +20,29 @@ function commandPerDevice(appName, topic) {
   return ret;
 }
 
+function namePerDevice(appName, topic) {
+  let ret = '';
+
+  switch (appName) {
+    case SONOFF_POW: {
+      const parts = topic.split('/');
+      ret = parts[parts.length - 1];
+    }
+      break;
+    default:
+      ret = '';
+      break;
+  }
+
+  return ret;
+}
+
 
 export default function infoMapper(e) {
   return {
     Type: e.Type,
     Payload: {
+      name: namePerDevice(e.Payload.AppName, e.Payload.Topic),
       gateway: e.GatewayId,
       swVersion: e.Payload.Version,
       deviceType: e.Payload.AppName,
