@@ -12,7 +12,7 @@ import DeviceProcessor from '../services/deviceProcessor';
 import PowerProcessor from '../services/powerProcessor';
 import PowerActionProcessor from '../services/powerActionProcessor';
 
-const BootstapEventsChain = (providers, pnub) => {
+const BootstapEventsChain = (providers, pnub, socket) => {
   const eventProcessor = EventProcessor(providers);
   const dailyProcessor = DailyStatProcessor(providers);
   const hourlyProcessor = HourlyStatProcessor(providers);
@@ -45,6 +45,11 @@ const BootstapEventsChain = (providers, pnub) => {
   eventsChain.add({
     predicate: msg => msg.Type === consts.EVENT_POWER_STATUS,
     fn: msg => powerProcessor.process(powerMapper(msg)),
+  });
+
+  eventsChain.add({
+    predicate: msg => msg.Type === consts.EVENT_POWER_STATUS,
+    fn: msg => socket.emit('WEBPUSH_DEVICE_POWER', powerMapper(msg)),
   });
 
   eventsChain.add({

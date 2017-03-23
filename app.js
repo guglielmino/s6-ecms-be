@@ -36,7 +36,7 @@ database.connect()
 
     const pub$ = pnub.fromChannel(consts.PUBNUB_EVENTS_CHANNEL);
 
-    const eventsChain = BootstapEventsChain(providers, pnub);
+    const eventsChain = BootstapEventsChain(providers, pnub, socket);
 
     Rx.Observable
       .merge(getPNEventObservable(pub$), getEmitterEventObservable(emitter))
@@ -46,11 +46,6 @@ database.connect()
         },
         error => logger.log('error', error),
       );
-
-    setInterval(() => {
-      socket.emit('message', { sample: 'Test' });
-    }, 6000);
-
 
     const connection$ = socket.fromEvent('connection');
     connection$
