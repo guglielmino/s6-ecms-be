@@ -1,5 +1,3 @@
-
-
 import Rx from 'rxjs';
 import Server from 'socket.io';
 
@@ -13,6 +11,7 @@ const socketServer = (server) => {
         observer.next(data);
       });
     }),
+    emit: (event, payload) => io.emit(event, payload),
   };
 };
 

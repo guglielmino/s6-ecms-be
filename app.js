@@ -47,8 +47,13 @@ database.connect()
         error => logger.log('error', error),
       );
 
+    setInterval(() => {
+      socket.emit('message', { sample: 'Test' });
+    }, 6000);
+
+
     const connection$ = socket.fromEvent('connection');
     connection$
-      .subscribe(conn => `Connection ${conn}`);
+      .subscribe(conn => logger.log('info', `Connection ${conn}`));
   })
   .catch(err => logger.log('error', err));
