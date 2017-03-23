@@ -8,7 +8,7 @@ import logger from '../common/logger';
  */
 const PowerProcessor = providers => ({
   process: (event) => {
-    logger.log('debug', `power processor ${JSON.stringify(event)}`);
+    logger.log('info', `power processor ${JSON.stringify(event)}`);
 
     const topicParts = event.Payload.Topic.split('/');
     let topicName = '';

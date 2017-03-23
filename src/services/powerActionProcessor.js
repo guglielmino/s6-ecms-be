@@ -10,7 +10,7 @@ import logger from '../common/logger';
  */
 const PowerActionProcessor = (providers, pnub) => ({
   process: (event) => {
-    logger.log('debug', `power action processor ${JSON.stringify(event)}`);
+    logger.log('info', `power action processor ${JSON.stringify(event)}`);
 
     providers
       .deviceProvider

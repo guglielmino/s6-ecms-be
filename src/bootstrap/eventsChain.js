@@ -48,8 +48,8 @@ const BootstapEventsChain = (providers, pnub) => {
   });
 
   eventsChain.add({
-    predicate: msg => msg.Type === msg.type === consts.APPEVENT_TYPE_POWER,
-    fn: msg => powerActionProcessor(msg),
+    predicate: msg => msg.type === consts.APPEVENT_TYPE_POWER,
+    fn: msg => powerActionProcessor.process(msg),
   });
 
   return eventsChain;
