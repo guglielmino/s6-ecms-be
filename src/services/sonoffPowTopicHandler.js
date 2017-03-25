@@ -27,6 +27,18 @@ const SonoffPowTopicHanlders = () => ({
     }
     return ret;
   },
+  extractNameFromStatTopic: (statTopic, defaultName = '') => {
+    let ret = defaultName;
+
+    const re = /stat\/(\w*)*/;
+    const parts = re.exec(statTopic);
+
+    if (parts && parts.length === 2) {
+      ret = parts[1];
+    }
+
+    return ret;
+  },
 });
 
 export default SonoffPowTopicHanlders;

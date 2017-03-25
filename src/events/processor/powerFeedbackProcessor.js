@@ -10,14 +10,8 @@ const PowerFeedbackProcessor = providers => ({
   process: (event) => {
     logger.log('info', `power processor ${JSON.stringify(event)}`);
 
-    const topicParts = event.Payload.Topic.split('/');
-    let topicName = '';
-    if (topicParts.length > 1) {
-      topicName = topicParts[1];
-    }
-
     providers.deviceProvider
-      .findByPowerCommand(topicName)
+      .findByPowerCommand(event.Payload.TopicName)
       .then((res) => {
         providers
           .deviceProvider

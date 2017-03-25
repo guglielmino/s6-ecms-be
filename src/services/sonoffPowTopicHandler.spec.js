@@ -41,7 +41,7 @@ describe('SonoffPowTopicHanlders', () => {
       result.should.be.eq('mqtt:cmnd/lamp1/POWER');
     });
 
-    it('should return empy string for invalid topic name', () => {
+    it('should return empty string for invalid topic name', () => {
       const result = subject.makePowerCommandFromTopicName('cmnd/lamp1');
       result.should.be.empty;
     });
@@ -59,6 +59,22 @@ describe('SonoffPowTopicHanlders', () => {
       const result = subject.makePowerCommandFromCmndTopic('lamp1');
       result.should.be.empty;
     });
+  });
 
+  context('extractNameFromStatTopic', () => {
+    it('should get "lamp1" as result', () => {
+      const result = subject.extractNameFromStatTopic('stat/lamp1/RESULT');
+      result.should.be.eq('lamp1');
+    });
+
+    it('should get empty string if passed topic isn\'t in right format', () => {
+      const result = subject.extractNameFromStatTopic('cmnd/lamp1/POWER');
+      result.should.be.empty;
+    });
+
+    it('should return default if passed topic isn\'t in right format', () => {
+      const result = subject.extractNameFromCommandTopic('same_wrong_topic', 'DEFAULT_STRING');
+      result.should.be.eq('DEFAULT_STRING');
+    });
   });
 });

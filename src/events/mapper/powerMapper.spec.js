@@ -13,12 +13,13 @@ describe('power status message mapper', () => {
       Payload: {
         Topic: 'stat/sonoff/RESULT',
         Power: 'ON',
-      }
+      },
     };
 
     const result = powerMapper(rawPayload);
 
     result.Payload.Power.should.be.eq('on');
     result.Payload.Topic.should.be.eq('stat/sonoff/RESULT');
+    result.Payload.TopicName.should.be.eq('sonoff');
   });
 });
