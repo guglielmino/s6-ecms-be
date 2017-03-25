@@ -1,8 +1,8 @@
 import * as consts from '../../consts';
 
-import infoMapper from '../data/observable/mappers/infoMapper';
-import energyMapper from '../data/observable/mappers/energyMapper';
-import powerMapper from '../data/observable/mappers/powerMapper';
+import infoMapper from '../events/mapper/infoMapper';
+import energyMapper from '../events/mapper/energyMapper';
+import powerMapper from '../events/mapper/powerMapper';
 import EventsChainProcessor from '../events/eventChainProcessor';
 
 import EventProcessor from '../events/processor/eventProcessor';

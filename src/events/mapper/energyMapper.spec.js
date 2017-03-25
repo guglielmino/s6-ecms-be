@@ -4,7 +4,7 @@ import chai from 'chai';
 import sinon from 'sinon';
 import {
 	EVENT_TYPE_ENERGY,
-} from '../../../../consts';
+} from '../../../consts';
 
 import energyMapper from './energyMapper';
 
