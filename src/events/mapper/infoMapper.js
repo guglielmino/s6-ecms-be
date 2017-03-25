@@ -1,3 +1,5 @@
+import SonoffPowNameExtractor from '../../services/sonoffPowNameExtractor';
+
 // AppName values set in firmware
 const SONOFF = 'Sonoff 8266 Module'; // Sonoff Basic, Sonoff RF, Sonoff SV, Sonoff Dual, Sonoff TH, S20 Smart Socket
 const SONOFF_POW = 'Sonoff Pow Module'; // Sonoff Pow
@@ -25,8 +27,7 @@ function namePerDevice(appName, topic) {
 
   switch (appName) {
     case SONOFF_POW: {
-      const parts = topic.split('/');
-      ret = parts[parts.length - 1];
+      ret = SonoffPowNameExtractor(topic, 'NO NAME');
     }
       break;
     default:
