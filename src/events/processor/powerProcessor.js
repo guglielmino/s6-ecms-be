@@ -1,4 +1,4 @@
-import logger from '../common/logger';
+import logger from '../../common/logger';
 
 /**
  * Process power status change message coming from devices

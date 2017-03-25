@@ -1,4 +1,4 @@
-import logger from '../common/logger';
+import logger from '../../common/logger';
 
 /**
  * Processes the info event creating a device in the storage

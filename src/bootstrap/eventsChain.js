@@ -5,12 +5,12 @@ import energyMapper from '../data/observable/mappers/energyMapper';
 import powerMapper from '../data/observable/mappers/powerMapper';
 import EventsChainProcessor from '../events/eventChainProcessor';
 
-import EventProcessor from '../services/eventProcessor';
-import DailyStatProcessor from '../services/dailyStatProcessor';
-import HourlyStatProcessor from '../services/hourlyStatProcessor';
-import DeviceProcessor from '../services/deviceProcessor';
-import PowerProcessor from '../services/powerProcessor';
-import PowerActionProcessor from '../services/powerActionProcessor';
+import EventProcessor from '../events/processor/eventProcessor';
+import DailyStatProcessor from '../events/processor/dailyStatProcessor';
+import HourlyStatProcessor from '../events/processor/hourlyStatProcessor';
+import DeviceProcessor from '../events/processor/deviceProcessor';
+import PowerProcessor from '../events/processor/powerProcessor';
+import PowerActionProcessor from '../events/processor/powerActionProcessor';
 
 const BootstapEventsChain = (providers, pnub, socket) => {
   const eventProcessor = EventProcessor(providers);
