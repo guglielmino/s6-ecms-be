@@ -23,7 +23,8 @@ describe('PowerFeedbackProcessor', () => {
       Type: 'POWER_STATUS',
       Payload: {
         Topic: 'stat/lamp3/RESULT',
-        Power: 'off'
+        Power: 'off',
+        TopicName: 'lamp3',
       }
     };
 
