@@ -9,7 +9,7 @@ import EventProcessor from '../events/processor/eventProcessor';
 import DailyStatProcessor from '../events/processor/dailyStatProcessor';
 import HourlyStatProcessor from '../events/processor/hourlyStatProcessor';
 import DeviceProcessor from '../events/processor/deviceProcessor';
-import PowerProcessor from '../events/processor/powerProcessor';
+import PowerProcessor from '../events/processor/powerFeedbackProcessor';
 import PowerActionProcessor from '../events/processor/powerActionProcessor';
 
 const BootstapEventsChain = (providers, pnub, socket) => {

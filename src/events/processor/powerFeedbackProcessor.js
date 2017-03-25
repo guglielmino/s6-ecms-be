@@ -6,7 +6,7 @@ import logger from '../../common/logger';
  * @param providers
  * @constructor
  */
-const PowerProcessor = providers => ({
+const PowerFeedbackProcessor = providers => ({
   process: (event) => {
     logger.log('info', `power processor ${JSON.stringify(event)}`);
 
@@ -27,4 +27,4 @@ const PowerProcessor = providers => ({
   },
 });
 
-export default PowerProcessor;
+export default PowerFeedbackProcessor;
