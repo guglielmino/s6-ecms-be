@@ -26,9 +26,8 @@ function namePerDevice(appName, topic) {
   let ret = '';
 
   switch (appName) {
-    case SONOFF_POW: {
+    case SONOFF_POW:
       ret = SonoffPowNameExtractor(topic, 'NO NAME');
-    }
       break;
     default:
       ret = '';
