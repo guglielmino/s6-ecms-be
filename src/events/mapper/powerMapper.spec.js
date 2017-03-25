@@ -12,7 +12,7 @@ describe('power status message mapper', () => {
       Type: 'POWER_STATUS',
       Payload: {
         Topic: 'stat/sonoff/RESULT',
-        Power: 'ON'
+        Power: 'ON',
       }
     };
 

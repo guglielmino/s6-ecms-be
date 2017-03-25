@@ -52,13 +52,34 @@ describe('devicesProvider', () => {
       deviceType: 'Sonoff Pow Module',
       deviceId: 'bb:36:41:9f:d1:ea',
       commands: {
-        power: 'mqtt:cmnd/sonoff/POWER',
+        power: 'mqtt:cmnd/test/POWER',
       },
       created: new Date(),
     })
-      .then(res => subject.findByPowerCommand('sonoff'))
+      .then(res => subject.findByPowerCommand('test'))
       .then((res) => {
-        res.commands.power.should.be.eq('mqtt:cmnd/sonoff/POWER');
+        res.commands.power.should.be.eq('mqtt:cmnd/test/POWER');
+        done();
+      })
+      .catch(err => done(err));
+  });
+
+  it('should return the device having the requested command and value', (done) => {
+    subject = DevicesProvider(db);
+
+    subject.add({
+      gateway: 'zara1',
+      swVersion: '1.2.3',
+      deviceType: 'Sonoff Pow Module',
+      deviceId: 'bb:36:41:9f:d1:ea',
+      commands: {
+        power: 'mqtt:cmnd/test2/POWER',
+      },
+      created: new Date(),
+    })
+      .then(res => subject.findByCommand('power', 'mqtt:cmnd/test2/POWER'))
+      .then((res) => {
+        res.commands.power.should.be.eq('mqtt:cmnd/test2/POWER');
         done();
       })
       .catch(err => done(err));
