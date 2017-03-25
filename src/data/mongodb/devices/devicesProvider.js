@@ -60,6 +60,14 @@ const DevicesProvider = ({ db, collectionName }) => {
         });
       });
     },
+    /**
+     * Find a device having specified command and value
+     * eg. passing 'power' and 'mqtt:cmnd/lamp' means "get the device having
+     * "commands.power" equal to "mqtt:cmnd/lamp"
+     * @param commandName
+     * @param value
+     * @returns {Promise}
+     */
     findByCommand(commandName, value) {
       return new Promise((resolve, reject) => {
         db.collection(collectionName, (err, col) => {
