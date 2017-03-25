@@ -1,6 +1,6 @@
 import express from 'express';
 
-import emitter from '../../emitter';
+import emitter from '../../streams/emitter';
 import logger from '../../common/logger';
 import { transformEvent } from './eventTransformer';
 import { getDate } from '../api-utils';

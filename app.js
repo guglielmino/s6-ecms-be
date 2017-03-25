@@ -11,9 +11,9 @@ import { Database } from './src/data/mongodb/data';
 import bootstrapDataProvider from './src/bootstrap/dataProviders';
 import BootstapEventsChain from './src/bootstrap/eventsChain';
 
-import emitter from './src/emitter';
+import emitter from './src/streams/emitter';
 import socketServer from './src/socketServer';
-import pubnubHub from './src/pubnubHub';
+import pubnubHub from './src/streams/pubnubHub';
 
 import expSetup from './src/api/express-setup';
 import swaggerSetup from './src/api/swagger-setup';

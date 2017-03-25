@@ -1,5 +1,5 @@
 import express from 'express';
-import emitter from '../../emitter';
+import emitter from '../../streams/emitter';
 import logger from '../../common/logger';
 import { transformDevice } from './deviceTransformer';
 import * as consts from '../../../consts';

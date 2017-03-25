@@ -1,6 +1,6 @@
 import Rx from 'rxjs';
 import PubNub from 'pubnub';
-import logger from './common/logger';
+import logger from '../common/logger';
 
 const pubnubHub = (config) => {
   const pubnub = new PubNub({
