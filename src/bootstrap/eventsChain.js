@@ -9,7 +9,7 @@ import EventProcessor from '../events/processor/eventProcessor';
 import DailyStatProcessor from '../events/processor/dailyStatProcessor';
 import HourlyStatProcessor from '../events/processor/hourlyStatProcessor';
 import DeviceProcessor from '../events/processor/deviceProcessor';
-import PowerProcessor from '../events/processor/powerFeedbackProcessor';
+import PowerFeedbackProcessor from '../events/processor/powerFeedbackProcessor';
 import PowerActionProcessor from '../events/processor/powerActionProcessor';
 
 const BootstapEventsChain = (providers, pnub, socket) => {
@@ -17,7 +17,7 @@ const BootstapEventsChain = (providers, pnub, socket) => {
   const dailyProcessor = DailyStatProcessor(providers);
   const hourlyProcessor = HourlyStatProcessor(providers);
   const deviceProcessor = DeviceProcessor(providers);
-  const powerProcessor = PowerProcessor(providers);
+  const powerFeedbackProcessor = PowerFeedbackProcessor(providers, socket);
   const powerActionProcessor = PowerActionProcessor(providers, pnub);
 
   const eventsChain = new EventsChainProcessor();
@@ -44,12 +44,7 @@ const BootstapEventsChain = (providers, pnub, socket) => {
 
   eventsChain.add({
     predicate: msg => msg.Type === consts.EVENT_POWER_STATUS,
-    fn: msg => powerProcessor.process(powerMapper(msg)),
-  });
-
-  eventsChain.add({
-    predicate: msg => msg.Type === consts.EVENT_POWER_STATUS,
-    fn: msg => socket.emit('WEBPUSH_DEVICE_POWER', powerMapper(msg)),
+    fn: msg => powerFeedbackProcessor.process(powerMapper(msg)),
   });
 
   eventsChain.add({

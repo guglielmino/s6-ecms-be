@@ -6,16 +6,19 @@ import logger from '../../common/logger';
  * @param providers
  * @constructor
  */
-const PowerFeedbackProcessor = providers => ({
+const PowerFeedbackProcessor = (providers, socket) => ({
   process: (event) => {
-    logger.log('info', `power processor ${JSON.stringify(event)}`);
+    logger.log('info', `power feedback processor ${JSON.stringify(event)}`);
 
     providers.deviceProvider
       .findByCommand('power', event.Payload.PowerCommand)
       .then((res) => {
+        const updatedObj = { ...res, status: { power: event.Payload.Power } };
         providers
           .deviceProvider
-          .update(res, { ...res, status: { power: event.Payload.Power } });
+          .update(res, updatedObj);
+        // WebSocket notify
+        socket.emit('WEBPUSH_DEVICE_POWER', updatedObj);
       })
       .catch(err => logger.log('error', err));
   },

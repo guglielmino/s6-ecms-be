@@ -8,15 +8,18 @@ const expect = chai.expect;
 describe('PowerFeedbackProcessor', () => {
   let subject;
   let deviceProvider;
+  let socket;
 
   beforeEach(() => {
     deviceProvider = {};
-    subject = new PowerFeedbackProcessor({ deviceProvider });
+    socket = {};
+    subject = new PowerFeedbackProcessor({ deviceProvider }, socket);
   });
 
   it('should call findByCommand with topicName', () => {
     deviceProvider.findByCommand = sinon.stub().returns(Promise.resolve({}));
     deviceProvider.update = sinon.stub();
+    socket.emit = sinon.stub();
 
     const event = {
       GatewayId: 'TESTGW',
@@ -31,7 +34,8 @@ describe('PowerFeedbackProcessor', () => {
     subject.process(event);
     deviceProvider
       .findByCommand
-      .calledWith('power', 'mqtt:cmnd/lamp3/POWER')
+      .calledWith('power', event.Payload.PowerCommand)
       .should.be.true;
   });
+
 });
