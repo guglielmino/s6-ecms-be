@@ -11,7 +11,7 @@ const PowerFeedbackProcessor = providers => ({
     logger.log('info', `power processor ${JSON.stringify(event)}`);
 
     providers.deviceProvider
-      .findByPowerCommand(event.Payload.TopicName)
+      .findByCommand('power', event.Payload.PowerCommand)
       .then((res) => {
         providers
           .deviceProvider

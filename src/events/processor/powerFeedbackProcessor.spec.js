@@ -14,8 +14,8 @@ describe('PowerFeedbackProcessor', () => {
     subject = new PowerFeedbackProcessor({ deviceProvider });
   });
 
-  it('should call findByPowerCommand with topicName', () => {
-    deviceProvider.findByPowerCommand = sinon.stub().returns(Promise.resolve({}));
+  it('should call findByCommand with topicName', () => {
+    deviceProvider.findByCommand = sinon.stub().returns(Promise.resolve({}));
     deviceProvider.update = sinon.stub();
 
     const event = {
@@ -24,13 +24,14 @@ describe('PowerFeedbackProcessor', () => {
       Payload: {
         Topic: 'stat/lamp3/RESULT',
         Power: 'off',
-        TopicName: 'lamp3',
+        PowerCommand: 'mqtt:cmnd/lamp3/POWER',
       }
     };
 
     subject.process(event);
-    deviceProvider.findByPowerCommand
-      .calledWith('lamp3')
+    deviceProvider
+      .findByCommand
+      .calledWith('power', 'mqtt:cmnd/lamp3/POWER')
       .should.be.true;
   });
 });

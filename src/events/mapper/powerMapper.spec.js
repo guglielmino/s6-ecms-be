@@ -20,6 +20,6 @@ describe('power status message mapper', () => {
 
     result.Payload.Power.should.be.eq('on');
     result.Payload.Topic.should.be.eq('stat/sonoff/RESULT');
-    result.Payload.TopicName.should.be.eq('sonoff');
+    result.Payload.PowerCommand.should.be.eq('mqtt:cmnd/sonoff/POWER');
   });
 });
