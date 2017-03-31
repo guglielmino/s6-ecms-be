@@ -18,7 +18,7 @@ const PowerFeedbackProcessor = (providers, socket) => ({
           .deviceProvider
           .update(res, updatedObj);
         // WebSocket notify
-        socket.to(res.gateway).emit('WEBPUSH_DEVICE_POWER', updatedObj);
+        socket.emit(res.gateway, 'WEBPUSH_DEVICE_POWER', updatedObj);
       })
       .catch(err => logger.log('error', err));
   },

@@ -1,7 +1,7 @@
 import Rx from 'rxjs';
 import Server from 'socket.io';
 import socketioJwt from 'socketio-jwt';
-
+import logger from './common/logger';
 import config from './config';
 
 const socketServer = (server) => {
@@ -15,9 +15,10 @@ const socketServer = (server) => {
       const user = socket.decoded_token;
 
       // Each user gateway is used as room name and subscribed.
-      socket.decoded_token.app_metadata.gateways.forEach(gateway => {
-        socket.join(gateway);
-      });
+      socket.decoded_token.app_metadata.gateways
+        .forEach(gateway => {
+          socket.join(gateway, err => logger.log('error', err));
+        });
     });
 
 
@@ -28,7 +29,7 @@ const socketServer = (server) => {
         observer.next(data);
       });
     }),
-    emit: (event, payload) => io.emit(event, payload),
+    emit: (gateway, event, payload) => io.to(gateway).emit(event, payload),
   };
 };
 
