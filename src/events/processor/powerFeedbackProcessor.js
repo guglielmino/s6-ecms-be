@@ -1,4 +1,5 @@
 import logger from '../../common/logger';
+import { WS_DEVICE_POWER_FEEDBACK } from './socketConsts';
 
 /**
  * Process power status change message coming from devices
@@ -18,7 +19,7 @@ const PowerFeedbackProcessor = (providers, socket) => ({
           .deviceProvider
           .update(res, updatedObj);
         // WebSocket notify
-        socket.emit(res.gateway, 'WEBPUSH_DEVICE_POWER', updatedObj);
+        socket.emit(res.gateway, WS_DEVICE_POWER_FEEDBACK, updatedObj);
       })
       .catch(err => logger.log('error', err));
   },

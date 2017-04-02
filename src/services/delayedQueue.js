@@ -7,17 +7,17 @@ function Node(value) {
   this.next = null;
 }
 
-const navigateList = (first, predicate, action) => {
-  let head = first;
+function navigateList(predicate, action) {
+  let head = this.first;
   let prev;
   while (head !== null) {
     if (predicate(head)) {
-      action(first, head, prev);
+      action(head, prev);
     }
     prev = head;
     head = head.next;
   }
-};
+}
 
 function DelayedQueue() {
   this.first = null;
@@ -25,23 +25,34 @@ function DelayedQueue() {
 
   this.observable = new Rx.Subject();
 
-  this.intervalID = setInterval(() => {
+  setInterval(() => {
     const now = new Date();
-    let head = this.first;
-    while (head != null) {
-      if (head.value.expire >= now) {
-        // rimuovo
+    navigateList.call(this,
+      head => head.value.expire >= now,
+      (head, prev) => {
+        if (!prev) {
+          this.first = this.first.next;
+        } else {
+          prev.next = head.next; // eslint-disable-line no-param-reassign
+        }
+
         if (this.cb) {
           this.cb(head.value.item);
         }
-      }
-      head = head.next;
-    }
+      });
   }, INTERVAL_FREQ);
 }
 
-DelayedQueue.prototype.setCallback = function (cb) {
+DelayedQueue.prototype.setCallback = function setCallback(cb) {
   this.cb = cb;
+};
+
+DelayedQueue.prototype.forEach = function forEach(fn) {
+  navigateList.call(this,
+    () => true,
+    (head) => {
+      fn(head.value.item);
+    });
 };
 
 DelayedQueue.prototype.add = function insert(item, delay) {
@@ -67,43 +78,21 @@ DelayedQueue.prototype.remove = function remove(predicate) {
 
   const cb = this.cb;
 
-  navigateList(this.first, head => predicate(head.value.item), (first, head, prev) => {
-    found = true;
-    if (!prev) {
-      first = first.next;
-    } else {
-      prev.next = head.next;
-    }
-
-    // rimuovo
-    if (cb) {
-      cb(head.value.item);
-    }
-  });
-
-  return found;
-};
-
-DelayedQueue.prototype.remove1 = function remove(predicate) {
-  let found = false;
-  let head = this.first;
-  let prev;
-
-  while (head !== null) {
-    if (this.first && predicate(this.first.value.item)) {  // TODO: Comparision with predicate
-      this.first = this.first.next;
-      head = this.first;
-      prev = head;
+  navigateList.call(this,
+    head => predicate(head.value.item),
+    (head, prev) => {
       found = true;
-    } else {
-      if (head && predicate(head.value.item)) {
-        found = true;
-        prev.next = head.next;
+      if (!prev) {
+        this.first = this.first.next;
+      } else {
+        prev.next = head.next; // eslint-disable-line no-param-reassign
       }
-      prev = head;
-      head = head.next;
-    }
-  }
+
+      // rimuovo
+      if (cb) {
+        cb(head.value.item);
+      }
+    });
 
   return found;
 };

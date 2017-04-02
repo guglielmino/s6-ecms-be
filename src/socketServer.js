@@ -9,14 +9,14 @@ const socketServer = (server) => {
 
   io.on('connection', socketioJwt.authorize({
     secret: config.auth0.secret,
-    timeout: 15000 // 15 seconds to send the authentication message
+    timeout: 15000, // 15 seconds to send the authentication message
   }))
     .on('authenticated', (socket) => {
       const user = socket.decoded_token;
 
       // Each user gateway is used as room name and subscribed.
-      socket.decoded_token.app_metadata.gateways
-        .forEach(gateway => {
+      user.app_metadata.gateways
+        .forEach((gateway) => {
           socket.join(gateway, err => logger.log('error', err));
         });
     });

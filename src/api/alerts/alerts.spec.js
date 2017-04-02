@@ -13,7 +13,7 @@ const expect = chai.expect;
 
 mockery.enable({
   warnOnReplace: false,
-  warnOnUnregistered: false
+  warnOnUnregistered: false,
 });
 
 describe('Alerts API endpoints', () => {

@@ -48,11 +48,14 @@ describe('DelayedQueue', () => {
     const callback = sinon.stub();
 
     subject.setCallback(callback);
+
     subject.add({ name: 'an expiring item' }, 500);
     clock.tick(1000);
 
     callback.calledOnce
       .should.be.true;
+    subject.isEmpty().should.be.true;
+
   });
 
 });

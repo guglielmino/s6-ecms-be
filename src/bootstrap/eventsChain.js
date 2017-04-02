@@ -22,6 +22,7 @@ const BootstapEventsChain = (providers, pnub, socket) => {
 
   const eventsChain = new EventsChainProcessor();
 
+  /* -- Energy event processing -- */
   eventsChain.add({
     predicate: msg => msg.Type === consts.EVENT_TYPE_ENERGY,
     fn: msg => eventProcessor.process(energyMapper(msg)),
@@ -37,16 +38,19 @@ const BootstapEventsChain = (providers, pnub, socket) => {
     fn: msg => hourlyProcessor.process(energyMapper(msg)),
   });
 
+  /* -- Info event processing -- */
   eventsChain.add({
     predicate: msg => msg.Type === consts.EVENT_TYPE_INFO,
     fn: msg => deviceProcessor.process(infoMapper(msg)),
   });
 
+  /* -- Power event processing -- */
   eventsChain.add({
     predicate: msg => msg.Type === consts.EVENT_POWER_STATUS,
     fn: msg => powerFeedbackProcessor.process(powerMapper(msg)),
   });
 
+  /* -- Power command  processing -- */
   eventsChain.add({
     predicate: msg => msg.type === consts.APPEVENT_TYPE_POWER,
     fn: msg => powerActionProcessor.process(msg),
