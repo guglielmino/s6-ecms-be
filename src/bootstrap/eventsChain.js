@@ -11,6 +11,7 @@ import HourlyStatProcessor from '../events/processor/hourlyStatProcessor';
 import DeviceProcessor from '../events/processor/deviceProcessor';
 import PowerFeedbackProcessor from '../events/processor/powerFeedbackProcessor';
 import PowerActionProcessor from '../events/processor/powerActionProcessor';
+import EnergyAlertProcessor from '../events/processor/energyAlertProcessor';
 
 const BootstapEventsChain = (providers, pnub, socket) => {
   const eventProcessor = EventProcessor(providers);
@@ -19,6 +20,7 @@ const BootstapEventsChain = (providers, pnub, socket) => {
   const deviceProcessor = DeviceProcessor(providers);
   const powerFeedbackProcessor = PowerFeedbackProcessor(providers, socket);
   const powerActionProcessor = PowerActionProcessor(providers, pnub);
+  const energyEventProcessor = EnergyAlertProcessor(providers, socket);
 
   const eventsChain = new EventsChainProcessor();
 
@@ -36,6 +38,11 @@ const BootstapEventsChain = (providers, pnub, socket) => {
   eventsChain.add({
     predicate: msg => msg.Type === consts.EVENT_TYPE_ENERGY,
     fn: msg => hourlyProcessor.process(energyMapper(msg)),
+  });
+
+  eventsChain.add({
+    predicate: msg => msg.Type === consts.EVENT_TYPE_ENERGY,
+    fn: msg => energyEventProcessor.process(energyMapper(msg)),
   });
 
   /* -- Info event processing -- */
