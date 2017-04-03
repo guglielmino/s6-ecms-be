@@ -3,10 +3,10 @@
  * from gateway for a power command (ie turn on lamp)
  * @type {string}
  */
-export const WS_DEVICE_POWER_FEEDBACK = 'WEBPUSH_DEVICE_POWER';
+export const WS_DEVICE_POWER_FEEDBACK = 'WS_DEVICE_POWER';
 
 /**
  * Message type for device problem alarm
  * @type {string}
  */
-export const WS_DEVICE_ALARM = 'WS_DEVICE_ALARM';
+export const WS_DEVICE_ALARM = 'WS_ALERT_DEVICE';
