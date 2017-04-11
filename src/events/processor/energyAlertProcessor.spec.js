@@ -32,7 +32,7 @@ describe('EnergyAlertProcessor', () => {
       GatewayId: 'TESTGW',
       Type: 'ENERGY',
       Payload: {
-        DeviceId: '11:22:33:44:55',
+        DeviceId: 'tele/lamp_test/TELEMETRY',
         Yesterday: 0.031,
         Today: 0.013,
         Period: 0,
@@ -58,7 +58,7 @@ describe('EnergyAlertProcessor', () => {
       GatewayId: 'TESTGW',
       Type: 'ENERGY',
       Payload: {
-        DeviceId: '11:22:33:44:55',
+        DeviceId: 'tele/lamp_test/TELEMETRY',
         Yesterday: 0.031,
         Today: 0.013,
         Period: 0,
