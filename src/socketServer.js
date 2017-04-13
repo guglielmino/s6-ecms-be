@@ -9,7 +9,7 @@ const socketServer = (server) => {
 
   io.on('connection', socketioJwt.authorize({
     secret: config.auth0.secret,
-    timeout: 15000, // 15 seconds to send the authentication message
+    timeout: config.auth0.timeout,
   }))
     .on('authenticated', (socket) => {
       const user = socket.decoded_token;

@@ -42,6 +42,7 @@ const config = {
     secret: process.env.AUTH0_SECRET,
     clientID: process.env.AUTH0_CLIENTID,
     domain: process.env.AUTH0_DOMAIN,
+    timeout: process.env.AUTH0_TIMEOUT || 15000,
   },
 };
 
