@@ -9,7 +9,8 @@
     "dev": "nodemon --exec npm run start -- app.js",
     "test": "mocha --compilers js:babel-core/register --recursive 'src/**/*.spec.js'",
     "test:e2e": "mocha --compilers js:babel-core/register --recursive 'src/**/*.e2e.js'",
-    "test:watch": "npm run test -- --watch"
+    "test:watch": "npm run test -- --watch",
+    "postinstall": "./scripts/postinstall.sh"
   },
   "precommit": [
     "lint",
