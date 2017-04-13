@@ -1,6 +1,6 @@
 {
   "name": "server",
-  "version": "1.0.2",
+  "version": "0.1.0",
   "description": "",
   "main": "app.js",
   "scripts": {
@@ -32,7 +32,8 @@
         "perf",
         "test",
         "chore",
-        "revert"
+        "revert",
+        "release"
       ],
       "warnOnFail": false,
       "maxSubjectLength": 100,
