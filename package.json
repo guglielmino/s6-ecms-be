@@ -11,13 +11,9 @@
     "test:e2e": "mocha --compilers js:babel-core/register --recursive 'src/**/*.e2e.js'",
     "test:watch": "npm run test -- --watch",
     "validate-commit": "validate-commit-msg",
-    "postinstall": "./scripts/postinstall.sh"
+    "postinstall": "./scripts/postinstall.sh",
+    "precommit": "npm run lint && npm run test"
   },
-  "precommit": [
-    "validate-commit",
-    "lint",
-    "test"
-  ],
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"

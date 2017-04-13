@@ -6,7 +6,8 @@ if [ "$branch" = "refs/heads/master" ]; then
     exit 1
 fi
 
-./node_modules/pre-commit/hook
+npm run precommit
+
 RESULT=$?
 [ $RESULT -ne 0 ] && exit 1
 exit 0
