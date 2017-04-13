@@ -5,3 +5,4 @@ git config core.hooksPath ./scripts/git-hooks/
 # Git-flow settings
 git flow init -d
 git config gitflow.prefix.versiontag v_
+git config gitflow.path.hooks ./scripts/git-hooks/
