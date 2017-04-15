@@ -28,7 +28,7 @@ function DelayedQueue() {
   setInterval(() => {
     const now = new Date();
     navigateList.call(this,
-      head => head.value.expire >= now,
+      head => now.getTime() >= new Date(head.value.expire).getTime(),
       (head, prev) => {
         if (!prev) {
           this.first = this.first.next;
@@ -76,8 +76,6 @@ DelayedQueue.prototype.add = function insert(item, delay) {
 DelayedQueue.prototype.remove = function remove(predicate) {
   let found = false;
 
-  const cb = this.cb;
-
   navigateList.call(this,
     head => predicate(head.value.item),
     (head, prev) => {
@@ -86,11 +84,6 @@ DelayedQueue.prototype.remove = function remove(predicate) {
         this.first = this.first.next;
       } else {
         prev.next = head.next; // eslint-disable-line no-param-reassign
-      }
-
-      // rimuovo
-      if (cb) {
-        cb(head.value.item);
       }
     });
 

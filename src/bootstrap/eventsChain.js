@@ -10,7 +10,8 @@ import DailyStatProcessor from '../events/processor/dailyStatProcessor';
 import HourlyStatProcessor from '../events/processor/hourlyStatProcessor';
 import DeviceProcessor from '../events/processor/deviceProcessor';
 import PowerFeedbackProcessor from '../events/processor/powerFeedbackProcessor';
-import PowerActionProcessor from '../events/processor/powerActionProcessor';
+import PowerStateProcessor from '../events/processor/powerStateProcessor';
+import PowerStateAlerProcessor from '../events/processor/powerStateAlertProcessor';
 import EnergyAlertProcessor from '../events/processor/energyAlertProcessor';
 
 const BootstapEventsChain = (providers, pnub, socket) => {
@@ -19,7 +20,8 @@ const BootstapEventsChain = (providers, pnub, socket) => {
   const hourlyProcessor = HourlyStatProcessor(providers);
   const deviceProcessor = DeviceProcessor(providers);
   const powerFeedbackProcessor = PowerFeedbackProcessor(providers, socket);
-  const powerActionProcessor = PowerActionProcessor(providers, pnub);
+  const powerStateProcessor = PowerStateProcessor(providers, pnub);
+  const powerStateAlertProcessor = PowerStateAlerProcessor();
   const energyEventProcessor = EnergyAlertProcessor(providers, socket);
 
   const eventsChain = new EventsChainProcessor();
@@ -60,7 +62,12 @@ const BootstapEventsChain = (providers, pnub, socket) => {
   /* -- Power command  processing -- */
   eventsChain.add({
     predicate: msg => msg.type === consts.APPEVENT_TYPE_POWER,
-    fn: msg => powerActionProcessor.process(msg),
+    fn: msg => powerStateProcessor.process(msg),
+  });
+
+  eventsChain.add({
+    predicate: msg => msg.type === consts.APPEVENT_TYPE_POWER,
+    fn: msg => powerStateAlertProcessor.process(msg),
   });
 
   return eventsChain;

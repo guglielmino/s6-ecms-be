@@ -49,6 +49,6 @@ database.connect()
 
     const connection$ = socket.fromEvent('connection');
     connection$
-      .subscribe(conn => logger.log('info', `Connection ${conn}`));
+      .subscribe(() => logger.log('info', 'Socket.io connected'));
   })
   .catch(err => logger.log('error', err));
