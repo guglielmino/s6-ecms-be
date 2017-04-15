@@ -65,8 +65,10 @@ const DataProvider = ({ db, collectionName }) => ({
             if (error) {
               reject(error);
             } else {
-              const id = r.lastErrorObject.upserted ? r.lastErrorObject.upserted : r.value._id;
-              resolve({ status: r.ok, id: id });
+              /* eslint-disable no-underscore-dangle */
+              const respId = r.lastErrorObject.upserted ? r.lastErrorObject.upserted : r.value._id;
+              /* eslint-enable no-underscore-dangle */
+              resolve({ status: r.ok, id: respId });
             }
           });
       });

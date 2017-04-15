@@ -15,7 +15,7 @@ describe('DeviceProcessor', () => {
   });
 
   it('should call add in device provider', () => {
-    deviceProvider.add = sinon.stub();
+    deviceProvider.updateByDeviceId = sinon.stub();
     const event = {
       Type: 'ENERGY',
       Payload: {
@@ -24,7 +24,7 @@ describe('DeviceProcessor', () => {
     };
 
     subject.process(event);
-    deviceProvider.add
+    deviceProvider.updateByDeviceId
       .calledOnce.should.be.true;
   });
 });

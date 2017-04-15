@@ -94,7 +94,7 @@ describe('devicesProvider', () => {
 
     subject = DevicesProvider(db);
 
-    subject.updateById(new ObjectID(), {
+    subject.updateByDeviceId('11:44:41:9f:66:ea', {
       gateway: 'agateway',
       swVersion: '1.2.3',
       deviceType: 'Sonoff Pow Module',
@@ -106,7 +106,7 @@ describe('devicesProvider', () => {
       created: new Date(),
     })
       .then(res => subject.getById(res.id))
-      .then(res => subject.updateById(res._id, {
+      .then(res => subject.updateByDeviceId(res.deviceId, {
         gateway: 'agateway',
         swVersion: '1.2.3',
         deviceType: 'Sonoff Pow Module',
