@@ -55,17 +55,18 @@ const DataProvider = ({ db, collectionName }) => ({
           _id = ObjectId(id);
         }
 
-        col.updateOne({ _id },  // eslint-disable-line no-underscore-dangle
+        col.findOneAndUpdate({ _id },  // eslint-disable-line no-underscore-dangle
           newObj,
           {
             upsert: true,
+            returnOriginal: true,
           },
           (error, r) => {
             if (error) {
               reject(error);
             } else {
-              const resp = JSON.parse(r);
-              resolve(resp.ok);
+              const id = r.lastErrorObject.upserted ? r.lastErrorObject.upserted : r.value._id;
+              resolve({ status: r.ok, id: id });
             }
           });
       });

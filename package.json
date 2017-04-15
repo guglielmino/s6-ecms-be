@@ -12,7 +12,8 @@
     "test:watch": "npm run test -- --watch",
     "validate-commit": "validate-commit-msg",
     "postinstall": "./scripts/postinstall.sh",
-    "precommit": "npm run lint && npm run test"
+    "precommit": "npm run lint && npm run test",
+    "commit": "git-cz"
   },
   "config": {
     "commitizen": {
