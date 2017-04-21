@@ -1,6 +1,6 @@
 import logger from '../../common/logger';
 import { WS_DEVICE_POWER_FEEDBACK } from './socketConsts';
-
+import sharedDelayedQueue from '../../bootstrap/sharedDelayedQueue';
 /**
  * Process power status change message coming from devices
  * updating their status on database
@@ -15,6 +15,10 @@ const PowerFeedbackProcessor = (providers, socket) => ({
       .findByCommand('power', event.Payload.PowerCommand)
       .then((res) => {
         const updatedObj = { ...res, status: { power: event.Payload.Power } };
+        // Remove device from delayed queue
+        // (used for alerting if response doesn't come in a defined delay)
+        sharedDelayedQueue.remove(item => item.deviceId === res.deviceId);
+
         providers
           .deviceProvider
           .update(res, updatedObj);

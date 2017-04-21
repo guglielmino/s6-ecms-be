@@ -8,7 +8,7 @@ import logger from '../../common/logger';
  * @param pnub
  * @constructor
  */
-const PowerActionProcessor = (providers, pnub) => ({
+const PowerStateProcessor = (providers, pnub) => ({
   process: (event) => {
     logger.log('info', `power action processor ${JSON.stringify(event)}`);
 
@@ -16,16 +16,20 @@ const PowerActionProcessor = (providers, pnub) => ({
       .deviceProvider
       .findByDeviceId(event.deviceId)
       .then((dev) => {
-        pnub.publish(event.gateway, {
-          type: 'MQTT',
-          payload: {
-            topic: dev.commands.power.replace('mqtt:', ''),
-            value: event.state,
-          },
-        });
+        if (dev.commands && dev.commands.power) {
+          pnub.publish(event.gateway, {
+            type: 'MQTT',
+            payload: {
+              topic: dev.commands.power.replace('mqtt:', ''),
+              value: event.state,
+            },
+          });
+        } else {
+          logger.log('error', `Device ${event.deviceId} doesn't have power command configured.`);
+        }
       })
       .catch(err => logger.log('error', err));
   },
 });
 
-export default PowerActionProcessor;
+export default PowerStateProcessor;

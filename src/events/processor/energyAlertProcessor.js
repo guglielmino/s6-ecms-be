@@ -16,7 +16,7 @@ const EnergyAlertProcessor = (providers, socket) => ({
         .deviceProvider
         .findByDeviceId(event.Payload.DeviceId)
         .then((device) => {
-          if (device.status.power === 'on') {
+          if (device.status && device.status.power === 'on') {
             const alarmObj = {
               gateway: event.GatewayId,
               date: new Date(),

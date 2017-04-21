@@ -17,7 +17,7 @@ const socketServer = (server) => {
       // Each user gateway is used as room name and subscribed.
       user.app_metadata.gateways
         .forEach((gateway) => {
-          socket.join(gateway, err => logger.log('error', err));
+          socket.join(gateway, err => (err ? logger.log('error', err) : null));
         });
     });
 
