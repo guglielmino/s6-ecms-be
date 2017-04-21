@@ -1,6 +1,6 @@
 import chai from 'chai';
 import sinon from 'sinon';
-
+import { ObjectID } from 'mongodb';
 import ConnectDb from '../test_helper';
 import DevicesProvider from './devicesProvider';
 
@@ -30,6 +30,7 @@ describe('devicesProvider', () => {
       swVersion: '1.2.3',
       deviceType: 'Sonoff Pow Module',
       deviceId: 'bb:36:41:9f:d1:ea',
+      name: 'sample',
       commands: {
         power: 'mqtt:cmnd/sonoff/POWER',
       },
@@ -51,6 +52,7 @@ describe('devicesProvider', () => {
       swVersion: '1.2.3',
       deviceType: 'Sonoff Pow Module',
       deviceId: 'bb:36:41:9f:d1:ea',
+      name: 'sample',
       commands: {
         power: 'mqtt:cmnd/test2/POWER',
       },
@@ -63,4 +65,65 @@ describe('devicesProvider', () => {
       })
       .catch(err => done(err));
   });
+
+  it('should create a device if doesn\'t exists', (done) => {
+
+    subject = DevicesProvider(db);
+
+    subject.updateById(new ObjectID(), {
+      gateway: 'agateway',
+      swVersion: '1.2.3',
+      deviceType: 'Sonoff Pow Module',
+      deviceId: '11:44:41:9f:66:ea',
+      name: 'UpsertDevice',
+      commands: {
+        power: 'mqtt:cmnd/test6/POWER',
+      },
+      created: new Date(),
+    })
+      .then(res => subject.getDevices(['agateway']))
+      .then((res) => {
+        res.length.should.be.eq(1);
+        res[0].name.should.be.eq('UpsertDevice');
+        done();
+      })
+      .catch(err => done(err));
+  });
+
+  it('should update device after creating it', (done) => {
+
+    subject = DevicesProvider(db);
+
+    subject.updateByDeviceId('11:44:41:9f:66:ea', {
+      gateway: 'agateway',
+      swVersion: '1.2.3',
+      deviceType: 'Sonoff Pow Module',
+      deviceId: '11:44:41:9f:66:ea',
+      name: 'UpsertDevice',
+      commands: {
+        power: 'mqtt:cmnd/test6/POWER',
+      },
+      created: new Date(),
+    })
+      .then(res => subject.getById(res.id))
+      .then(res => subject.updateByDeviceId(res.deviceId, {
+        gateway: 'agateway',
+        swVersion: '1.2.3',
+        deviceType: 'Sonoff Pow Module',
+        deviceId: '11:44:41:9f:66:ea',
+        name: 'UpsertDeviceUpdated',
+        commands: {
+          power: 'mqtt:cmnd/test6/POWER',
+        },
+        created: new Date(),
+      }))
+      .then(res => subject.getById(res.id))
+      .then((res) => {
+        res.name.should.be.eq('UpsertDeviceUpdated');
+        done();
+      })
+      .catch(err => done(err));
+  });
+
+
 });

@@ -10,7 +10,7 @@ const DeviceProcessor = providers => ({
     logger.log('debug', `device processor ${JSON.stringify(event)}`);
 
      // Payload.deviceId
-    providers.deviceProvider.add(event.Payload);
+    providers.deviceProvider.updateByDeviceId(event.Payload.deviceId, event.Payload);
   },
 });
 

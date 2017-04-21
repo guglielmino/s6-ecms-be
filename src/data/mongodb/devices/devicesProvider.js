@@ -85,6 +85,33 @@ const DevicesProvider = ({ db, collectionName }) => {
         });
       });
     },
+
+    updateByDeviceId(deviceId, newObj) {
+      return new Promise((resolve, reject) => {
+        db.collection(collectionName, (err, col) => {
+          if (err) {
+            reject(err);
+          }
+
+          col.findOneAndUpdate({ deviceId },  // eslint-disable-line no-underscore-dangle
+            newObj,
+            {
+              upsert: true,
+              returnOriginal: true,
+            },
+            (error, r) => {
+              if (error) {
+                reject(error);
+              } else {
+                /* eslint-disable no-underscore-dangle, max-len  */
+                const respId = r.lastErrorObject.upserted ? r.lastErrorObject.upserted : r.value._id;
+                /* eslint-enable no-underscore-dangle, max-len  */
+                resolve({ status: r.ok, id: respId });
+              }
+            });
+        });
+      });
+    },
   };
 };
 
