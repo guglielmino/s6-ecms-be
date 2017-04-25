@@ -93,6 +93,24 @@ const DataProvider = ({ db, collectionName }) => ({
       });
     });
   },
+  getMany(query) {
+    return new Promise((resolve, reject) => {
+      db.collection(collectionName, (err, col) => {
+        if (err) {
+          reject(err);
+        }
+
+        col.find(query)
+          .toArray((error, docs) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(docs);
+            }
+          });
+      });
+    });
+  },
 });
 
 
