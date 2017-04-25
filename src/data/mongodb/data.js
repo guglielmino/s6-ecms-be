@@ -111,6 +111,24 @@ const DataProvider = ({ db, collectionName }) => ({
       });
     });
   },
+  getOne(query) {
+    return new Promise((resolve, reject) => {
+      db.collection(collectionName, (err, col) => {
+        if (err) {
+          reject(err);
+        }
+
+        col.findOne(query,
+          (error, obj) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(obj);
+            }
+          });
+      });
+    });
+  },
 });
 
 
