@@ -16,113 +16,100 @@ const getRefDateTime = (date) => {
   return dayDate;
 };
 
-const HourlyStatsProvider = ({ db, collectionName }) => {
-  db.collection(collectionName, (err, col) => {
-    col.createIndex({ date: 1, gateway: 1, deviceId: 1 },
-      { unique: true, background: true, dropDups: true, w: 1 },
-      (error) => {
-        if (error) {
-          throw error;
-        }
-      });
-  });
-
-  return {
-    updateHourlyStat({ date, gateway, deviceId, power }) {
-      const dayDate = getRefDateTime(date);
-
-      return new Promise((resolve, reject) => {
-        db.collection(collectionName, (err, col) => {
-          if (err) {
-            reject(err);
-          }
-
-          col.updateOne(
-            { date: dayDate, gateway, deviceId },
-            {
-              $set: { power },
-            },
-            { upsert: true },
-            (error, r) => {
-              if (error) {
-                reject(error);
-              } else {
-                const resp = JSON.parse(r);
-                resolve(resp.ok === 1);
-              }
-            },
-          );
-        });
-      });
-    },
-
-    getHourlyStatByDevice(date, gateway, deviceId) {
-      const dayDate = getRefDateTime(date);
-
-      return new Promise((resolve, reject) => {
-        db.collection(collectionName, (err, col) => {
-          if (err) {
-            reject(err);
-          }
-
-          col.find({
-            date: dayDate,
-            gateway,
-            deviceId,
-          })
-            .toArray((error, docs) => {
-              if (error) {
-                reject(error);
-              } else {
-                resolve(docs);
-              }
-            });
-        });
-      });
-    },
-
-    getHourlyStat(dates, gateways) {
-      const dayDates = dates.map(d => getRefDateTime(d));
-
-      return new Promise((resolve, reject) => {
-        db.collection(collectionName, (err, col) => {
-          if (err) {
-            reject(err);
-          }
-
-          col.aggregate([{
-            $match: {
-              $and: [
-                { gateway: { $in: gateways } },
-                { date: { $in: dayDates } },
-              ],
-            },
-          }, {
-            $group: {
-              _id: { $hour: '$date' },
-              power: {
-                $sum: '$power',
-              },
-            },
-          }])
-            .toArray((error, docs) => {
-              if (error) {
-                reject(error);
-              } else {
-                resolve(docs);
-              }
-            });
-        });
-      });
-    },
-  };
-};
-
-
-export default function (db) {
+export default function (database) {
   const params = {
-    db,
+    db: database,
     collectionName: 'hourlyStats',
   };
-  return Object.assign({}, DataProvider(params), HourlyStatsProvider(params));
+
+  const dataProvider = DataProvider(params);
+
+  const HourlyStatsProvider = ({ db, collectionName }) => {
+    db.collection(collectionName, (err, col) => {
+      col.createIndex({ date: 1, gateway: 1, deviceId: 1 },
+        { unique: true, background: true, dropDups: true, w: 1 },
+        (error) => {
+          if (error) {
+            throw error;
+          }
+        });
+    });
+
+    return {
+      updateHourlyStat({ date, gateway, deviceId, power }) {
+        const dayDate = getRefDateTime(date);
+
+        return new Promise((resolve, reject) => {
+          db.collection(collectionName, (err, col) => {
+            if (err) {
+              reject(err);
+            }
+
+            col.updateOne(
+              { date: dayDate, gateway, deviceId },
+              {
+                $set: { power },
+              },
+              { upsert: true },
+              (error, r) => {
+                if (error) {
+                  reject(error);
+                } else {
+                  const resp = JSON.parse(r);
+                  resolve(resp.ok === 1);
+                }
+              },
+            );
+          });
+        });
+      },
+
+      getHourlyStatByDevice(date, gateway, deviceId) {
+        const dayDate = getRefDateTime(date);
+        return dataProvider.getMany({
+          date: dayDate,
+          gateway,
+          deviceId,
+        });
+      },
+
+      getHourlyStat(dates, gateways) {
+        const dayDates = dates.map(d => getRefDateTime(d));
+
+        return new Promise((resolve, reject) => {
+          db.collection(collectionName, (err, col) => {
+            if (err) {
+              reject(err);
+            }
+
+            col.aggregate([{
+              $match: {
+                $and: [
+                  { gateway: { $in: gateways } },
+                  { date: { $in: dayDates } },
+                ],
+              },
+            }, {
+              $group: {
+                _id: { $hour: '$date' },
+                power: {
+                  $sum: '$power',
+                },
+              },
+            }])
+              .toArray((error, docs) => {
+                if (error) {
+                  reject(error);
+                } else {
+                  resolve(docs);
+                }
+              });
+          });
+        });
+      },
+    };
+  };
+
+
+  return Object.assign({}, dataProvider, HourlyStatsProvider(params));
 }

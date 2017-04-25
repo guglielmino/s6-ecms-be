@@ -93,6 +93,7 @@ const DataProvider = ({ db, collectionName }) => ({
       });
     });
   },
+
   getMany(query) {
     return new Promise((resolve, reject) => {
       db.collection(collectionName, (err, col) => {
@@ -111,6 +112,7 @@ const DataProvider = ({ db, collectionName }) => ({
       });
     });
   },
+
   getOne(query) {
     return new Promise((resolve, reject) => {
       db.collection(collectionName, (err, col) => {
