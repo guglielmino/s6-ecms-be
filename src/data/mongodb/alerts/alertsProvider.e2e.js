@@ -2,7 +2,7 @@ import chai from 'chai';
 import sinon from 'sinon';
 
 import ConnectDb from '../test_helper';
-import EventsProvider from './alertsProvider';
+import AlertsProvider from './alertsProvider';
 
 chai.should();
 const expect = chai.expect;
@@ -23,7 +23,7 @@ describe('alertsProvider', () => {
   });
 
   it('should returns array of alerts', (done) => {
-    subject = EventsProvider(db);
+    subject = AlertsProvider(db);
     subject.add({
       gateway: 'DevelopmentGateway',
       date: new Date(),
