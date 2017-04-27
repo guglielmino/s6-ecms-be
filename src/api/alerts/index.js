@@ -27,45 +27,6 @@ export default function (app, AuthCheck, RoleCheck, { alertProvider }) {
 
   /**
    * @swagger
-   * /api/alerts/{gateway}:
-   *   parameters:
-   *     - $ref: '#/parameters/gateway'
-   *   get:
-   *     tags:
-   *      - Alerts
-   *     description: Returns alerts for the devices belonging to requesting user
-   *     produces:
-   *      - application/json
-   *     responses:
-   *       200:
-   *         description: alerts
-   *         schema:
-   *           type: array
-   *           items:
-   *             $ref: '#/definitions/Alert'
-   */
-  router.get('/:gateway', [AuthCheck()], (req, res) => {
-    const gateways = req.user.app_metadata.gateways;
-    const reqGateway = req.params.gateway;
-
-    if (gateways.indexOf(reqGateway) === -1) {
-      res.sendStatus(204);
-      return;
-    }
-    alertProvider
-      .getAlerts([reqGateway])
-      .then((ev) => {
-        res.json(ev.map(e => transformAlert(e)));
-      })
-      .catch((err) => {
-        logger.log('error', err);
-        res.sendStatus(500);
-      });
-  });
-
-
-  /**
-   * @swagger
    * /api/alerts:
    *   get:
    *     tags:
@@ -88,6 +49,25 @@ export default function (app, AuthCheck, RoleCheck, { alertProvider }) {
       .getAlerts(gateways)
       .then((ev) => {
         res.json(ev.map(e => transformAlert(e)));
+      })
+      .catch((err) => {
+        logger.log('error', err);
+        res.sendStatus(500);
+      });
+  });
+
+  router.put('/:alertId/read', [AuthCheck()], (req, res) => {
+    const reqAlertId = req.params.alertId;
+
+    alertProvider.getOne({ _id: reqAlertId })
+      .then((alert) => {
+        const newAlert = alert;
+        newAlert.read = !newAlert.read;
+
+        return alertProvider.updateById(reqAlertId, alert);
+      })
+      .then((result) => {
+        res.sendStatus(result.status ? 200 : 204);
       })
       .catch((err) => {
         logger.log('error', err);
