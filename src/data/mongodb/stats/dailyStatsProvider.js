@@ -22,82 +22,70 @@ export default function (database) {
   };
 
   const dataProvider = DataProvider(params);
+  dataProvider.createIndex({ date: 1, gateway: 1 });
 
-  const DailyStatsProvider = ({ db, collectionName }) => {
-    db.collection(collectionName, (err, col) => {
-      col.createIndex({ date: 1, gateway: 1 },
-        { unique: true, background: true, dropDups: true, w: 1 },
-        (error) => {
-          if (error) {
-            throw error;
+  const DailyStatsProvider = ({ db, collectionName }) => ({
+    updateDailyStat({ date, gateway, today }) {
+      const dayDate = getRefDate(date);
+
+      return new Promise((resolve, reject) => {
+        db.collection(collectionName, (err, col) => {
+          if (err) {
+            reject(err);
           }
+
+          col.updateOne(
+            { date: dayDate, gateway },
+            {
+              $set: { today },
+            },
+            { upsert: true },
+            (error, r) => {
+              if (error) {
+                reject(error);
+              } else {
+                const resp = JSON.parse(r);
+                resolve(resp.ok === 1);
+              }
+            },
+          );
         });
-    });
+      });
+    },
 
-    return {
-      updateDailyStat({ date, gateway, today }) {
-        const dayDate = getRefDate(date);
+    getDailyStat(date, gateways) {
+      const dayDate = getRefDate(date);
 
-        return new Promise((resolve, reject) => {
-          db.collection(collectionName, (err, col) => {
-            if (err) {
-              reject(err);
-            }
+      return new Promise((resolve, reject) => {
+        db.collection(collectionName, (err, col) => {
+          if (err) {
+            reject(err);
+          }
 
-            col.updateOne(
-              { date: dayDate, gateway },
-              {
-                $set: { today },
-              },
-              { upsert: true },
-              (error, r) => {
-                if (error) {
-                  reject(error);
-                } else {
-                  const resp = JSON.parse(r);
-                  resolve(resp.ok === 1);
-                }
-              },
-            );
-          });
+          col.aggregate([{
+            $match: {
+              $and: [
+                { gateway: { $in: gateways } },
+                { date: { $eq: dayDate } },
+              ],
+            },
+          }, {
+            $group: {
+              _id: '$date',
+              today: { $sum: '$today' },
+            },
+          }])
+            .toArray((error, docs) => {
+              if (error) {
+                reject(error);
+              } else {
+                resolve(docs);
+              }
+            });
         });
-      },
-
-      getDailyStat(date, gateways) {
-        const dayDate = getRefDate(date);
-
-        return new Promise((resolve, reject) => {
-          db.collection(collectionName, (err, col) => {
-            if (err) {
-              reject(err);
-            }
-
-            col.aggregate([{
-              $match: {
-                $and: [
-                  { gateway: { $in: gateways } },
-                  { date: { $eq: dayDate } },
-                ],
-              },
-            }, {
-              $group: {
-                _id: '$date',
-                today: { $sum: '$today' },
-              },
-            }])
-              .toArray((error, docs) => {
-                if (error) {
-                  reject(error);
-                } else {
-                  resolve(docs);
-                }
-              });
-          });
-        });
-      },
-    };
-  };
-
+      });
+    },
+  });
 
   return Object.assign({}, dataProvider, DailyStatsProvider(params));
 }

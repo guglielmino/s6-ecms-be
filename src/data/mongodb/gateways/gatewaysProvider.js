@@ -8,28 +8,21 @@ export default function (database) {
 
   const dataProvider = DataProvider(params);
 
-  const GatewaysProvider = ({ db, collectionName }) => {
-    db.collection(collectionName, (err, col) => {
-      col.createIndex('code', { unique: true, background: true, dropDups: true, w: 1 }, (error) => {
-        if (error) {
-          throw error;
-        }
+  dataProvider.createIndex('code');
+
+  const GatewaysProvider = () => ({
+
+    /**
+     * Returns gateways objects having code passed in gateways array
+     */
+    getGateways(gateways) {
+      return dataProvider.getMany({
+        code: {
+          $in: gateways,
+        },
       });
-    });
+    },
+  });
 
-    return {
-
-      /**
-       * Returns gateways objects having code passed in gateways array
-       */
-      getGateways(gateways) {
-        return dataProvider.getMany({
-          code: {
-            $in: gateways,
-          },
-        });
-      },
-    };
-  };
-  return Object.assign({}, dataProvider, GatewaysProvider(params));
+  return Object.assign({}, dataProvider, GatewaysProvider());
 }

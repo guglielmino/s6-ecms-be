@@ -21,6 +21,17 @@ const Database = (config) => {
 };
 
 const DataProvider = ({ db, collectionName }) => ({
+  createIndex(fields, unique = true) {
+    db.collection(collectionName, (err, col) => {
+      col.createIndex(fields,
+        { unique, background: true, dropDups: true, w: 1 },
+        (error) => {
+          if (error) {
+            throw error;
+          }
+        });
+    });
+  },
   add(obj) {
     return new Promise((resolve, reject) => {
       db.collection(collectionName, (err, col) => {
