@@ -4,6 +4,7 @@ const transformAlert = alert => ({
   deviceId: alert.deviceId,
   message: alert.message,
   read: alert.read,
+  id: alert._id, // eslint-disable-line no-underscore-dangle
 });
 
 

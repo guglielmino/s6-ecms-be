@@ -28,7 +28,7 @@ describe('device transformer', () => {
     res.type.should.be.eq('Sonoff Pow Module');
     res.version.should.be.eq('1.0.2');
     res.status.should.be.empty;
-    Object.keys(res).length.should.be.eq(5);
+    Object.keys(res).length.should.be.eq(6);
   });
 
   it('should map status if present ', () => {
@@ -44,6 +44,7 @@ describe('device transformer', () => {
       status: {
         power: "off"
       },
+      _id: '58c55e7af36d281631b3f6b6',
     });
 
     res.name.should.be.eq('Lampada 1 - primo piano');
@@ -52,6 +53,7 @@ describe('device transformer', () => {
     res.version.should.be.eq('1.0.2');
     res.status.should.not.be.null;
     res.status.power.should.be.eq('off');
-    Object.keys(res).length.should.be.eq(5);
+    res.id.should.eq('58c55e7af36d281631b3f6b6');
+    Object.keys(res).length.should.be.eq(6);
   });
 });

@@ -34,6 +34,7 @@ describe('event transformer', () => {
     res.period.should.be.eq(2);
     res.voltage.should.be.eq(220);
     res.time.should.be.eq('2017-01-27T14:51:12.524Z');
-    Object.keys(res).length.should.be.eq(5);
+    res.id.should.eq('588b5e60bdb6577968dbc0a0');
+    Object.keys(res).length.should.be.eq(6);
   });
 });
