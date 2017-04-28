@@ -9,6 +9,8 @@ import { FakeAuthMiddleware } from '../test-helper';
 import express from 'express';
 import mockery from "mockery";
 
+import { DevicesProvider } from '../../data/mongodb';
+
 chai.should();
 const expect = chai.expect;
 
@@ -21,6 +23,7 @@ describe('Devices API endpoints', () => {
   let request;
   let app;
   let Devices;
+  let deviceProvider;
 
 
   beforeEach(() => {
@@ -32,15 +35,13 @@ describe('Devices API endpoints', () => {
     app = express();
     app.use(bodyParser.json());
     request = supertest(app);
+
+    const db = { collection: () => {} };
+    deviceProvider = DevicesProvider(db);
   });
 
   it('should returns devices with required fields', (done) => {
-    const deviceProvider = {};
-    Devices(app, FakeAuthMiddleware(['samplegw']), null, { deviceProvider });
-
-    deviceProvider
-      .getDevices = sinon
-      .stub()
+    const getDevicesStub = sinon.stub(deviceProvider, "getDevices")
       .returns(Promise.resolve([{
           name: 'Sample',
           deviceId: '00:11:22:33:44:55',
@@ -48,6 +49,8 @@ describe('Devices API endpoints', () => {
           swVersion: '1.0',
         }]),
       );
+
+    Devices(app, FakeAuthMiddleware(['samplegw']), null, { deviceProvider });
 
     request
       .get('/api/devices/samplegw')

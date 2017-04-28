@@ -6,9 +6,9 @@ import express from 'express';
 import mockery from "mockery";
 
 import { FakeAuthMiddleware } from '../../test-helper';
-import DailyStats from './';
+import HourlyStats from './';
 
-import { DailyStatsProvider } from '../../../data/mongodb';
+import { HourlyStatsProvider } from '../../../data/mongodb';
 
 chai.should();
 const expect = chai.expect;
@@ -22,7 +22,7 @@ mockery.enable({
 describe('DailyStats API endpoints', () => {
   let request;
   let app;
-  let dailyStatsProvider;
+  let hourlyStatsProvider;
 
   beforeEach(() => {
     mockery.enable();
@@ -33,35 +33,37 @@ describe('DailyStats API endpoints', () => {
     request = supertest(app);
     const db = {
       collection: () => {
-      }
+      },
     };
-    dailyStatsProvider = DailyStatsProvider(db);
+    hourlyStatsProvider = HourlyStatsProvider(db);
   });
 
-  it('should returns daily stats for the given gateway', (done) => {
+  it('should get hourly stats', (done) => {
     const date = new Date();
-    sinon.stub(dailyStatsProvider, 'getDailyStat')
+    sinon.stub(hourlyStatsProvider, 'getHourlyStat')
       .returns(Promise.resolve(
         [{
-          _id: date,
-          gateway: 'gwtest',
-          today: 120.0,
+          _id: 12,
+          date: Date.parse('2017-03-16T12:00:00.000Z'),
+          deviceId: '11:22:33:44:55:66',
+          gateway: 'test_gateway1',
+          power: 20,
         }]),
       );
 
-    DailyStats(app, FakeAuthMiddleware(['gwtest']), null, { dailyStatsProvider });
+    HourlyStats(app, FakeAuthMiddleware(['gwtest']), null, { hourlyStatsProvider });
 
     request
-      .get('/api/stats/daily/gwtest')
+      .get('/api/stats/hourly/')
       .expect(200, (err, res) => {
         if (err) {
           done(err);
         } else {
           const response = res.body;
           response.length.should.be.eq(1);
-          response[0].gateway.should.be.eq('gwtest');
-          response[0].value.should.be.eq(120.0);
-          response[0].date.should.be.eq(date.toJSON());
+          response[0].deviceId.should.be.eq('11:22:33:44:55:66');
+          response[0].power.should.be.eq(20);
+          response[0].hour.should.be.eq(12);
           done();
         }
       });
