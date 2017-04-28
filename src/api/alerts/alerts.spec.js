@@ -8,7 +8,7 @@ import {FakeAuthMiddleware} from '../test-helper';
 import express from 'express';
 import mockery from "mockery";
 
-import { AlertsProdiver } from '../../data/mongodb';
+import { AlertsProvider } from '../../data/mongodb';
 
 chai.should();
 const expect = chai.expect;
@@ -34,7 +34,7 @@ describe('Alerts API endpoints', () => {
     app = express();
     app.use(bodyParser.json());
     request = supertest(app);
-    alertProvider = AlertsProdiver({});
+    alertProvider = AlertsProvider({});
   });
 
   it('should get alerts for a passed gateway', (done) => {
