@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import supertest from 'supertest';
 import bodyParser from 'body-parser';
 
-import {FakeAuthMiddleware} from '../test-helper';
+import { FakeAuthMiddleware } from '../test-helper';
 
 import express from 'express';
 import mockery from "mockery";
