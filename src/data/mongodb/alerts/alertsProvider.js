@@ -1,39 +1,27 @@
 import { DataProvider } from '../data';
 
-const AlertsProvider = ({ db, collectionName }) => ({
-
-  /**
-   * Returns all alerts related to the gateways passed as parameter
-   */
-  getAlerts(gateways) {
-    return new Promise((resolve, reject) => {
-      db.collection(collectionName, (err, col) => {
-        if (err) {
-          reject(err);
-        }
-
-        col.find({
-          gateway: {
-            $in: gateways,
-          },
-        })
-          .toArray((error, docs) => {
-            if (error) {
-              reject(error);
-            } else {
-              resolve(docs);
-            }
-          });
-      });
-    });
-  },
-});
-
-
-export default function (db) {
+export default function (database) {
   const params = {
-    db,
+    db: database,
     collectionName: 'alerts',
   };
-  return Object.assign({}, DataProvider(params), AlertsProvider(params));
+
+  const dataProvider = DataProvider(params);
+
+  const AlertsProvider = () => ({
+
+    /**
+     * Returns all alerts related to the gateways passed as parameter
+     */
+    getAlerts(gateways) {
+      return dataProvider.getMany({
+        gateway: {
+          $in: gateways,
+        },
+      });
+    },
+  });
+
+
+  return Object.assign({}, dataProvider, AlertsProvider());
 }

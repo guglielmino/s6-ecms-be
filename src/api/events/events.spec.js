@@ -7,29 +7,29 @@ import express from 'express';
 import { FakeAuthMiddleware } from '../test-helper';
 import Events from './';
 
+import { EventsProvider } from '../../data/mongodb';
+
 chai.should();
 const expect = chai.expect;
 
 describe('Events API endpoints', () => {
   let request;
   let app;
+  let eventProvider;
 
   beforeEach(() => {
     app = express();
     request = supertest(app);
+    eventProvider = EventsProvider({});
   });
 
   it('should returns events with required fields for the given gateway', (done) => {
-    const eventProvider = {};
-    Events(app, FakeAuthMiddleware(['gwtest']), null, { eventProvider });
-
     const date = new Date();
 
-    eventProvider
-      .getEvents = sinon
-      .stub()
+    sinon.stub(eventProvider, 'getEvents')
       .returns(Promise.resolve(
         [{
+          _id: '5901080d98aa4e001af6b15c',
           Payload: {
             Yesterday: 12.3,
             Today: 8.4,
@@ -39,6 +39,8 @@ describe('Events API endpoints', () => {
           },
         }]),
       );
+
+    Events(app, FakeAuthMiddleware(['gwtest']), null, { eventProvider });
 
     request
       .get('/api/events/energy/gwtest')
@@ -59,12 +61,10 @@ describe('Events API endpoints', () => {
   });
 
   it('should returns 204 for a gateway not owned by the user', (done) => {
-    const eventProvider = {};
-    Events(app, FakeAuthMiddleware(['gwtest']), null, { eventProvider });
-    eventProvider
-      .getEvents = sinon
-      .stub()
+    sinon.stub(eventProvider, 'getEvents')
       .returns(Promise.resolve([]));
+
+    Events(app, FakeAuthMiddleware(['gwtest']), null, { eventProvider });
 
     request
       .get('/api/events/energy/agateway')
@@ -78,8 +78,7 @@ describe('Events API endpoints', () => {
   });
 
   it('should call post for a result event', (done) => {
-    const deviceProvider = {};
-    Events(app, FakeAuthMiddleware(['samplegw']), null, { deviceProvider });
+    Events(app, FakeAuthMiddleware(['samplegw']), null, { eventProvider });
 
     request
       .post('/api/events/')

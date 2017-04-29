@@ -35,7 +35,7 @@ describe('data', () => {
           name: 'test',
           age: 23
         })
-        .then(res => {
+        .then((res) => {
           res.inserted.should.be.eq(1);
           res.id.should.not.be.undefined;
           done();
@@ -86,13 +86,13 @@ describe('data', () => {
 
 
     it('Should create the object if does\'t exists', (done) => {
-      subject.
-      updateById('123334a6734d1d44bec9d20d', {
+      subject
+        .updateById('123334a6734d1d44bec9d20d', {
           name: 'test',
           age: 23,
         })
         .then((res) => {
-          res.should.be.eq(1);
+          res.status.should.be.eq(1);
           done();
         })
         .catch(err => done(err));

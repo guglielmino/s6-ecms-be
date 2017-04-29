@@ -4,6 +4,7 @@ const transformEvent = event => ({
   period: event.Payload.Period,
   voltage: event.Payload.Voltage,
   time: event.Payload.Time,
+  id: event._id, // eslint-disable-line no-underscore-dangle
 });
 
 export { transformEvent }; // eslint-disable-line import/prefer-default-export

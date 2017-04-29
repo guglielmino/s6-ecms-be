@@ -15,19 +15,16 @@ const getRefDate = (date) => {
   return dayDate;
 };
 
+export default function (database) {
+  const params = {
+    db: database,
+    collectionName: 'dailyStats',
+  };
 
-const DailyStatsProvider = ({ db, collectionName }) => {
-  db.collection(collectionName, (err, col) => {
-    col.createIndex({ date: 1, gateway: 1 },
-      { unique: true, background: true, dropDups: true, w: 1 },
-      (error) => {
-        if (error) {
-          throw error;
-        }
-      });
-  });
+  const dataProvider = DataProvider(params);
+  dataProvider.createIndex({ date: 1, gateway: 1 });
 
-  return {
+  const DailyStatsProvider = ({ db, collectionName }) => ({
     updateDailyStat({ date, gateway, today }) {
       const dayDate = getRefDate(date);
 
@@ -88,13 +85,7 @@ const DailyStatsProvider = ({ db, collectionName }) => {
         });
       });
     },
-  };
-};
+  });
 
-export default function (db) {
-  const params = {
-    db,
-    collectionName: 'dailyStats',
-  };
-  return Object.assign({}, DataProvider(params), DailyStatsProvider(params));
+  return Object.assign({}, dataProvider, DailyStatsProvider(params));
 }

@@ -1,51 +1,28 @@
 import { DataProvider } from '../data';
 
+export default function (database) {
+  const params = {
+    db: database,
+    collectionName: 'gateways',
+  };
 
-const GatewaysProvider = ({ db, collectionName }) => {
-  db.collection(collectionName, (err, col) => {
-    col.createIndex('code', { unique: true, background: true, dropDups: true, w: 1 }, (error) => {
-      if (error) {
-        throw error;
-      }
-    });
-  });
+  const dataProvider = DataProvider(params);
 
-  return {
+  dataProvider.createIndex('code');
+
+  const GatewaysProvider = () => ({
 
     /**
      * Returns gateways objects having code passed in gateways array
      */
     getGateways(gateways) {
-      return new Promise((resolve, reject) => {
-        db.collection(collectionName, (err, col) => {
-          if (err) {
-            reject(err);
-          }
-
-          col.find({
-            code: {
-              $in: gateways,
-            },
-          })
-            .toArray((error, docs) => {
-              if (error) {
-                reject(error);
-              } else {
-                resolve(docs);
-              }
-            });
-        });
+      return dataProvider.getMany({
+        code: {
+          $in: gateways,
+        },
       });
     },
+  });
 
-
-  };
-};
-
-export default function (db) {
-  const params = {
-    db,
-    collectionName: 'gateways',
-  };
-  return Object.assign({}, DataProvider(params), GatewaysProvider(params));
+  return Object.assign({}, dataProvider, GatewaysProvider());
 }

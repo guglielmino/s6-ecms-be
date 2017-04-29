@@ -1,40 +1,24 @@
 import { DataProvider } from '../data';
 
-const DevicesProvider = ({ db, collectionName }) => {
-  db.collection(collectionName, (err, col) => {
-    col.createIndex('deviceId', { unique: true, background: true, dropDups: true, w: 1 },
-      (error) => {
-        if (error) {
-          throw error;
-        }
-      });
-  });
+export default function (database) {
+  const params = {
+    db: database,
+    collectionName: 'devices',
+  };
 
-  return {
+  const dataProvider = DataProvider(params);
+  dataProvider.createIndex('deviceId');
+
+  const DevicesProvider = ({ db, collectionName }) => ({
 
     /**
      * Returns all devices belonging to the gateways passed as parameter
      */
     getDevices(gateways) {
-      return new Promise((resolve, reject) => {
-        db.collection(collectionName, (err, col) => {
-          if (err) {
-            reject(err);
-          }
-
-          col.find({
-            gateway: {
-              $in: gateways,
-            },
-          })
-            .toArray((error, docs) => {
-              if (error) {
-                reject(error);
-              } else {
-                resolve(docs);
-              }
-            });
-        });
+      return dataProvider.getMany({
+        gateway: {
+          $in: gateways,
+        },
       });
     },
     /**
@@ -46,46 +30,15 @@ const DevicesProvider = ({ db, collectionName }) => {
      * @returns {Promise}
      */
     findByCommand(commandName, value) {
-      return new Promise((resolve, reject) => {
-        db.collection(collectionName, (err, col) => {
-          if (err) {
-            reject(err);
-          }
+      const commandKey = `commands.${commandName}`;
+      const query = {};
+      query[commandKey] = value;
 
-          const commandKey = `commands.${commandName}`;
-          const query = { };
-          query[commandKey] = value;
-
-          col.find(query)
-            .toArray((error, docs) => {
-              if (error) {
-                reject(error);
-              } else {
-                resolve(docs[0]);
-              }
-            });
-        });
-      });
+      return dataProvider.getOne(query);
     },
     findByDeviceId(deviceId) {
-      return new Promise((resolve, reject) => {
-        db.collection(collectionName, (err, col) => {
-          if (err) {
-            reject(err);
-          }
-
-          col.find({ deviceId })
-            .toArray((error, docs) => {
-              if (error) {
-                reject(error);
-              } else {
-                resolve(docs[0]);
-              }
-            });
-        });
-      });
+      return dataProvider.getOne({ deviceId });
     },
-
     updateByDeviceId(deviceId, newObj) {
       return new Promise((resolve, reject) => {
         db.collection(collectionName, (err, col) => {
@@ -112,13 +65,7 @@ const DevicesProvider = ({ db, collectionName }) => {
         });
       });
     },
-  };
-};
+  });
 
-export default function (db) {
-  const params = {
-    db,
-    collectionName: 'devices',
-  };
-  return Object.assign({}, DataProvider(params), DevicesProvider(params));
+  return Object.assign({}, dataProvider, DevicesProvider(params));
 }

@@ -21,6 +21,17 @@ const Database = (config) => {
 };
 
 const DataProvider = ({ db, collectionName }) => ({
+  createIndex(fields, unique = true) {
+    db.collection(collectionName, (err, col) => {
+      col.createIndex(fields,
+        { unique, background: true, dropDups: true, w: 1 },
+        (error) => {
+          if (error) {
+            throw error;
+          }
+        });
+    });
+  },
   add(obj) {
     return new Promise((resolve, reject) => {
       db.collection(collectionName, (err, col) => {
@@ -83,6 +94,44 @@ const DataProvider = ({ db, collectionName }) => ({
         }
 
         col.findOne({ _id: ObjectId(id) }, // eslint-disable-line no-underscore-dangle
+          (error, obj) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(obj);
+            }
+          });
+      });
+    });
+  },
+
+  getMany(query) {
+    return new Promise((resolve, reject) => {
+      db.collection(collectionName, (err, col) => {
+        if (err) {
+          reject(err);
+        }
+
+        col.find(query)
+          .toArray((error, docs) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(docs);
+            }
+          });
+      });
+    });
+  },
+
+  getOne(query) {
+    return new Promise((resolve, reject) => {
+      db.collection(collectionName, (err, col) => {
+        if (err) {
+          reject(err);
+        }
+
+        col.findOne(query,
           (error, obj) => {
             if (error) {
               reject(error);

@@ -16,18 +16,16 @@ const getRefDateTime = (date) => {
   return dayDate;
 };
 
-const HourlyStatsProvider = ({ db, collectionName }) => {
-  db.collection(collectionName, (err, col) => {
-    col.createIndex({ date: 1, gateway: 1, deviceId: 1 },
-      { unique: true, background: true, dropDups: true, w: 1 },
-      (error) => {
-        if (error) {
-          throw error;
-        }
-      });
-  });
+export default function (database) {
+  const params = {
+    db: database,
+    collectionName: 'hourlyStats',
+  };
 
-  return {
+  const dataProvider = DataProvider(params);
+  dataProvider.createIndex({ date: 1, gateway: 1, deviceId: 1 });
+
+  const HourlyStatsProvider = ({ db, collectionName }) => ({
     updateHourlyStat({ date, gateway, deviceId, power }) {
       const dayDate = getRefDateTime(date);
 
@@ -58,26 +56,10 @@ const HourlyStatsProvider = ({ db, collectionName }) => {
 
     getHourlyStatByDevice(date, gateway, deviceId) {
       const dayDate = getRefDateTime(date);
-
-      return new Promise((resolve, reject) => {
-        db.collection(collectionName, (err, col) => {
-          if (err) {
-            reject(err);
-          }
-
-          col.find({
-            date: dayDate,
-            gateway,
-            deviceId,
-          })
-            .toArray((error, docs) => {
-              if (error) {
-                reject(error);
-              } else {
-                resolve(docs);
-              }
-            });
-        });
+      return dataProvider.getMany({
+        date: dayDate,
+        gateway,
+        deviceId,
       });
     },
 
@@ -115,14 +97,7 @@ const HourlyStatsProvider = ({ db, collectionName }) => {
         });
       });
     },
-  };
-};
+  });
 
-
-export default function (db) {
-  const params = {
-    db,
-    collectionName: 'hourlyStats',
-  };
-  return Object.assign({}, DataProvider(params), HourlyStatsProvider(params));
+  return Object.assign({}, dataProvider, HourlyStatsProvider(params));
 }
