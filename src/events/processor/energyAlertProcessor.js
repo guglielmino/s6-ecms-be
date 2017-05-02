@@ -1,5 +1,6 @@
 import logger from '../../common/logger';
 import { WS_DEVICE_ALARM } from './socketConsts';
+import { ALERT_CRITICAL } from '../../common/alertConsts';
 
 /**
  * Process energy event checking if Power is 0 but device
@@ -23,6 +24,7 @@ const EnergyAlertProcessor = (providers, socket) => ({
               deviceId: event.Payload.DeviceId,
               message: `${device.name} could be broken, power is 0 while state is on`,
               read: false,
+              level: ALERT_CRITICAL,
             };
 
             providers.alertProvider.add(alarmObj);

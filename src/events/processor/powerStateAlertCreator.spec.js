@@ -4,6 +4,9 @@ import * as consts from '../../../consts';
 import PowerStateAlertCreator from './powerStateAlertCreator';
 import mockery from "mockery";
 
+import { AlertsProvider } from '../../data/mongodb';
+
+
 chai.should();
 const expect = chai.expect;
 
@@ -14,18 +17,19 @@ mockery.enable({
 
 describe('PowerStateAlertCreator', () => {
   let subject;
-  let alertProvider = {}, socket = {};
+  let alertProvider, socket = {};
 
   beforeEach(() => {
     mockery.enable();
     mockery.registerAllowable('./index');
     mockery.registerMock('../../common/logger', { log: () => {} });
 
+    alertProvider = AlertsProvider({});
     subject = PowerStateAlertCreator({ alertProvider }, socket);
   });
 
   it('should add the alert and send it over the socket', () => {
-    alertProvider.add = sinon.stub();
+    sinon.stub(alertProvider, 'add');
     socket.emit = sinon.stub();
 
     subject.process({
@@ -39,7 +43,8 @@ describe('PowerStateAlertCreator', () => {
       .calledOnce.should.be.true;
 
     alertProvider.add
-      .calledWith(sinon.match({ deviceId: '13:32:22:34:55:12' })).should.be.true;
+      .calledWith(sinon.match({ deviceId: '13:32:22:34:55:12', level: 'critical' }))
+      .should.be.true;
 
     socket.emit
       .calledOnce.should.be.true;

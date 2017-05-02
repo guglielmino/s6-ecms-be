@@ -1,7 +1,10 @@
 import chai from 'chai';
 import sinon from 'sinon';
 import EnergyAlertProcessor from './energyAlertProcessor';
+
 import mockery from "mockery";
+
+import { AlertsProvider, DevicesProvider } from '../../data/mongodb';
 
 chai.should();
 const expect = chai.expect;
@@ -19,10 +22,17 @@ describe('EnergyAlertProcessor', () => {
   beforeEach(() => {
     mockery.enable();
     mockery.registerAllowable('./index');
-    mockery.registerMock('../../common/logger', { log: () => {} });
+    mockery.registerMock('../../common/logger', {
+      log: () => {
+      }
+    });
 
-    deviceProvider = {};
-    alertProvider = {};
+    const db = {
+      collection: () => {
+      }
+    };
+    deviceProvider = DevicesProvider(db);
+    alertProvider = AlertsProvider(db);
     socket = {};
     subject = new EnergyAlertProcessor({ deviceProvider, alertProvider }, socket);
   });
@@ -42,10 +52,10 @@ describe('EnergyAlertProcessor', () => {
         Current: 0,
         Time: new Date(),
         created: new Date(),
-      }
+      },
     };
 
-    deviceProvider.findByDeviceId = sinon.stub();
+    sinon.stub(deviceProvider, 'findByDeviceId');
 
     subject.process(event);
 
@@ -71,7 +81,9 @@ describe('EnergyAlertProcessor', () => {
       },
     };
 
-    deviceProvider.findByDeviceId = sinon.stub()
+    const eventDate = new Date();
+
+    sinon.stub(deviceProvider, 'findByDeviceId')
       .returns(Promise.resolve({
         gateway: 'TESTGW',
         name: 'lamp_test',
@@ -81,16 +93,25 @@ describe('EnergyAlertProcessor', () => {
         commands: {
           power: 'mqtt:cmnd/lamp_test/POWER',
         },
-        created: new Date(),
+        created: eventDate,
         status: {
           power: 'on',
         },
       }));
 
-    alertProvider.add = sinon.stub();
+    sinon.stub(alertProvider, 'add');
     socket.emit = () => {
       alertProvider.add
         .calledOnce.should.be.true;
+
+      alertProvider.add.calledWith({
+        gateway: 'TESTGW',
+        date: eventDate,
+        deviceId: '11:22:33:44:55',
+        message: 'lamp_test could be broken, power is 0 while state is on',
+        read: false,
+        level: 'critical',
+      });
 
       deviceProvider.findByDeviceId
         .called.should.be.true;
