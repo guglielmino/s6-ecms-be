@@ -42,11 +42,17 @@ export default function (app, AuthCheck, RoleCheck, { alertProvider }) {
    *           items:
    *             $ref: '#/definitions/Alert'
    */
-  router.get('/', [AuthCheck()], (req, res) => {
+  router.get('/:gateway', [AuthCheck()], (req, res) => {
     const gateways = req.user.app_metadata.gateways;
+    const reqGateway = req.params.gateway;
+
+    if (gateways.indexOf(reqGateway) === -1) {
+      res.sendStatus(204);
+      return;
+    }
 
     alertProvider
-      .getAlerts(gateways)
+      .getAlerts([reqGateway])
       .then((ev) => {
         res.json(ev.map(e => transformAlert(e)));
       })
@@ -56,6 +62,19 @@ export default function (app, AuthCheck, RoleCheck, { alertProvider }) {
       });
   });
 
+  /**
+   * @swagger
+   * /api/alerts/{alertId}/read:
+   *   put:
+   *     tags:
+   *      - Alerts
+   *     description: Mark the alert as read
+   *     produces:
+   *      - application/json
+   *     responses:
+   *       200:
+   *         description: Ok
+   */
   router.put('/:alertId/read', [AuthCheck()], (req, res) => {
     const reqAlertId = req.params.alertId;
 

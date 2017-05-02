@@ -19,7 +19,7 @@ mockery.enable({
 });
 
 
-describe('DailyStats API endpoints', () => {
+describe('HourlyStats API endpoints', () => {
   let request;
   let app;
   let hourlyStatsProvider;
@@ -38,7 +38,7 @@ describe('DailyStats API endpoints', () => {
     hourlyStatsProvider = HourlyStatsProvider(db);
   });
 
-  it('should get hourly stats', (done) => {
+  it('should get hourly stats for a given gateway', (done) => {
     const date = new Date();
     sinon.stub(hourlyStatsProvider, 'getHourlyStat')
       .returns(Promise.resolve(
@@ -54,7 +54,7 @@ describe('DailyStats API endpoints', () => {
     HourlyStats(app, FakeAuthMiddleware(['gwtest']), null, { hourlyStatsProvider });
 
     request
-      .get('/api/stats/hourly/')
+      .get('/api/stats/hourly/gwtest')
       .expect(200, (err, res) => {
         if (err) {
           done(err);

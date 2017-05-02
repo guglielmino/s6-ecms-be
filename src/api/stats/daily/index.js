@@ -79,43 +79,5 @@ export default function (app, AuthCheck, RoleCheck, { dailyStatsProvider }) {
       });
   });
 
-  /**
-   * @swagger
-   * /api/stats/daily/:
-   *   get:
-   *     tags:
-   *      - Stats
-   *     description: Returns daily stats about day consumption of devices
-   *                  belonging to all the user's gateways
-   *     parameters:
-   *      - name: date
-   *        description: requested stats date
-   *        type: string
-   *        in: query
-   *     produces:
-   *      - application/json
-   *     responses:
-   *       200:
-   *         description: alerts
-   *         schema:
-   *           type: array
-   *           items:
-   *             $ref: '#/definitions/DailyStat'
-   */
-  router.get('/', [AuthCheck()], (req, res) => {
-    const date = getDate(req);
-    const gateways = req.user.app_metadata.gateways;
-
-    dailyStatsProvider
-      .getDailyStat(date, gateways)
-      .then((stat) => {
-        res.json(stat.map(e => transformDailyStat(e)));
-      })
-      .catch((err) => {
-        logger.log('error', err);
-        res.sendStatus(500);
-      });
-  });
-
   return router;
 }
