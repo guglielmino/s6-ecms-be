@@ -58,7 +58,7 @@ export default function (app, AuthCheck, RoleCheck, { gatewayProvider }) {
     }
 
     gatewayProvider
-      .getGateways(gateways)
+      .getGateways([reqGateway])
       .then((stat) => {
         res.json(stat.map(s => transformGateway(s)));
       })

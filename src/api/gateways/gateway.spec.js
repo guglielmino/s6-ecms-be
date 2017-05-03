@@ -50,7 +50,7 @@ describe('Gateway API endpoints', () => {
         }]),
       );
 
-    Gateways(app, FakeAuthMiddleware(['gwtest']), null, { gatewayProvider });
+    Gateways(app, FakeAuthMiddleware(['gwtest', 'gwtest2', 'gwtest3']), null, { gatewayProvider });
 
     request
       .get('/api/gateways/gwtest')
@@ -58,6 +58,9 @@ describe('Gateway API endpoints', () => {
         if (err) {
           done(err);
         } else {
+          gatewayProvider.getGateways.calledWith(['gwtest'])
+            .should.be.true;
+
           const response = res.body;
           response.length.should.be.eq(1);
           response[0].code.should.be.eq('gwtest');
