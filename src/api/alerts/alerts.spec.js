@@ -38,7 +38,7 @@ describe('Alerts API endpoints', () => {
   });
 
   it('should get alerts for a passed gateway', (done) => {
-    Alerts(app, FakeAuthMiddleware(['samplegw']), null, { alertProvider });
+    Alerts(app, FakeAuthMiddleware(['samplegw', 'testgw']), null, { alertProvider });
     const stub = sinon.stub(alertProvider, 'getAlerts')
       .returns(Promise.resolve([{
           gateway: 'samplegw',
@@ -56,6 +56,8 @@ describe('Alerts API endpoints', () => {
         if (err) {
           done(err);
         } else {
+          stub.calledWith(['samplegw'])
+            .should.be.true;
           done();
         }
       });
