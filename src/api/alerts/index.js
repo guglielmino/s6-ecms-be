@@ -27,6 +27,17 @@ export default function (app, AuthCheck, RoleCheck, { alertProvider }) {
 
   /**
    * @swagger
+   * parameters:
+   *   alertId:
+   *     name: alertId
+   *     in: path
+   *     description: alert id
+   *     type: string
+   *     required: true
+   */
+
+  /**
+   * @swagger
    * /api/alerts:
    *   get:
    *     tags:
@@ -65,6 +76,8 @@ export default function (app, AuthCheck, RoleCheck, { alertProvider }) {
   /**
    * @swagger
    * /api/alerts/{alertId}/read:
+   *   parameters:
+   *     - $ref: '#/parameters/alertId'
    *   put:
    *     tags:
    *      - Alerts

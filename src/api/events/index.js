@@ -105,8 +105,7 @@ export default function (app, AuthCheck, RoleCheck, { eventProvider }) {
    *   post:
    *     tags:
    *      - Events
-   *     description: Store the Info event received from gateway,
-   *                  Info event carries data about device (id, name, ...)
+   *     description: Store events received from gateway
    *     produces:
    *      - application/json
    *     responses:
