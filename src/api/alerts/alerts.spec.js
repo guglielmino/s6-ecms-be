@@ -64,7 +64,7 @@ describe('Alerts API endpoints', () => {
   });
 
   it('should toggle read field', (done) => {
-    const stub = sinon.stub( alertProvider, 'getOne')
+    const stub = sinon.stub( alertProvider, 'getAlertById')
       .returns(Promise.resolve({
         gateway: 'samplegw',
         date: new Date(),

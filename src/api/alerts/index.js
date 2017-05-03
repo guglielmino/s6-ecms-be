@@ -91,7 +91,7 @@ export default function (app, AuthCheck, RoleCheck, { alertProvider }) {
   router.put('/:alertId/read', [AuthCheck()], (req, res) => {
     const reqAlertId = req.params.alertId;
 
-    alertProvider.getOne({ _id: reqAlertId })
+    alertProvider.getAlertById(reqAlertId)
       .then((alert) => {
         const newAlert = alert;
         newAlert.read = !newAlert.read;
