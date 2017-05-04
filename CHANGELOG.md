@@ -1,9 +1,10 @@
-<a name="0.4.0"></a>
-# 0.4.0 (2017-05-04)
+<a name="1.0.0"></a>
+# 1.0.0 (2017-05-04)
 
 
 ### Bug Fixes
 
+* Fix event API read feedback ([c89fffc](https://gitlab.com/smart-office-iot/iot-project-server/commit/c89fffc))
 * Fix get alert in update read status endpoint ([612d7ba](https://gitlab.com/smart-office-iot/iot-project-server/commit/612d7ba))
 * Fix modify of an existing device for Info1 event ([87a21d1](https://gitlab.com/smart-office-iot/iot-project-server/commit/87a21d1))
 * Fix wrong use of passed gateway code in /api/gateways/{code} ([6b1ee81](https://gitlab.com/smart-office-iot/iot-project-server/commit/6b1ee81))
