@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import { DataProvider } from '../data';
 
 export default function (database) {
@@ -19,6 +20,14 @@ export default function (database) {
           $in: gateways,
         },
       });
+    },
+    getAlertById(alertId) {
+      let _id = alertId; // eslint-disable-line no-underscore-dangle
+      if (typeof id === 'string' || alertId instanceof String) {
+        _id = ObjectId(alertId);
+      }
+
+      return dataProvider.getOne({ _id });
     },
   });
 

@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import supertest from 'supertest';
 import bodyParser from 'body-parser';
 
-import {FakeAuthMiddleware} from '../test-helper';
+import { FakeAuthMiddleware } from '../test-helper';
 
 import express from 'express';
 import mockery from "mockery";
@@ -38,8 +38,8 @@ describe('Alerts API endpoints', () => {
   });
 
   it('should get alerts for a passed gateway', (done) => {
-    Alerts(app, FakeAuthMiddleware(['samplegw']), null, { alertProvider });
-    const stub = sinon.stub(alertProvider, "getAlerts")
+    Alerts(app, FakeAuthMiddleware(['samplegw', 'testgw']), null, { alertProvider });
+    const stub = sinon.stub(alertProvider, 'getAlerts')
       .returns(Promise.resolve([{
           gateway: 'samplegw',
           date: new Date(),
@@ -51,18 +51,20 @@ describe('Alerts API endpoints', () => {
       );
 
     request
-      .get('/api/alerts/')
+      .get('/api/alerts/samplegw')
       .expect(200, (err, res) => {
         if (err) {
           done(err);
         } else {
+          stub.calledWith(['samplegw'])
+            .should.be.true;
           done();
         }
       });
   });
 
   it('should toggle read field', (done) => {
-    const stub = sinon.stub( alertProvider, 'getOne')
+    const stub = sinon.stub( alertProvider, 'getAlertById')
       .returns(Promise.resolve({
         gateway: 'samplegw',
         date: new Date(),

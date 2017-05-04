@@ -90,42 +90,5 @@ export default function (app, AuthCheck, RoleCheck, { hourlyStatsProvider }) {
       });
   });
 
-  /**
-   * @swagger
-   * /api/stats/hourly/:
-   *   get:
-   *     tags:
-   *      - Stats
-   *     description: Returns hourly stats about day consumption for all user gateways
-   *     parameters:
-   *      - name: date
-   *        description: requested stats date
-   *        type: string
-   *        in: query
-   *     produces:
-   *      - application/json
-   *     responses:
-   *       200:
-   *         description: alerts
-   *         schema:
-   *           type: array
-   *           items:
-   *             $ref: '#/definitions/HourlyStat'
-   */
-  router.get('/', [AuthCheck()], (req, res) => {
-    const date = getDate(req);
-    const gateways = req.user.app_metadata.gateways;
-
-    hourlyStatsProvider
-      .getHourlyStat(getHourlyDates(date), gateways)
-      .then((stat) => {
-        res.json(stat.map(s => transformHourlyStat(s)));
-      })
-      .catch((err) => {
-        logger.log('error', err);
-        res.sendStatus(500);
-      });
-  });
-
   return router;
 }

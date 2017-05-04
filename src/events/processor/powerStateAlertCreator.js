@@ -1,5 +1,6 @@
 import logger from '../../common/logger';
 import { WS_DEVICE_ALARM } from './socketConsts';
+import { ALERT_CRITICAL } from '../../common/alertConsts';
 
 /**
  * Create the alert for the timeout on receiving feedback after a power command
@@ -17,6 +18,7 @@ const PowerStateAlertCreator = (providers, socket) => ({
       deviceId: event.deviceId,
       message: `${event.deviceId} doesn't respond to turn ${event.requestStatus}`,
       read: false,
+      level: ALERT_CRITICAL,
     };
 
     providers.alertProvider.add(alarmObj);

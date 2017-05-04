@@ -1,10 +1,12 @@
-<a name="0.3.0"></a>
-# 0.3.0 (2017-04-29)
+<a name="0.4.0"></a>
+# 0.4.0 (2017-05-04)
 
 
 ### Bug Fixes
 
+* Fix get alert in update read status endpoint ([612d7ba](https://gitlab.com/smart-office-iot/iot-project-server/commit/612d7ba))
 * Fix modify of an existing device for Info1 event ([87a21d1](https://gitlab.com/smart-office-iot/iot-project-server/commit/87a21d1))
+* Fix wrong use of passed gateway code in /api/gateways/{code} ([6b1ee81](https://gitlab.com/smart-office-iot/iot-project-server/commit/6b1ee81))
 
 
 ### Features
@@ -13,6 +15,7 @@
 * Add createIndex to DataProvider to encapsulate index creation ([b38cffe](https://gitlab.com/smart-office-iot/iot-project-server/commit/b38cffe))
 * Add endpoint to mark alert read/unread ([8331828](https://gitlab.com/smart-office-iot/iot-project-server/commit/8331828))
 * Add id to api response ([4665b38](https://gitlab.com/smart-office-iot/iot-project-server/commit/4665b38))
+* Add level to alerts and expose it in API responses ([00c76e4](https://gitlab.com/smart-office-iot/iot-project-server/commit/00c76e4))
 * Add Power Action feedback alert infrastructure ([b70ca42](https://gitlab.com/smart-office-iot/iot-project-server/commit/b70ca42))
 * Add socketio timeout authentication in config ([5b035de](https://gitlab.com/smart-office-iot/iot-project-server/commit/5b035de))
 * Alerts provider refactoring to decrease code duplication ([4292dad](https://gitlab.com/smart-office-iot/iot-project-server/commit/4292dad))

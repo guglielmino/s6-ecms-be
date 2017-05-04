@@ -38,38 +38,6 @@ describe('Gateway API endpoints', () => {
     gatewayProvider = GatewaysProvider(db);
   });
 
-  it('should returns all gateways belonging to the user', (done) => {
-    const date = new Date();
-
-    sinon.stub(gatewayProvider, 'getGateways')
-      .returns(Promise.resolve(
-        [{
-          _id: '589334a6734d1d44bec9d20d',
-          code: 'zara2',
-          description: 'Negozio Zara, Milano',
-        }]),
-      );
-
-    Gateways(app, FakeAuthMiddleware(['gwtest']), null, { gatewayProvider });
-
-    request
-      .get('/api/gateways')
-      .expect(200, (err, res) => {
-        if (err) {
-          done(err);
-        } else {
-          const response = res.body;
-          response.length.should.be.eq(1);
-          response[0].code.should.be.eq('zara2');
-          response[0].description.should.be.eq('Negozio Zara, Milano');
-          response[0].id.should.be.eq('589334a6734d1d44bec9d20d');
-
-          done();
-        }
-      });
-  });
-
-
   it('should returns requested gateway', (done) => {
     const date = new Date();
 
@@ -82,7 +50,7 @@ describe('Gateway API endpoints', () => {
         }]),
       );
 
-    Gateways(app, FakeAuthMiddleware(['gwtest']), null, { gatewayProvider });
+    Gateways(app, FakeAuthMiddleware(['gwtest', 'gwtest2', 'gwtest3']), null, { gatewayProvider });
 
     request
       .get('/api/gateways/gwtest')
@@ -90,6 +58,9 @@ describe('Gateway API endpoints', () => {
         if (err) {
           done(err);
         } else {
+          gatewayProvider.getGateways.calledWith(['gwtest'])
+            .should.be.true;
+
           const response = res.body;
           response.length.should.be.eq(1);
           response[0].code.should.be.eq('gwtest');

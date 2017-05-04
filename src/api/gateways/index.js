@@ -31,37 +31,6 @@ export default function (app, AuthCheck, RoleCheck, { gatewayProvider }) {
 
   /**
    * @swagger
-   * /api/gateways/:
-   *   get:
-   *     tags:
-   *      - Gateways
-   *     description: Returns information about specified gateway
-   *     produces:
-   *      - application/json
-   *     responses:
-   *       200:
-   *         description: alerts
-   *         schema:
-   *           type: array
-   *           items:
-   *             $ref: '#/definitions/Gateway'
-   */
-  router.get('/', [AuthCheck()], (req, res) => {
-    const gateways = req.user.app_metadata.gateways;
-
-    gatewayProvider
-      .getGateways(gateways)
-      .then((stat) => {
-        res.json(stat.map(s => transformGateway(s)));
-      })
-      .catch((err) => {
-        logger.log('error', err);
-        res.sendStatus(500);
-      });
-  });
-
-  /**
-   * @swagger
    * /api/gateways/{gateway}:
    *   parameters:
    *     - $ref: '#/parameters/gateway'
@@ -89,7 +58,7 @@ export default function (app, AuthCheck, RoleCheck, { gatewayProvider }) {
     }
 
     gatewayProvider
-      .getGateways(gateways)
+      .getGateways([reqGateway])
       .then((stat) => {
         res.json(stat.map(s => transformGateway(s)));
       })
