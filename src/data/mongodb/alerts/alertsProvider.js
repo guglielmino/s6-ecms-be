@@ -23,7 +23,7 @@ export default function (database) {
     },
     getAlertById(alertId) {
       let _id = alertId; // eslint-disable-line no-underscore-dangle
-      if (typeof id === 'string' || alertId instanceof String) {
+      if (typeof alertId === 'string' || alertId instanceof String) {
         _id = ObjectId(alertId);
       }
 
