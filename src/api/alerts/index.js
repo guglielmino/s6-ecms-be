@@ -1,7 +1,7 @@
 import express from 'express';
 import { transformAlert } from './alertTransformer';
 import logger from '../../common/logger';
-
+import { getOverlapped } from '../api-utils';
 
 export default function (app, AuthCheck, RoleCheck, { alertProvider }) {
   const router = express.Router();
@@ -38,7 +38,22 @@ export default function (app, AuthCheck, RoleCheck, { alertProvider }) {
 
   /**
    * @swagger
+   * parameters:
+   *   gw:
+   *     name: gw
+   *     in: query
+   *     description: gateway internal code
+   *     type: array
+   *     items:
+   *      type: string
+   *     required: true
+   */
+
+  /**
+   * @swagger
    * /api/alerts:
+   *   parameters:
+   *     - $ref: '#/parameters/gw'
    *   get:
    *     tags:
    *      - Alerts
@@ -53,19 +68,20 @@ export default function (app, AuthCheck, RoleCheck, { alertProvider }) {
    *           items:
    *             $ref: '#/definitions/Alert'
    */
-  router.get('/:gateway', [AuthCheck()], (req, res) => {
-    const gateways = req.user.app_metadata.gateways;
-    const reqGateway = req.params.gateway;
+  router.get('/', [AuthCheck()], (req, res) => {
+    const ownedGws = req.user.app_metadata.gateways;
+    const reqGateways = req.query.gw;
 
-    if (gateways.indexOf(reqGateway) === -1) {
-      res.sendStatus(204);
-      return;
-    }
+    const gws = getOverlapped(ownedGws, reqGateways);
 
     alertProvider
-      .getAlerts([reqGateway])
+      .getAlerts(gws)
       .then((ev) => {
-        res.json(ev.map(e => transformAlert(e)));
+        if (ev.length === 0) {
+          res.sendStatus(204);
+        } else {
+          res.json(ev.map(e => transformAlert(e)));
+        }
       })
       .catch((err) => {
         logger.log('error', err);

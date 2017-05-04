@@ -40,7 +40,7 @@ describe('DailyStats API endpoints', () => {
 
   it('should returns daily stats for the given gateway', (done) => {
     const date = new Date();
-    sinon.stub(dailyStatsProvider, 'getDailyStat')
+    const stub = sinon.stub(dailyStatsProvider, 'getDailyStat')
       .returns(Promise.resolve(
         [{
           _id: date,
@@ -52,11 +52,14 @@ describe('DailyStats API endpoints', () => {
     DailyStats(app, FakeAuthMiddleware(['gwtest']), null, { dailyStatsProvider });
 
     request
-      .get('/api/stats/daily/gwtest')
+      .get('/api/stats/daily/?gw=gwtest')
       .expect(200, (err, res) => {
         if (err) {
           done(err);
         } else {
+          stub.calledWith(sinon.match.any, ['gwtest'])
+            .should.be.true;
+
           const response = res.body;
           response.length.should.be.eq(1);
           response[0].gateway.should.be.eq('gwtest');

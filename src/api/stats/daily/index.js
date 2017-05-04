@@ -1,8 +1,6 @@
-
-
 import express from 'express';
 import logger from '../../../common/logger';
-import { getDate } from '../../api-utils';
+import { getDate, getOverlapped } from '../../api-utils';
 import { transformDailyStat } from './dailyStatTransformer';
 
 export default function (app, AuthCheck, RoleCheck, { dailyStatsProvider }) {
@@ -24,20 +22,9 @@ export default function (app, AuthCheck, RoleCheck, { dailyStatsProvider }) {
 
   /**
    * @swagger
-   * parameters:
-   *   gateway:
-   *     name: gateway
-   *     in: path
-   *     description: gateway internal code
-   *     type: string
-   *     required: true
-   */
-
-  /**
-   * @swagger
-   * /api/stats/daily/{gateway}:
+   * /api/stats/daily:
    *   parameters:
-   *     - $ref: '#/parameters/gateway'
+   *     - $ref: '#/parameters/gw'
    *   get:
    *     tags:
    *      - Stats
@@ -58,20 +45,21 @@ export default function (app, AuthCheck, RoleCheck, { dailyStatsProvider }) {
    *           items:
    *             $ref: '#/definitions/DailyStat'
    */
-  router.get('/:gateway', [AuthCheck()], (req, res) => {
+  router.get('/', [AuthCheck()], (req, res) => {
     const date = getDate(req);
-    const gateways = req.user.app_metadata.gateways;
-    const reqGateway = req.params.gateway;
+    const ownedGws = req.user.app_metadata.gateways;
+    const reqGateways = req.query.gw;
 
-    if (gateways.indexOf(reqGateway) === -1) {
-      res.sendStatus(204);
-      return;
-    }
+    const gws = getOverlapped(ownedGws, reqGateways);
 
     dailyStatsProvider
-      .getDailyStat(date, [reqGateway])
+      .getDailyStat(date, gws)
       .then((stat) => {
-        res.json(stat.map(s => transformDailyStat(s)));
+        if (stat.length === 0) {
+          res.sendStatus(204);
+        } else {
+          res.json(stat.map(s => transformDailyStat(s)));
+        }
       })
       .catch((err) => {
         logger.log('error', err);

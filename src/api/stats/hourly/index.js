@@ -1,8 +1,6 @@
-
-
 import express from 'express';
 import logger from '../../../common/logger';
-import { getDate } from '../../api-utils';
+import { getDate, getOverlapped } from '../../api-utils';
 import { transformHourlyStat } from './hourlyStatTransformer';
 
 function getHourlyDates(date) {
@@ -36,20 +34,9 @@ export default function (app, AuthCheck, RoleCheck, { hourlyStatsProvider }) {
 
   /**
    * @swagger
-   * parameters:
-   *   gateway:
-   *     name: gateway
-   *     in: path
-   *     description: gateway internal code
-   *     type: string
-   *     required: true
-   */
-
-  /**
-   * @swagger
-   * /api/stats/hourly/{gateway}:
+   * /api/stats/hourly:
    *   parameters:
-   *     - $ref: '#/parameters/gateway'
+   *     - $ref: '#/parameters/gw'
    *   get:
    *     tags:
    *      - Stats
@@ -69,20 +56,21 @@ export default function (app, AuthCheck, RoleCheck, { hourlyStatsProvider }) {
    *           items:
    *             $ref: '#/definitions/HourlyStat'
    */
-  router.get('/:gateway', [AuthCheck()], (req, res) => {
+  router.get('/', [AuthCheck()], (req, res) => {
     const date = getDate(req);
-    const gateways = req.user.app_metadata.gateways;
-    const reqGateway = req.params.gateway;
+    const ownedGws = req.user.app_metadata.gateways;
+    const reqGateways = req.query.gw;
 
-    if (gateways.indexOf(reqGateway) === -1) {
-      res.sendStatus(204);
-      return;
-    }
+    const gws = getOverlapped(ownedGws, reqGateways);
 
     hourlyStatsProvider
-      .getHourlyStat(getHourlyDates(date), [reqGateway])
+      .getHourlyStat(getHourlyDates(date), gws)
       .then((stat) => {
-        res.json(stat.map(s => transformHourlyStat(s)));
+        if (stat.length === 0) {
+          res.sendStatus(204);
+        } else {
+          res.json(stat.map(s => transformHourlyStat(s)));
+        }
       })
       .catch((err) => {
         logger.log('error', err);

@@ -2,12 +2,10 @@ import chai from 'chai';
 import sinon from 'sinon';
 import supertest from 'supertest';
 import bodyParser from 'body-parser';
+import express from 'express';
+import mockery from 'mockery';
 
 import { FakeAuthMiddleware } from '../test-helper';
-
-//import Devices from './';
-import express from 'express';
-import mockery from "mockery";
 
 import { DevicesProvider } from '../../data/mongodb';
 
@@ -24,7 +22,6 @@ describe('Devices API endpoints', () => {
   let app;
   let Devices;
   let deviceProvider;
-
 
   beforeEach(() => {
     mockery.enable();
@@ -53,7 +50,7 @@ describe('Devices API endpoints', () => {
     Devices(app, FakeAuthMiddleware(['samplegw']), null, { deviceProvider });
 
     request
-      .get('/api/devices/samplegw')
+      .get('/api/devices/?gw=samplegw')
       .expect(200, (err, res) => {
         if (err) {
           done(err);

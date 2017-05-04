@@ -40,7 +40,7 @@ describe('HourlyStats API endpoints', () => {
 
   it('should get hourly stats for a given gateway', (done) => {
     const date = new Date();
-    sinon.stub(hourlyStatsProvider, 'getHourlyStat')
+    const stub = sinon.stub(hourlyStatsProvider, 'getHourlyStat')
       .returns(Promise.resolve(
         [{
           _id: 12,
@@ -54,11 +54,14 @@ describe('HourlyStats API endpoints', () => {
     HourlyStats(app, FakeAuthMiddleware(['gwtest']), null, { hourlyStatsProvider });
 
     request
-      .get('/api/stats/hourly/gwtest')
+      .get('/api/stats/hourly?gw=gwtest')
       .expect(200, (err, res) => {
         if (err) {
           done(err);
         } else {
+          stub.calledWith(sinon.match.any, ['gwtest'])
+            .should.be.true;
+
           const response = res.body;
           response.length.should.be.eq(1);
           response[0].deviceId.should.be.eq('11:22:33:44:55:66');
