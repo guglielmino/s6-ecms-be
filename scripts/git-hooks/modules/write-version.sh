@@ -8,7 +8,7 @@ if [ ! -z "$VERSION_PREFIX" ]; then
 fi
 
 if [ -z "$VERSION_BUMP_MESSAGE" ]; then
-    VERSION_BUMP_MESSAGE="Bump version to %version%"
+    VERSION_BUMP_MESSAGE="release: %version%"
 fi
 
 VER=$(cat $ROOT_DIR/package.json | grep -m 1 "version" | awk '{ print $2 }' | sed s/\"//g | sed s/\,//g);
@@ -21,7 +21,8 @@ $ROOT_DIR/node_modules/.bin/conventional-changelog -p angular -i $ROOT_DIR/CHANG
 echo -n "$VERSION" > $VERSION_FILE && \
     git add $VERSION_FILE && \
     git add $ROOT_DIR/package.json && \
-    git add $ROOT_DIR/CHANGELOG.md
+    git add $ROOT_DIR/CHANGELOG.md && \
+    git commit -m "$(echo "$VERSION_BUMP_MESSAGE" | sed s/%version%/$VERSION/g)"
 
 if [ $? -ne 0 ]; then
     __print_fail "Unable to write version to $VERSION_FILE."
