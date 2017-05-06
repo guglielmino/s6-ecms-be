@@ -1,4 +1,4 @@
-import { DataProvider } from '../data';
+import { DataProvider, QueryDataProvider } from '../data';
 
 export default function (database) {
   const params = {
@@ -7,6 +7,8 @@ export default function (database) {
   };
 
   const dataProvider = DataProvider(params);
+  const queryDataProvider = QueryDataProvider(params);
+
   dataProvider.createIndex('deviceId');
 
   const DevicesProvider = ({ db, collectionName }) => ({
@@ -15,12 +17,18 @@ export default function (database) {
      * Returns all devices belonging to the gateways passed as parameter
      */
     getDevices(gateways) {
-      return dataProvider.getMany({
+      return queryDataProvider.getMany({
         gateway: {
           $in: gateways,
         },
       });
     },
+    getById(deviceId) {
+      return queryDataProvider.getOne({
+        _id: deviceId,
+      });
+    },
+
     /**
      * Find a device having specified command and value
      * eg. passing 'power' and 'mqtt:cmnd/lamp' means "get the device having
@@ -34,10 +42,10 @@ export default function (database) {
       const query = {};
       query[commandKey] = value;
 
-      return dataProvider.getOne(query);
+      return queryDataProvider.getOne(query);
     },
     findByDeviceId(deviceId) {
-      return dataProvider.getOne({ deviceId });
+      return queryDataProvider.getOne({ deviceId });
     },
     updateByDeviceId(deviceId, newObj) {
       return new Promise((resolve, reject) => {

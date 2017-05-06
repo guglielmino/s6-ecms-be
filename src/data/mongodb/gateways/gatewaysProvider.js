@@ -1,4 +1,4 @@
-import { DataProvider } from '../data';
+import { DataProvider, QueryDataProvider } from '../data';
 
 export default function (database) {
   const params = {
@@ -7,6 +7,7 @@ export default function (database) {
   };
 
   const dataProvider = DataProvider(params);
+  const queryDataProvider = QueryDataProvider(params);
 
   dataProvider.createIndex('code');
 
@@ -16,7 +17,7 @@ export default function (database) {
      * Returns gateways objects having code passed in gateways array
      */
     getGateways(gateways) {
-      return dataProvider.getMany({
+      return queryDataProvider.getMany({
         code: {
           $in: gateways,
         },

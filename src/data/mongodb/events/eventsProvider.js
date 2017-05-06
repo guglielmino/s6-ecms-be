@@ -1,4 +1,4 @@
-import { DataProvider } from '../data';
+import { DataProvider, QueryDataProvider } from '../data';
 
 export default function (database) {
   const params = {
@@ -7,13 +7,14 @@ export default function (database) {
   };
 
   const dataProvider = DataProvider(params);
+  const queryDataProvider = QueryDataProvider(params);
 
   const EventsProvider = () => ({
     /**
      * Returns all events belonging to the gateways passed as parameter
      */
     getEvents(gateways) {
-      return dataProvider.getMany({
+      return queryDataProvider.getMany({
         GatewayId: {
           $in: gateways,
         },
