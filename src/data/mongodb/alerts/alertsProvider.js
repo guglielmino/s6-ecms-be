@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { DataProvider } from '../data';
+import { DataProvider, QueryDataProvider } from '../data';
 
 export default function (database) {
   const params = {
@@ -8,6 +8,7 @@ export default function (database) {
   };
 
   const dataProvider = DataProvider(params);
+  const queryDataProvider = QueryDataProvider(params);
 
   const AlertsProvider = () => ({
 
@@ -15,7 +16,7 @@ export default function (database) {
      * Returns all alerts related to the gateways passed as parameter
      */
     getAlerts(gateways) {
-      return dataProvider.getMany({
+      return queryDataProvider.getMany({
         gateway: {
           $in: gateways,
         },
@@ -27,7 +28,7 @@ export default function (database) {
         _id = ObjectId(alertId);
       }
 
-      return dataProvider.getOne({ _id });
+      return queryDataProvider.getOne({ _id });
     },
   });
 

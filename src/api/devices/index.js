@@ -3,6 +3,7 @@ import emitter from '../../streams/emitter';
 import logger from '../../common/logger';
 import { transformDevice } from './deviceTransformer';
 import * as consts from '../../../consts';
+import { getOverlapped } from '../api-utils';
 
 export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
   const router = express.Router();
@@ -27,17 +28,6 @@ export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
   /**
    * @swagger
    * parameters:
-   *   gateway:
-   *     name: gateway
-   *     in: path
-   *     description: gateway internal code
-   *     type: string
-   *     required: true
-   */
-
-  /**
-   * @swagger
-   * parameters:
    *   deviceId:
    *     name: deviceId
    *     in: path
@@ -48,9 +38,9 @@ export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
 
   /**
    * @swagger
-   * /api/devices/{gateway}:
+   * /api/devices:
    *   parameters:
-   *     - $ref: '#/parameters/gateway'
+   *     - $ref: '#/parameters/gw'
    *   get:
    *     tags:
    *      - Devices
@@ -65,19 +55,20 @@ export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
    *           items:
    *             $ref: '#/definitions/Device'
    */
-  router.get('/:gateway', [AuthCheck()], (req, res) => {
-    const gateways = req.user.app_metadata.gateways;
-    const reqGateway = req.params.gateway;
+  router.get('/', [AuthCheck()], (req, res) => {
+    const ownedGws = req.user.app_metadata.gateways;
+    const reqGateways = req.query.gw;
 
-    if (gateways.indexOf(reqGateway) === -1) {
-      res.sendStatus(204);
-      return;
-    }
+    const gws = getOverlapped(ownedGws, reqGateways);
 
     deviceProvider
-      .getDevices([reqGateway])
+      .getDevices(gws)
       .then((stat) => {
-        res.json(stat.map(e => transformDevice(e)));
+        if (stat.length === 0) {
+          res.sendStatus(204);
+        } else {
+          res.json(stat.map(e => transformDevice(e)));
+        }
       })
       .catch((err) => {
         logger.log('error', err);

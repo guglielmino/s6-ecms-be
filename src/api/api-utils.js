@@ -6,4 +6,8 @@ const getDate = (req) => {
   return date;
 };
 
-export { getDate }; // eslint-disable-line import/prefer-default-export
+const getOverlapped = (owned, requested) => (
+  owned.filter(item => requested.indexOf(item) !== -1)
+);
+
+export { getDate, getOverlapped }; // eslint-disable-line import/prefer-default-export

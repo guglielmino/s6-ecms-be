@@ -51,13 +51,56 @@ describe('Alerts API endpoints', () => {
       );
 
     request
-      .get('/api/alerts/samplegw')
+      .get('/api/alerts/?gw=samplegw')
       .expect(200, (err, res) => {
         if (err) {
           done(err);
         } else {
           stub.calledWith(['samplegw'])
             .should.be.true;
+          done();
+        }
+      });
+  });
+
+  it('should get alerts for some gateways', (done) => {
+    Alerts(app, FakeAuthMiddleware(['samplegw', 'testgw']), null, { alertProvider });
+    const stub = sinon.stub(alertProvider, 'getAlerts')
+      .returns(Promise.resolve([{
+          gateway: 'samplegw',
+          date: new Date(),
+          deviceId: '00:11:22:33:44:55:66',
+          message: 'an alert',
+          read: false,
+          id: '58c7b3e46b835bf90cfdffeb',
+        }]),
+      );
+
+    request
+      .get('/api/alerts/?gw=samplegw&gw=testgw')
+      .expect(200, (err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          stub.calledWith(['samplegw', 'testgw'])
+            .should.be.true;
+          done();
+        }
+      });
+  });
+
+  it('should responds 204 for not owned gateways', (done) => {
+    Alerts(app, FakeAuthMiddleware(['samplegw', 'testgw']), null, { alertProvider });
+    const stub = sinon.stub(alertProvider, 'getAlerts')
+      .returns(Promise.resolve([]),
+      );
+
+    request
+      .get('/api/alerts/?gw=first&gw=second')
+      .expect(204, (err, res) => {
+        if (err) {
+          done(err);
+        } else {
           done();
         }
       });

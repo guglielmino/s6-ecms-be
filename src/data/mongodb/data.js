@@ -85,7 +85,9 @@ const DataProvider = ({ db, collectionName }) => ({
       });
     });
   },
+});
 
+const QueryDataProvider = ({ db, collectionName }) => ({
   getById(id) {
     return new Promise((resolve, reject) => {
       db.collection(collectionName, (err, col) => {
@@ -144,8 +146,8 @@ const DataProvider = ({ db, collectionName }) => ({
   },
 });
 
-
 export {
   Database,
   DataProvider,
+  QueryDataProvider,
 };
