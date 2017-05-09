@@ -42,8 +42,6 @@ export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
   /**
    * @swagger
    * /api/devices:
-   *   parameters:
-   *     - $ref: '#/parameters/gw'
    *   get:
    *     tags:
    *      - Devices
@@ -81,6 +79,44 @@ export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
 
   /**
    * @swagger
+   * /api/devices/{deviceId}:
+   *   parameters:
+   *     - $ref: '#/parameters/deviceId'
+   *   get:
+   *     tags:
+   *      - Devices
+   *     description: Return the requested device
+   *     produces:
+   *      - application/json
+   *     responses:
+   *       200:
+   *         description: alerts
+   *         schema:
+   *           $ref: '#/definitions/Device'
+   */
+  router.get('/:deviceId', [AuthCheck()], (req, res) => {
+    const ownedGws = req.user.app_metadata.gateways;
+    const reqGateways = req.query.gw;
+
+    const gws = getOverlapped(ownedGws, reqGateways);
+
+    deviceProvider
+      .getDevices(gws)
+      .then((stat) => {
+        if (stat.length === 0) {
+          res.sendStatus(204);
+        } else {
+          res.json(stat.map(e => transformDevice(e)));
+        }
+      })
+      .catch((err) => {
+        logger.log('error', err);
+        res.sendStatus(500);
+      });
+  });
+
+  /**
+   * @swagger
    * definitions:
    *   PowerPayload:
    *     properties:
@@ -91,9 +127,8 @@ export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
 
   /**
    * @swagger
-   * /api/devices/{gateway}/{deviceId}/power:
+   * /api/devices/{deviceId}/command:
    *   parameters:
-   *     - $ref: '#/parameters/gateway'
    *     - $ref: '#/parameters/deviceId'
    *     - name: state
    *       in: body
