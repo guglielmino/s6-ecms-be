@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { DataProvider, QueryDataProvider } from '../data';
+import { DataProvider, InternalDataProvider } from '../data';
 
 export default function (database) {
   const params = {
@@ -8,7 +8,7 @@ export default function (database) {
   };
 
   const dataProvider = DataProvider(params);
-  const queryDataProvider = QueryDataProvider(params);
+  const queryDataProvider = InternalDataProvider(params);
 
   const AlertsProvider = () => ({
 

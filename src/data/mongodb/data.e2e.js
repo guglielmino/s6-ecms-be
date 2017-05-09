@@ -2,7 +2,7 @@ import chai from 'chai';
 import sinon from 'sinon';
 
 import ConnectDb from './test_helper';
-import { DataProvider, QueryDataProvider } from './data';
+import { DataProvider, InternalDataProvider } from './data';
 
 chai.should();
 const expect = chai.expect;
@@ -27,7 +27,7 @@ describe('data', () => {
     let queryDataProvider;
 
     beforeEach(() => {
-      queryDataProvider = QueryDataProvider({ db, collectionName: 'test_collection' });
+      queryDataProvider = InternalDataProvider({ db, collectionName: 'test_collection' });
       subject = DataProvider({ db, collectionName: 'test_collection' });
     });
 
@@ -81,7 +81,7 @@ describe('data', () => {
 
     beforeEach(() => {
       genericProvider = DataProvider({ db, collectionName: 'test_collection' });
-      subject = QueryDataProvider({ db, collectionName: 'test_collection' });
+      subject = InternalDataProvider({ db, collectionName: 'test_collection' });
     });
 
     it('Should get a document by id', (done) => {
