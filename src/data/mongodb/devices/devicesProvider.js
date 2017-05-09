@@ -23,9 +23,9 @@ export default function (database) {
         },
       });
     },
-    getById(deviceId) {
+    getById(entityId) {
       return queryDataProvider.getOne({
-        _id: deviceId,
+        _id: entityId,
       });
     },
 
