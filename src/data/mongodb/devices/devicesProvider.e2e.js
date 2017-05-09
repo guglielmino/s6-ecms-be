@@ -140,9 +140,9 @@ describe('devicesProvider', () => {
       created: new Date(),
     })
       .then(res => subject.getById(res.id))
-      .then((res) => {
-        res.name.should.be.eq('sample');
-        res.deviceId.be.eq('12:34:55:6a:d1:ea');
+      .then((device) => {
+        device.name.should.be.eq('sample');
+        device.deviceId.should.be.eq('12:34:55:6a:d1:ea');
         done();
       })
       .catch(err => done(err));
