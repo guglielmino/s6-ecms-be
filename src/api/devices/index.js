@@ -2,7 +2,6 @@ import express from 'express';
 import emitter from '../../streams/emitter';
 import logger from '../../common/logger';
 import { transformDevice } from './deviceTransformer';
-import * as consts from '../../../consts';
 import { getOverlapped } from '../api-utils';
 
 export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
@@ -108,12 +107,11 @@ export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
    *       200:
    *         description: done
    */
-  router.post('/:gateway/:device/power', [], (req, res) => {
-    const reqGateway = req.params.gateway;
+  router.post('/:device/command', [], (req, res) => {
     const reqDevice = req.params.device;
 
     try {
-      emitter.emit('event', { ...req.body, gateway: reqGateway, deviceId: reqDevice, type: consts.APPEVENT_TYPE_POWER });
+      emitter.emit('event', { ...req.body, deviceId: reqDevice });
       res.sendStatus(200);
     } catch (e) {
       logger.log('error', e);

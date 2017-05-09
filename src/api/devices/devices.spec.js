@@ -66,5 +66,8 @@ describe('Devices API endpoints', () => {
       });
   });
 
+  it('should process device command', (done) => {
+    done();
+  });
 
 });
