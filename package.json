@@ -58,6 +58,8 @@
     "dotenv": "^2.0.0",
     "express": "^4.14.0",
     "express-jwt": "^5.1.0",
+    "express-validation": "^1.0.2",
+    "joi": "^10.4.1",
     "lodash": "^4.17.4",
     "mongodb": "^2.2.20",
     "pubnub": "^4.3.3",
