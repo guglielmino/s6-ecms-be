@@ -96,17 +96,15 @@ export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
    */
   router.get('/:deviceId', [AuthCheck()], (req, res) => {
     const ownedGws = req.user.app_metadata.gateways;
-    const reqGateways = req.query.gw;
-
-    const gws = getOverlapped(ownedGws, reqGateways);
+    const deviceId = req.query.deviceId;
 
     deviceProvider
-      .getDevices(gws)
-      .then((stat) => {
-        if (stat.length === 0) {
-          res.sendStatus(204);
+      .findByDeviceId(deviceId)
+      .then((dev) => {
+        if (ownedGws.indexOf(dev.gateway) === -1) {
+          res.sendStatus(403);
         } else {
-          res.json(stat.map(e => transformDevice(e)));
+          res.json(transformDevice(dev));
         }
       })
       .catch((err) => {
@@ -151,7 +149,7 @@ export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
     const ownedGws = req.user.app_metadata.gateways;
 
     if (ownedGws.indexOf(req.body.gateway) === -1) {
-      res.sendStatus(401);
+      res.sendStatus(403);
       return;
     }
 

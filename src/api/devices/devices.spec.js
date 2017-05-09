@@ -52,6 +52,7 @@ describe('Devices API endpoints', () => {
     const getDevicesStub = sinon.stub(deviceProvider, "getDevices")
       .returns(Promise.resolve([{
           name: 'Sample',
+          gateway: 'samplegw',
           deviceId: '00:11:22:33:44:55',
           deviceType: 'Sonoff Pow Module',
           swVersion: '1.0',
@@ -125,13 +126,66 @@ describe('Devices API endpoints', () => {
       });
   });
 
-  it('should get 401 for gateway not owned by user', (done) => {
+  it('should get 403 for gateway not owned by user', (done) => {
     Devices(app, FakeAuthMiddleware(['samplegw']), null, { deviceProvider });
 
     request
       .post('/api/devices/11:22:33:44:55:66/command')
       .send({ command: 'AE_POWER_STATE', gateway: 'XYZ', param: 'on' })
-      .expect(401, (err) => {
+      .expect(403, (err) => {
+        if (err) {
+          done(err);
+        } else {
+          done();
+        }
+      });
+  });
+
+  it('should get device data by deviceId', (done) => {
+    const getDeviceStub = sinon.stub(deviceProvider, 'findByDeviceId')
+      .returns(Promise.resolve({
+          name: 'Sample',
+          gateway: 'samplegw',
+          deviceId: '11:22:33:44:55:66',
+          deviceType: 'Sonoff Pow Module',
+          swVersion: '1.0',
+        }),
+      );
+
+    Devices(app, FakeAuthMiddleware(['samplegw']), null, { deviceProvider });
+
+    request
+      .get('/api/devices/11:22:33:44:55:66')
+      .expect(200, (err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          const response = res.body;
+          response.deviceId.should.be.eq('11:22:33:44:55:66');
+          response.name.should.be.eq('Sample');
+          response.type.should.be.eq('Sonoff Pow Module');
+          response.version.should.be.eq('1.0');
+          done();
+        }
+      });
+  });
+
+  it('should return 403 when device\'s gateway doesn\'t match user gateways' , (done) => {
+    const getDeviceStub = sinon.stub(deviceProvider, 'findByDeviceId')
+      .returns(Promise.resolve({
+          name: 'Sample',
+          gateway: 'testgw',
+          deviceId: '11:22:33:44:55:66',
+          deviceType: 'Sonoff Pow Module',
+          swVersion: '1.0',
+        }),
+      );
+
+    Devices(app, FakeAuthMiddleware(['samplegw']), null, { deviceProvider });
+
+    request
+      .get('/api/devices/11:22:33:44:55:66')
+      .expect(403, (err, res) => {
         if (err) {
           done(err);
         } else {
