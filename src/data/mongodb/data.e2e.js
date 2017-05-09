@@ -75,7 +75,7 @@ describe('data', () => {
     });
   });
 
-  context('Query Data Provider', () => {
+  context('Internal Data Provider', () => {
     let subject;
     let genericProvider;
 
@@ -107,5 +107,24 @@ describe('data', () => {
         })
         .catch(err => done(err));
     });
+
+    it('Should delete a document matching passed query', (done) => {
+      genericProvider
+        .add({
+          name: 'Phil',
+          age: 23,
+        })
+        .then(res => subject.deleteOne({ age: 23 }))
+        .then(obj => {
+          obj.should.be.true;
+          return subject.getOne({ age: 23 });
+        })
+        .then(device => {
+          expect(device).to.be.null;
+          done();
+        })
+        .catch(err => done(err));
+    });
+
   });
 });

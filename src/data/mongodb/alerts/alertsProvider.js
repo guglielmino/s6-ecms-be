@@ -30,6 +30,14 @@ export default function (database) {
 
       return queryDataProvider.getOne({ _id });
     },
+    deleteById(alertId) {
+      let _id = alertId; // eslint-disable-line no-underscore-dangle
+      if (typeof alertId === 'string' || alertId instanceof String) {
+        _id = ObjectId(alertId);
+      }
+
+      return queryDataProvider.deleteOne({ _id });
+    },
   });
 
 

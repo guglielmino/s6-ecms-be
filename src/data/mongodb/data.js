@@ -144,6 +144,25 @@ const InternalDataProvider = ({ db, collectionName }) => ({
       });
     });
   },
+
+  deleteOne(query) {
+    return new Promise((resolve, reject) => {
+      db.collection(collectionName, (err, col) => {
+        if (err) {
+          reject(err);
+        }
+
+        col.deleteOne(query,
+          (error, resp) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(resp.deletedCount === 1);
+            }
+          });
+      });
+    });
+  },
 });
 
 export {
