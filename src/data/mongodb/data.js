@@ -145,6 +145,25 @@ const InternalDataProvider = ({ db, collectionName }) => ({
     });
   },
 
+  aggregate(query) {
+    return new Promise((resolve, reject) => {
+      db.collection(collectionName, (err, col) => {
+        if (err) {
+          reject(err);
+        }
+
+        col.aggregate(query,
+          (error, obj) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(obj);
+            }
+          });
+      });
+    });
+  },
+
   deleteOne(query) {
     return new Promise((resolve, reject) => {
       db.collection(collectionName, (err, col) => {

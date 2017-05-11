@@ -38,6 +38,22 @@ export default function (database) {
 
       return queryDataProvider.deleteOne({ _id });
     },
+
+    getLastAlertByKey(alertKey) {
+      return queryDataProvider.aggregate(
+        [
+          { $sort: { lastUpdate: -1 } },
+          { $match: { key: alertKey } },
+          { $limit: 1 },
+        ])
+        .then((results) => {
+          let alert = null;
+          if (results && results.length === 1) {
+            alert = results[0];
+          }
+          return Promise.resolve(alert);
+        });
+    },
   });
 
 

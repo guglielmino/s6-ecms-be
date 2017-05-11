@@ -71,6 +71,39 @@ describe('alertsProvider', () => {
         done();
       })
       .catch(err => done(err));
+  });
 
+  it('should return last alert', (done) => {
+    const date = new Date();
+    subject = AlertsProvider(db);
+    subject
+      .add({
+        gateway: 'SampleGw',
+        date: new Date(),
+        lastUpdate: date,
+        deviceId: 'f1-33-d2-25-3b-6c',
+        key: 'akey',
+        message: 'Lamp could be broken, power is 0 while state is on',
+        read: 0,
+      })
+      .then(() => {
+        date.setHours(date.getHours() + 3);
+        return subject.add({
+          gateway: 'SampleGw',
+          date: new Date(),
+          lastUpdate: date,
+          deviceId: '00:00:00:00:00:00',
+          key: 'akey',
+          message: 'Lamp could be broken, power is 0 while state is on',
+          read: 0,
+        });
+      })
+      .then(() => subject.getLastAlertByKey('akey'))
+      .then((result) => {
+        result.deviceId.should.eq('00:00:00:00:00:00');
+        done();
+
+      })
+      .catch(err => done(err));
   });
 });
