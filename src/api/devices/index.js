@@ -96,11 +96,15 @@ export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
    */
   router.get('/:deviceId', [AuthCheck()], (req, res) => {
     const ownedGws = req.user.app_metadata.gateways;
-    const deviceId = req.query.deviceId;
+    const deviceId = req.params.deviceId;
 
     deviceProvider
       .findByDeviceId(deviceId)
       .then((dev) => {
+        if (!dev) {
+          res.sendStatus(404);
+          return;
+        }
         if (ownedGws.indexOf(dev.gateway) === -1) {
           res.sendStatus(403);
         } else {
