@@ -1,4 +1,4 @@
-import { DataProvider, QueryDataProvider } from '../data';
+import { DataProvider, InternalDataProvider } from '../data';
 
 export default function (database) {
   const params = {
@@ -7,7 +7,7 @@ export default function (database) {
   };
 
   const dataProvider = DataProvider(params);
-  const queryDataProvider = QueryDataProvider(params);
+  const queryDataProvider = InternalDataProvider(params);
 
   dataProvider.createIndex('deviceId');
 
@@ -23,9 +23,9 @@ export default function (database) {
         },
       });
     },
-    getById(deviceId) {
+    getById(entityId) {
       return queryDataProvider.getOne({
-        _id: deviceId,
+        _id: entityId,
       });
     },
 

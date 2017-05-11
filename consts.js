@@ -10,7 +10,8 @@ export const EVENTS_TYPES = [EVENT_TYPE_ENERGY, EVENT_TYPE_INFO, EVENT_POWER_STA
 export const PUBNUB_EVENTS_CHANNEL = 'events';
 
 /**
- * Message types for messages coming from inside the application (API call, events, ...)
+ * Message types for messages coming from inside the application
+ * or client SPA (API call, events, ...)
  */
 export const APPEVENT_TYPE_POWER = 'AE_POWER_STATE';
 export const APPEVENT_TYPE_POWER_ALERT = 'AE_POWER_ALERT';

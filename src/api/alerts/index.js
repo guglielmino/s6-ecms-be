@@ -89,6 +89,43 @@ export default function (app, AuthCheck, RoleCheck, { alertProvider }) {
       });
   });
 
+
+  /**
+   * @swagger
+   * /api/alerts/{alertId}:
+   *   parameters:
+   *     - $ref: '#/parameters/alertId'
+   *   delete:
+   *     tags:
+   *      - Alerts
+   *     description: Delete alert identified by passed id
+   *     produces:
+   *      - application/json
+   *     responses:
+   *       200:
+   *         description: Ok
+   */
+  router.delete('/:alertId', [AuthCheck()], (req, res) => {
+    const ownedGws = req.user.app_metadata.gateways;
+    const alertId = req.query.alertId;
+
+    alertProvider
+      .getAlertById(alertId)
+      .then((alert) => {
+        if (ownedGws.indexOf(alert.gateway) === -1) {
+          return Promise.resolve(false);
+        }
+
+        return alertProvider
+            .deleteById(alert._id); // eslint-disable-line no-underscore-dangle
+      })
+      .then(deleted => res.sendStatus(deleted ? 200 : 403))
+      .catch((err) => {
+        logger.log('error', err);
+        res.sendStatus(500);
+      });
+  });
+
   /**
    * @swagger
    * /api/alerts/{alertId}/read:

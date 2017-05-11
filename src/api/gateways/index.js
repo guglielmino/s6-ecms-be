@@ -44,9 +44,7 @@ export default function (app, AuthCheck, RoleCheck, { gatewayProvider }) {
    *       200:
    *         description: alerts
    *         schema:
-   *           type: array
-   *           items:
-   *             $ref: '#/definitions/Gateway'
+   *           $ref: '#/definitions/Gateway'
    */
   router.get('/:gateway', [AuthCheck()], (req, res) => {
     const gateways = req.user.app_metadata.gateways;

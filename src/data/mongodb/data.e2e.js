@@ -2,7 +2,7 @@ import chai from 'chai';
 import sinon from 'sinon';
 
 import ConnectDb from './test_helper';
-import { DataProvider, QueryDataProvider } from './data';
+import { DataProvider, InternalDataProvider } from './data';
 
 chai.should();
 const expect = chai.expect;
@@ -27,7 +27,7 @@ describe('data', () => {
     let queryDataProvider;
 
     beforeEach(() => {
-      queryDataProvider = QueryDataProvider({ db, collectionName: 'test_collection' });
+      queryDataProvider = InternalDataProvider({ db, collectionName: 'test_collection' });
       subject = DataProvider({ db, collectionName: 'test_collection' });
     });
 
@@ -75,13 +75,13 @@ describe('data', () => {
     });
   });
 
-  context('Query Data Provider', () => {
+  context('Internal Data Provider', () => {
     let subject;
     let genericProvider;
 
     beforeEach(() => {
       genericProvider = DataProvider({ db, collectionName: 'test_collection' });
-      subject = QueryDataProvider({ db, collectionName: 'test_collection' });
+      subject = InternalDataProvider({ db, collectionName: 'test_collection' });
     });
 
     it('Should get a document by id', (done) => {
@@ -107,5 +107,24 @@ describe('data', () => {
         })
         .catch(err => done(err));
     });
+
+    it('Should delete a document matching passed query', (done) => {
+      genericProvider
+        .add({
+          name: 'Phil',
+          age: 23,
+        })
+        .then(res => subject.deleteOne({ age: 23 }))
+        .then(obj => {
+          obj.should.be.true;
+          return subject.getOne({ age: 23 });
+        })
+        .then(device => {
+          expect(device).to.be.null;
+          done();
+        })
+        .catch(err => done(err));
+    });
+
   });
 });

@@ -125,5 +125,28 @@ describe('devicesProvider', () => {
       .catch(err => done(err));
   });
 
+  it('should get device by entity id', (done) => {
+    subject = DevicesProvider(db);
+
+    subject.add({
+      gateway: 'samplegw',
+      swVersion: '1.2.3',
+      deviceType: 'Sonoff Pow Module',
+      deviceId: '12:34:55:6a:d1:ea',
+      name: 'sample',
+      commands: {
+        power: 'mqtt:cmnd/sonoff/POWER',
+      },
+      created: new Date(),
+    })
+      .then(res => subject.getById(res.id))
+      .then((device) => {
+        device.name.should.be.eq('sample');
+        device.deviceId.should.be.eq('12:34:55:6a:d1:ea');
+        done();
+      })
+      .catch(err => done(err));
+  });
+
 
 });

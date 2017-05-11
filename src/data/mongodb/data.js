@@ -87,7 +87,7 @@ const DataProvider = ({ db, collectionName }) => ({
   },
 });
 
-const QueryDataProvider = ({ db, collectionName }) => ({
+const InternalDataProvider = ({ db, collectionName }) => ({
   getById(id) {
     return new Promise((resolve, reject) => {
       db.collection(collectionName, (err, col) => {
@@ -144,10 +144,48 @@ const QueryDataProvider = ({ db, collectionName }) => ({
       });
     });
   },
+
+  aggregate(query) {
+    return new Promise((resolve, reject) => {
+      db.collection(collectionName, (err, col) => {
+        if (err) {
+          reject(err);
+        }
+
+        col.aggregate(query,
+          (error, obj) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(obj);
+            }
+          });
+      });
+    });
+  },
+
+  deleteOne(query) {
+    return new Promise((resolve, reject) => {
+      db.collection(collectionName, (err, col) => {
+        if (err) {
+          reject(err);
+        }
+
+        col.deleteOne(query,
+          (error, resp) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(resp.deletedCount === 1);
+            }
+          });
+      });
+    });
+  },
 });
 
 export {
   Database,
   DataProvider,
-  QueryDataProvider,
+  InternalDataProvider,
 };

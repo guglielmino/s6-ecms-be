@@ -73,7 +73,7 @@ const BootstapEventsChain = (providers, pnub, socket) => {
   });
 
   eventsChain.add({
-    predicate: msg => msg.type === consts.APPEVENT_TYPE_POWER_ALERT,
+    predicate: msg => msg.command === consts.APPEVENT_TYPE_POWER_ALERT,
     fn: msg => powerStateAlertCreator.process(msg),
   });
 

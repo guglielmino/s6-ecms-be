@@ -1,9 +1,12 @@
 import express from 'express';
+import validate from 'express-validation';
 import emitter from '../../streams/emitter';
 import logger from '../../common/logger';
+
 import { transformDevice } from './deviceTransformer';
-import * as consts from '../../../consts';
 import { getOverlapped } from '../api-utils';
+
+import deviceCommandValidator from './device.command.validation';
 
 export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
   const router = express.Router();
@@ -39,8 +42,6 @@ export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
   /**
    * @swagger
    * /api/devices:
-   *   parameters:
-   *     - $ref: '#/parameters/gw'
    *   get:
    *     tags:
    *      - Devices
@@ -78,6 +79,42 @@ export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
 
   /**
    * @swagger
+   * /api/devices/{deviceId}:
+   *   parameters:
+   *     - $ref: '#/parameters/deviceId'
+   *   get:
+   *     tags:
+   *      - Devices
+   *     description: Return the requested device
+   *     produces:
+   *      - application/json
+   *     responses:
+   *       200:
+   *         description: alerts
+   *         schema:
+   *           $ref: '#/definitions/Device'
+   */
+  router.get('/:deviceId', [AuthCheck()], (req, res) => {
+    const ownedGws = req.user.app_metadata.gateways;
+    const deviceId = req.query.deviceId;
+
+    deviceProvider
+      .findByDeviceId(deviceId)
+      .then((dev) => {
+        if (ownedGws.indexOf(dev.gateway) === -1) {
+          res.sendStatus(403);
+        } else {
+          res.json(transformDevice(dev));
+        }
+      })
+      .catch((err) => {
+        logger.log('error', err);
+        res.sendStatus(500);
+      });
+  });
+
+  /**
+   * @swagger
    * definitions:
    *   PowerPayload:
    *     properties:
@@ -88,9 +125,8 @@ export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
 
   /**
    * @swagger
-   * /api/devices/{gateway}/{deviceId}/power:
+   * /api/devices/{deviceId}/command:
    *   parameters:
-   *     - $ref: '#/parameters/gateway'
    *     - $ref: '#/parameters/deviceId'
    *     - name: state
    *       in: body
@@ -108,16 +144,20 @@ export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
    *       200:
    *         description: done
    */
-  router.post('/:gateway/:device/power', [], (req, res) => {
-    const reqGateway = req.params.gateway;
-    const reqDevice = req.params.device;
+  router.post('/:deviceId/command', [AuthCheck(), validate(deviceCommandValidator)], (req, res) => {
+    const reqDevice = req.params.deviceId;
+    const ownedGws = req.user.app_metadata.gateways;
+
+    if (ownedGws.indexOf(req.body.gateway) === -1) {
+      res.sendStatus(403);
+      return;
+    }
 
     try {
-      emitter.emit('event', { ...req.body, gateway: reqGateway, deviceId: reqDevice, type: consts.APPEVENT_TYPE_POWER });
+      emitter.emit('event', { ...req.body, deviceId: reqDevice });
       res.sendStatus(200);
     } catch (e) {
-      logger.log('error', e);
-      res.sendStatus(500);
+      res.sendStatus(500, e);
     }
   });
 

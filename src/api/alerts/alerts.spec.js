@@ -134,4 +134,55 @@ describe('Alerts API endpoints', () => {
         }
       });
   });
+
+  it('should delete alert identifyed by id', (done) => {
+    const stubGet = sinon.stub( alertProvider, 'getAlertById')
+      .returns(Promise.resolve({
+        gateway: 'samplegw',
+        date: new Date(),
+        deviceId: '00:11:22:33:44:55:66',
+        message: 'an alert',
+        read: false,
+        id: '58c7b3e46b835bf90cfdffeb',
+      }));
+
+    const stubDelete = sinon.stub(alertProvider, 'deleteById').returns(true);
+
+    Alerts(app, FakeAuthMiddleware(['samplegw']), null, { alertProvider });
+
+    request
+      .delete('/api/alerts/58c7b3e46b835bf90cfdffeb')
+      .expect(200, (err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          expect(stubDelete.calledWith('58c7b3e46b835bf90cfdffeb'));
+          done();
+        }
+      });
+  });
+
+  it('should return 403 trying to delete an alert of a wrong gateway', (done) => {
+    const stubGet = sinon.stub( alertProvider, 'getAlertById')
+      .returns(Promise.resolve({
+        gateway: 'test',
+        date: new Date(),
+        deviceId: '00:11:22:33:44:55:66',
+        message: 'an alert',
+        read: false,
+        id: '58c7b3e46b835bf90cfdffeb',
+      }));
+
+    Alerts(app, FakeAuthMiddleware(['samplegw']), null, { alertProvider });
+
+    request
+      .delete('/api/alerts/58c7b3e46b835bf90cfdffeb')
+      .expect(403, (err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          done();
+        }
+      });
+  });
 });
