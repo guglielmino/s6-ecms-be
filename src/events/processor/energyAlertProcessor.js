@@ -1,6 +1,6 @@
 import logger from '../../common/logger';
-import { WS_DEVICE_ALARM } from './socketConsts';
-import { ALERT_CRITICAL } from '../../common/alertConsts';
+import {WS_DEVICE_ALARM} from './socketConsts';
+import {ALERT_CRITICAL} from '../../common/alertConsts';
 
 // When same alert (same device and gateway) is received in less than
 // ALERT_DELAY_SEC old alert is updated. Else a new one is created
@@ -55,21 +55,25 @@ const EnergyAlertProcessor = (providers, socket) => {
       if (event.Payload.Power === 0) {
         getDevice(event.Payload.DeviceId)
           .then((device) => {
-            if (device.status && device.status.power === 'on') {
-              const alertKey = makeAlertKey(device);
+            if (device) {
+              if (device.status && device.status.power === 'on') {
+                const alertKey = makeAlertKey(device);
 
-              getAlert(alertKey)
-                .then((alert) => {
-                  let alarmObj = null;
-                  if (needsNewAlert(alert, new Date(), ALERT_DELAY_SEC)) {
-                    alarmObj = createAlert(event, device, alertKey);
-                  } else {
-                    alarmObj = Object.assign(alarmObj, { lastUpdate: new Date() });
-                  }
+                getAlert(alertKey)
+                  .then((alert) => {
+                    let alarmObj = null;
+                    if (needsNewAlert(alert, new Date(), ALERT_DELAY_SEC)) {
+                      alarmObj = createAlert(event, device, alertKey);
+                    } else {
+                      alarmObj = Object.assign(alarmObj, { lastUpdate: new Date() });
+                    }
 
-                  providers.alertProvider.update(alarmObj);
-                  socket.emit(event.GatewayId, WS_DEVICE_ALARM, alarmObj);
-                });
+                    providers.alertProvider.update(alarmObj);
+                    socket.emit(event.GatewayId, WS_DEVICE_ALARM, alarmObj);
+                  });
+              }
+            } else {
+              logger.log('error', `Energy event for unknown device : ${JSON.stringify(event)}`);
             }
           })
           .catch(err => logger.log('error', err));
@@ -80,4 +84,4 @@ const EnergyAlertProcessor = (providers, socket) => {
 
 export default EnergyAlertProcessor;
 // Note: exported for testing, using a build tool could be exported only when running tests
-export { needsNewAlert, makeAlertKey };
+export {needsNewAlert, makeAlertKey};
