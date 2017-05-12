@@ -63,17 +63,17 @@ const BootstapEventsChain = (providers, pnub, socket) => {
 
   /* -- Power command  processing -- */
   eventsChain.add({
-    predicate: msg => msg.type === consts.APPEVENT_TYPE_POWER,
+    predicate: msg => msg.command === consts.APPEVENT_TYPE_POWER,
     fn: msg => powerStateProcessor.process(msg),
   });
 
   eventsChain.add({
-    predicate: msg => msg.type === consts.APPEVENT_TYPE_POWER,
+    predicate: msg => msg.command === consts.APPEVENT_TYPE_POWER,
     fn: msg => powerStateAlertProcessor.process(msg),
   });
 
   eventsChain.add({
-    predicate: msg => msg.command === consts.APPEVENT_TYPE_POWER,
+    predicate: msg => msg.type === consts.APPEVENT_TYPE_POWER_ALERT,
     fn: msg => powerStateAlertCreator.process(msg),
   });
 

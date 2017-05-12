@@ -1,10 +1,11 @@
-<a name="1.5.0"></a>
-# 1.5.0 (2017-05-12)
+<a name="1.6.0"></a>
+# 1.6.0 (2017-05-12)
 
 
 ### Bug Fixes
 
 * Add log for device null in energy processor ([25ec4ef](https://gitlab.com/smart-office-iot/iot-project-server/commit/25ec4ef))
+* Fix device command handling after paylod change ([9b4610c](https://gitlab.com/smart-office-iot/iot-project-server/commit/9b4610c))
 * Fix event API read feedback ([c89fffc](https://gitlab.com/smart-office-iot/iot-project-server/commit/c89fffc))
 * Fix get alert in update read status endpoint ([612d7ba](https://gitlab.com/smart-office-iot/iot-project-server/commit/612d7ba))
 * Fix get of nonexistent device and read of device id from path ([07c7f16](https://gitlab.com/smart-office-iot/iot-project-server/commit/07c7f16))
