@@ -160,12 +160,33 @@ describe('Devices API endpoints', () => {
         if (err) {
           done(err);
         } else {
+          getDeviceStub.calledWith('11:22:33:44:55:66')
+            .should.be.true;
+
           const response = res.body;
           response.deviceId.should.be.eq('11:22:33:44:55:66');
           response.name.should.be.eq('Sample');
           response.type.should.be.eq('Sonoff Pow Module');
           response.version.should.be.eq('1.0');
           done();
+        }
+      });
+  });
+
+  it('should get 404 when device doesn\'t exists', (done) => {
+    sinon.stub(deviceProvider, 'findByDeviceId')
+      .returns(Promise.resolve(null),
+      );
+
+    Devices(app, FakeAuthMiddleware(['samplegw']), null, { deviceProvider });
+
+    request
+      .get('/api/devices/11:22:33:44:55:66')
+      .expect(404, (err, res) => {
+        if (err) {
+          done(err);
+        } else {
+           done();
         }
       });
   });

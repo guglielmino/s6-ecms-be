@@ -55,21 +55,25 @@ const EnergyAlertProcessor = (providers, socket) => {
       if (event.Payload.Power === 0) {
         getDevice(event.Payload.DeviceId)
           .then((device) => {
-            if (device.status && device.status.power === 'on') {
-              const alertKey = makeAlertKey(device);
+            if (device) {
+              if (device.status && device.status.power === 'on') {
+                const alertKey = makeAlertKey(device);
 
-              getAlert(alertKey)
-                .then((alert) => {
-                  let alarmObj = null;
-                  if (needsNewAlert(alert, new Date(), ALERT_DELAY_SEC)) {
-                    alarmObj = createAlert(event, device, alertKey);
-                  } else {
-                    alarmObj = Object.assign(alarmObj, { lastUpdate: new Date() });
-                  }
+                getAlert(alertKey)
+                  .then((alert) => {
+                    let alarmObj = null;
+                    if (needsNewAlert(alert, new Date(), ALERT_DELAY_SEC)) {
+                      alarmObj = createAlert(event, device, alertKey);
+                    } else {
+                      alarmObj = Object.assign(alarmObj, { lastUpdate: new Date() });
+                    }
 
-                  providers.alertProvider.update(alarmObj);
-                  socket.emit(event.GatewayId, WS_DEVICE_ALARM, alarmObj);
-                });
+                    providers.alertProvider.update(alarmObj);
+                    socket.emit(event.GatewayId, WS_DEVICE_ALARM, alarmObj);
+                  });
+              }
+            } else {
+              logger.log('error', `Energy event for unknown device : ${JSON.stringify(event)}`);
             }
           })
           .catch(err => logger.log('error', err));

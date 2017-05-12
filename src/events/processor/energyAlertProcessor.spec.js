@@ -126,7 +126,6 @@ describe('EnergyAlertProcessor', () => {
 
       subject.process(event);
     });
-
   });
 
   context('needsNewAlert', () => {
