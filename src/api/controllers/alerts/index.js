@@ -1,7 +1,7 @@
 import express from 'express';
 import { transformAlert } from './alertTransformer';
-import logger from '../../common/logger';
-import { getOverlapped } from '../api-utils';
+import logger from '../../../common/logger';
+import { getOverlapped } from '../../api-utils';
 
 export default function (app, AuthCheck, RoleCheck, { alertProvider }) {
   const router = express.Router();

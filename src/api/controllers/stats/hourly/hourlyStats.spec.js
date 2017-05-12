@@ -5,10 +5,10 @@ import supertest from 'supertest';
 import express from 'express';
 import mockery from "mockery";
 
-import { FakeAuthMiddleware } from '../../test-helper';
+import { FakeAuthMiddleware } from '../../../test-helper';
 import HourlyStats from './';
 
-import { HourlyStatsProvider } from '../../../data/mongodb';
+import { HourlyStatsProvider } from '../../../../data/mongodb';
 
 chai.should();
 const expect = chai.expect;

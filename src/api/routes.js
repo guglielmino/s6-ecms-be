@@ -2,12 +2,12 @@ import config from '../config';
 import JwtCheck from './middleware/auth-check-middleware';
 import RoleCheck from './middleware/roles-middleware';
 
-import Events from './events';
-import HourlyStats from './stats/hourly';
-import DailyStats from './stats/daily';
-import Gateways from './gateways';
-import Devices from './devices';
-import Alerts from './alerts';
+import Events from './controllers/events';
+import HourlyStats from './controllers/stats/hourly';
+import DailyStats from './controllers/stats/daily';
+import Gateways from './controllers/gateways';
+import Devices from './controllers/devices';
+import Alerts from './controllers/alerts';
 
 module.exports = (app, providers) => {
   const AuthCheck = JwtCheck(config.auth0);

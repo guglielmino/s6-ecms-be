@@ -1,7 +1,7 @@
 import express from 'express';
 
-import emitter from '../../streams/emitter';
-import logger from '../../common/logger';
+import emitter from '../../../streams/emitter';
+import logger from '../../../common/logger';
 
 /* eslint-disable no-unused-vars */
 export default function (app, AuthCheck, RoleCheck, { eventProvider }) {

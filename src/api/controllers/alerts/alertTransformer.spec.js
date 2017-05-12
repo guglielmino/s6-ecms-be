@@ -4,7 +4,7 @@
 import chai from 'chai';
 import sinon from 'sinon';
 
-import { ALERT_CRITICAL, ALERT_INFO } from '../../common/alertConsts';
+import { ALERT_CRITICAL, ALERT_INFO } from '../../../common/alertConsts';
 import { transformAlert } from './alertTransformer';
 
 describe('alert transformer', () => {

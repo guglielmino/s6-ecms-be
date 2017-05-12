@@ -1,5 +1,5 @@
 import express from 'express';
-import logger from '../../common/logger';
+import logger from '../../../common/logger';
 import { transformGateway } from './gatewayTransformer';
 
 export default function (app, AuthCheck, RoleCheck, { gatewayProvider }) {

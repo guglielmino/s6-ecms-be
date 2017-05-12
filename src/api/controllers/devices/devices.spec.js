@@ -5,9 +5,9 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import mockery from 'mockery';
 
-import { FakeAuthMiddleware } from '../test-helper';
+import { FakeAuthMiddleware } from '../../test-helper';
 
-import { DevicesProvider } from '../../data/mongodb';
+import { DevicesProvider } from '../../../data/mongodb';
 
 chai.should();
 const expect = chai.expect;
@@ -28,7 +28,7 @@ describe('Devices API endpoints', () => {
     mockery.registerAllowable('./index');
     mockery.registerMock('../../common/logger', { log: () => {} });
     emitter = { emit: sinon.spy() };
-    mockery.registerMock('../../streams/emitter', emitter);
+    mockery.registerMock('../../../streams/emitter', emitter);
 
     Devices = require('./index').default;
   });

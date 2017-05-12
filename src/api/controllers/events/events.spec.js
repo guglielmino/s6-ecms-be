@@ -4,10 +4,10 @@ import sinon from 'sinon';
 import supertest from 'supertest';
 import express from 'express';
 
-import { FakeAuthMiddleware } from '../test-helper';
+import { FakeAuthMiddleware } from '../../test-helper';
 import Events from './';
 
-import { EventsProvider } from '../../data/mongodb';
+import { EventsProvider } from '../../../data/mongodb';
 
 chai.should();
 const expect = chai.expect;
