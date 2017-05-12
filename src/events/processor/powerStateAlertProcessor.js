@@ -14,7 +14,7 @@ const PowerStateAlertProcessor = () => ({
         type: consts.APPEVENT_TYPE_POWER_ALERT,
         gateway: event.gateway,
         deviceId: event.deviceId,
-        requestStatus: event.state,
+        requestStatus: event.param,
       },
       700);
   },

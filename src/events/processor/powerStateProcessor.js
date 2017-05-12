@@ -21,7 +21,7 @@ const PowerStateProcessor = (providers, pnub) => ({
             type: 'MQTT',
             payload: {
               topic: dev.commands.power.replace('mqtt:', ''),
-              value: event.state,
+              value: event.param,
             },
           });
         } else {
