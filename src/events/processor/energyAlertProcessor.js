@@ -1,6 +1,6 @@
 import logger from '../../common/logger';
-import {WS_DEVICE_ALARM} from './socketConsts';
-import {ALERT_CRITICAL} from '../../common/alertConsts';
+import { WS_DEVICE_ALARM } from './socketConsts';
+import { ALERT_CRITICAL } from '../../common/alertConsts';
 
 // When same alert (same device and gateway) is received in less than
 // ALERT_DELAY_SEC old alert is updated. Else a new one is created
@@ -84,4 +84,4 @@ const EnergyAlertProcessor = (providers, socket) => {
 
 export default EnergyAlertProcessor;
 // Note: exported for testing, using a build tool could be exported only when running tests
-export {needsNewAlert, makeAlertKey};
+export { needsNewAlert, makeAlertKey };
