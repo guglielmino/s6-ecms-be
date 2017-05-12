@@ -1,5 +1,5 @@
-<a name="1.4.0"></a>
-# 1.4.0 (2017-05-12)
+<a name="1.5.0"></a>
+# 1.5.0 (2017-05-12)
 
 
 ### Bug Fixes
@@ -9,6 +9,7 @@
 * Fix get alert in update read status endpoint ([612d7ba](https://gitlab.com/smart-office-iot/iot-project-server/commit/612d7ba))
 * Fix get of nonexistent device and read of device id from path ([07c7f16](https://gitlab.com/smart-office-iot/iot-project-server/commit/07c7f16))
 * Fix modify of an existing device for Info1 event ([87a21d1](https://gitlab.com/smart-office-iot/iot-project-server/commit/87a21d1))
+* Fix payload change for power command ([a9771d6](https://gitlab.com/smart-office-iot/iot-project-server/commit/a9771d6))
 * Fix wrong command constant for power event in rule engine and add log in energy processor for d ([2b2cfe0](https://gitlab.com/smart-office-iot/iot-project-server/commit/2b2cfe0))
 * Fix wrong use of passed gateway code in /api/gateways/{code} ([6b1ee81](https://gitlab.com/smart-office-iot/iot-project-server/commit/6b1ee81))
 
