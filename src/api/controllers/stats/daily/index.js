@@ -1,46 +1,35 @@
 import express from 'express';
-import logger from '../../../common/logger';
-import { getDate, getOverlapped } from '../../api-utils';
-import { transformHourlyStat } from './hourlyStatTransformer';
+import logger from '../../../../common/logger';
+import { getDate, getOverlapped } from '../../../api-utils';
+import { transformDailyStat } from './dailyStatTransformer';
 
-function getHourlyDates(date) {
-  const todayHours = [];
-  date.setUTCHours(7);
-  while (date.getUTCHours() < 23) {
-    date.setUTCHours(date.getUTCHours() + 1);
-    todayHours.push(new Date(date));
-  }
-
-  return todayHours;
-}
-
-export default function (app, AuthCheck, RoleCheck, { hourlyStatsProvider }) {
+export default function (app, AuthCheck, RoleCheck, { dailyStatsProvider }) {
   const router = express.Router();
-  app.use('/api/stats/hourly', router);
-
+  app.use('/api/stats/daily', router);
   /**
    * @swagger
    * definitions:
-   *   HourlyStat:
+   *   DailyStat:
    *     properties:
-   *       deviceId:
+   *       date:
+   *         type: string
+   *       gateway:
    *         type: string
    *         description: could be empty for aggregate stats
-   *       power:
-   *         type: number
-   *       hour:
+   *       value:
    *         type: number
    */
 
   /**
    * @swagger
-   * /api/stats/hourly:
+   * /api/stats/daily:
    *   parameters:
    *     - $ref: '#/parameters/gw'
    *   get:
    *     tags:
    *      - Stats
-   *     description: Returns hourly stats about day consumption of devices belonging to gateway
+   *     description: Returns daily stats about day consumption of devices
+   *                  belonging to the specified gateway
    *     parameters:
    *      - name: date
    *        description: requested stats date
@@ -54,7 +43,7 @@ export default function (app, AuthCheck, RoleCheck, { hourlyStatsProvider }) {
    *         schema:
    *           type: array
    *           items:
-   *             $ref: '#/definitions/HourlyStat'
+   *             $ref: '#/definitions/DailyStat'
    */
   router.get('/', [AuthCheck()], (req, res) => {
     const date = getDate(req);
@@ -63,13 +52,13 @@ export default function (app, AuthCheck, RoleCheck, { hourlyStatsProvider }) {
 
     const gws = getOverlapped(ownedGws, reqGateways);
 
-    hourlyStatsProvider
-      .getHourlyStat(getHourlyDates(date), gws)
+    dailyStatsProvider
+      .getDailyStat(date, gws)
       .then((stat) => {
         if (stat.length === 0) {
           res.sendStatus(204);
         } else {
-          res.json(stat.map(s => transformHourlyStat(s)));
+          res.json(stat.map(s => transformDailyStat(s)));
         }
       })
       .catch((err) => {

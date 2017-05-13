@@ -5,10 +5,10 @@ import supertest from 'supertest';
 import express from 'express';
 import mockery from "mockery";
 
-import { FakeAuthMiddleware } from '../test-helper';
-import Gateways from './';
+import { FakeAuthMiddleware } from '../../../test-helper';
+import DailyStats from './';
 
-import { GatewaysProvider } from '../../data/mongodb';
+import { DailyStatsProvider } from '../../../../data/mongodb';
 
 chai.should();
 const expect = chai.expect;
@@ -18,10 +18,11 @@ mockery.enable({
   warnOnUnregistered: false,
 });
 
-describe('Gateway API endpoints', () => {
+
+describe('DailyStats API endpoints', () => {
   let request;
   let app;
-  let gatewayProvider;
+  let dailyStatsProvider;
 
   beforeEach(() => {
     mockery.enable();
@@ -30,43 +31,40 @@ describe('Gateway API endpoints', () => {
 
     app = express();
     request = supertest(app);
-
     const db = {
       collection: () => {
       }
     };
-    gatewayProvider = GatewaysProvider(db);
+    dailyStatsProvider = DailyStatsProvider(db);
   });
 
-  it('should returns requested gateway', (done) => {
+  it('should returns daily stats for the given gateway', (done) => {
     const date = new Date();
-
-    sinon.stub(gatewayProvider, 'getGateways')
+    const stub = sinon.stub(dailyStatsProvider, 'getDailyStat')
       .returns(Promise.resolve(
         [{
-          _id: '589334a6734d1d44bec9d20d',
-          code: 'gwtest',
-          description: 'Negozio Zara, Milano',
+          _id: date,
+          gateway: 'gwtest',
+          today: 120.0,
         }]),
       );
 
-    Gateways(app, FakeAuthMiddleware(['gwtest', 'gwtest2', 'gwtest3']), null, { gatewayProvider });
+    DailyStats(app, FakeAuthMiddleware(['gwtest']), null, { dailyStatsProvider });
 
     request
-      .get('/api/gateways/gwtest')
+      .get('/api/stats/daily/?gw=gwtest')
       .expect(200, (err, res) => {
         if (err) {
           done(err);
         } else {
-          gatewayProvider.getGateways.calledWith(['gwtest'])
+          stub.calledWith(sinon.match.any, ['gwtest'])
             .should.be.true;
 
           const response = res.body;
           response.length.should.be.eq(1);
-          response[0].code.should.be.eq('gwtest');
-          response[0].description.should.be.eq('Negozio Zara, Milano');
-          response[0].id.should.be.eq('589334a6734d1d44bec9d20d');
-
+          response[0].gateway.should.be.eq('gwtest');
+          response[0].value.should.be.eq(120.0);
+          response[0].date.should.be.eq(date.toJSON());
           done();
         }
       });

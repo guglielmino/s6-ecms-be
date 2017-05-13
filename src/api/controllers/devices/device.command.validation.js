@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import * as consts from '../../../consts';
+import * as consts from '../../../../consts';
 
 module.exports = {
   options: { allowUnknownBody: false },

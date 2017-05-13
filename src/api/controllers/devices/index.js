@@ -1,10 +1,10 @@
 import express from 'express';
 import validate from 'express-validation';
-import emitter from '../../streams/emitter';
-import logger from '../../common/logger';
+import emitter from '../../../streams/emitter';
+import logger from '../../../common/logger';
 
 import { transformDevice } from './deviceTransformer';
-import { getOverlapped } from '../api-utils';
+import { getOverlapped } from '../../api-utils';
 
 import deviceCommandValidator from './device.command.validation';
 

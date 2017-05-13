@@ -1,4 +1,4 @@
-import { ALERT_CRITICAL } from '../../common/alertConsts';
+import { ALERT_CRITICAL } from '../../../common/alertConsts';
 
 const transformAlert = alert => ({
   gateway: alert.gateway,

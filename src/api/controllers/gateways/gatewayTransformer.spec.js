@@ -1,8 +1,3 @@
-/**
- * Created by alessiapileri on 27/04/2017.
- */
-
-
 import chai from 'chai';
 
 import { transformGateway } from './gatewayTransformer';
