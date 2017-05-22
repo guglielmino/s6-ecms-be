@@ -1,3 +1,5 @@
+import logger from '../common/logger';
+
 /**
  * Implements a Chain Of Responsability to handle execution of right
  * function based on a predicate to evaluate the message
@@ -15,8 +17,13 @@ EventsChainProcessor.prototype.add = function add({ predicate, fn }) {
 EventsChainProcessor.prototype.handle = function handle(message) {
   this
     .chain
-    .filter(i => i.predicate(message))
-    .map(m => m.fn(message));
+    .forEach((m) => {
+      if (m.predicate(message)) {
+        m.fn(message);
+      } else {
+        logger.log('error', `Unknown ${JSON.stringify(message)}`);
+      }
+    });
 };
 
 export default EventsChainProcessor;

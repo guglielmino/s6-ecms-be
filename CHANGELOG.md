@@ -1,5 +1,5 @@
-<a name="1.7.0"></a>
-# 1.7.0 (2017-05-13)
+<a name="1.8.0"></a>
+# 1.8.0 (2017-05-22)
 
 
 ### Bug Fixes
@@ -26,6 +26,7 @@
 * Add energy alerts (power == 0 when device is on) aggregation for same device/gateway in given ([7c4e7f0](https://gitlab.com/smart-office-iot/iot-project-server/commit/7c4e7f0))
 * Add id to api response ([4665b38](https://gitlab.com/smart-office-iot/iot-project-server/commit/4665b38))
 * Add level to alerts and expose it in API responses ([00c76e4](https://gitlab.com/smart-office-iot/iot-project-server/commit/00c76e4))
+* Add logging of unknown events ([acdfd4c](https://gitlab.com/smart-office-iot/iot-project-server/commit/acdfd4c))
 * Add Power Action feedback alert infrastructure ([b70ca42](https://gitlab.com/smart-office-iot/iot-project-server/commit/b70ca42))
 * Add socketio timeout authentication in config ([5b035de](https://gitlab.com/smart-office-iot/iot-project-server/commit/5b035de))
 * Alerts provider refactoring to decrease code duplication ([4292dad](https://gitlab.com/smart-office-iot/iot-project-server/commit/4292dad))
