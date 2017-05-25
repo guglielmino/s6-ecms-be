@@ -8,7 +8,7 @@ export default function powerMapper(e) {
       Topic: e.Payload.Topic,
       Power: e.Payload.Power.toLowerCase(),
       PowerCommand: topicHanlders
-        .makePowerCommandFromTopicName(topicHanlders.extractNameFromStatTopic(e.Payload.Topic)),
+        .makePowerCommandFromTopicName(topicHanlders.extractNameFromTopic('stat', e.Payload.Topic)),
     },
   };
 }

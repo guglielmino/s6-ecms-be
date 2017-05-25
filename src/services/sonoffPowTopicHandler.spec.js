@@ -63,12 +63,12 @@ describe('SonoffPowTopicHanlders', () => {
 
   context('extractNameFromStatTopic', () => {
     it('should get "lamp1" as result', () => {
-      const result = subject.extractNameFromStatTopic('stat/lamp1/RESULT');
+      const result = subject.extractNameFromTopic('stat', 'stat/lamp1/RESULT');
       result.should.be.eq('lamp1');
     });
 
     it('should get empty string if passed topic isn\'t in right format', () => {
-      const result = subject.extractNameFromStatTopic('cmnd/lamp1/POWER');
+      const result = subject.extractNameFromTopic('stat', 'cmnd/lamp1/POWER');
       result.should.be.empty;
     });
 
