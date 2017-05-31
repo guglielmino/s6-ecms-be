@@ -9,8 +9,13 @@ const DeviceProcessor = providers => ({
   process: (event) => {
     logger.log('debug', `device processor ${JSON.stringify(event)}`);
 
-     // Payload.deviceId
-    providers.deviceProvider.updateByDeviceId(event.Payload.deviceId, event.Payload);
+    return new Promise((resolve, reject) => {
+      providers
+        .deviceProvider
+        .updateByDeviceId(event.Payload.deviceId, event.Payload)
+        .then(() => resolve())
+        .catch(err => reject(err));
+    });
   },
 });
 

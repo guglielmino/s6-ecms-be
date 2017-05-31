@@ -11,22 +11,26 @@ const PowerFeedbackProcessor = (providers, socket) => ({
   process: (event) => {
     logger.log('info', `power feedback processor ${JSON.stringify(event)}`);
 
-    providers.deviceProvider
-      .findByCommand('power', event.Payload.PowerCommand)
-      .then((res) => {
-        const updatedObj = { ...res, status: { power: event.Payload.Power } };
-        // Remove device from delayed queue
-        // (used for alerting if response doesn't come in a defined delay)
-        sharedDelayedQueue.remove(item => item.deviceId === res.deviceId);
+    return new Promise((resolve, reject) => {
+      providers.deviceProvider
+        .findByCommand('power', event.Payload.PowerCommand)
+        .then((res) => {
+          const updatedObj = { ...res, status: { power: event.Payload.Power } };
+          // Remove device from delayed queue
+          // (used for alerting if response doesn't come in a defined delay)
+          sharedDelayedQueue.remove(item => item.deviceId === res.deviceId);
 
-        providers
-          .deviceProvider
-          .update(res, updatedObj);
-        // WebSocket notify
-        socket.emit(res.gateway, WS_DEVICE_POWER_FEEDBACK,
-          { deviceId: res.deviceId, status: event.Payload.Power });
-      })
-      .catch(err => logger.log('error', err));
+          providers
+            .deviceProvider
+            .update(res, updatedObj);
+          // WebSocket notify
+          socket.emit(res.gateway, WS_DEVICE_POWER_FEEDBACK,
+            { deviceId: res.deviceId, status: event.Payload.Power });
+
+          resolve();
+        })
+        .catch(err => reject(err));
+    });
   },
 });
 

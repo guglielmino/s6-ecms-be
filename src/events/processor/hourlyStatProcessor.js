@@ -10,13 +10,20 @@ const HourlyStatProcessor = providers => ({
   process: (event) => {
     logger.log('debug', `hourly stat processor ${JSON.stringify(event)}`);
 
-    providers.hourlyStatsProvider
-      .updateHourlyStat({
-        date: event.Payload.Time,
-        gateway: event.GatewayId,
-        deviceId: event.Payload.DeviceId,
-        power: event.Payload.Power,
-      });
+    return new Promise((resolve, reject) => {
+      providers
+        .hourlyStatsProvider
+        .updateHourlyStat({
+          date: event.Payload.Time,
+          gateway: event.GatewayId,
+          deviceId: event.Payload.DeviceId,
+          power: event.Payload.Power,
+        })
+        .then(() => {
+          resolve();
+        })
+        .catch(err => reject(err));
+    });
   },
 });
 

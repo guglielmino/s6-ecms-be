@@ -1,34 +1,24 @@
 import chai from 'chai';
 import sinon from 'sinon';
-import EnergyAlertProcessor, {needsNewAlert, makeAlertKey}  from './energyAlertProcessor';
+import EnergyAlertProcessor, { needsNewAlert, makeAlertKey }  from './energyAlertProcessor';
 
-import mockery from "mockery";
+import helper from './processor_tests_helper.spec';
+helper('./energyAlertProcessor');
 
-import {AlertsProvider, DevicesProvider} from '../../data/mongodb';
+import { AlertsProvider, DevicesProvider } from '../../data/mongodb';
 
 chai.should();
 const expect = chai.expect;
 
-mockery.enable({
-  warnOnReplace: false,
-  warnOnUnregistered: false,
-});
 
 describe('EnergyAlertProcessor', () => {
 
-  context('Main module', () => {
+ context('Main module', () => {
     let subject;
     let deviceProvider, alertProvider;
     let socket;
 
     beforeEach(() => {
-      mockery.enable();
-      mockery.registerAllowable('./index');
-      mockery.registerMock('../../common/logger', {
-        log: () => {
-        }
-      });
-
       const db = {
         collection: () => {
         }
@@ -39,7 +29,7 @@ describe('EnergyAlertProcessor', () => {
       subject = new EnergyAlertProcessor({ deviceProvider, alertProvider }, socket);
     });
 
-    it('should do nothing if power is greater than 0', () => {
+    it('should do nothing if power is greater than 0', (done) => {
       const event = {
         GatewayId: 'TESTGW',
         Type: 'ENERGY',
@@ -59,10 +49,12 @@ describe('EnergyAlertProcessor', () => {
 
       sinon.stub(deviceProvider, 'findByDeviceId');
 
-      subject.process(event);
-
-      deviceProvider.findByDeviceId
-        .called.should.be.false;
+      subject.process(event)
+        .then(() => {
+          deviceProvider.findByDeviceId
+            .called.should.be.false;
+          done();
+        })
     });
 
     it('should create alert when power > 0, device status is on and there aren\'t previous alerts for the device/gateway', (done) => {
@@ -105,26 +97,29 @@ describe('EnergyAlertProcessor', () => {
         .returns(Promise.resolve(null));
 
       sinon.stub(alertProvider, 'update');
-      socket.emit = () => {
-        alertProvider.update
-          .calledOnce.should.be.true;
 
-        alertProvider.update.calledWith({
-          gateway: 'TESTGW',
-          date: eventDate,
-          deviceId: '11:22:33:44:55',
-          message: 'lamp_test could be broken, power is 0 while state is on',
-          read: false,
-          level: 'critical',
+      socket.emit = sinon.stub();
+
+      subject.process(event)
+        .then(() => {
+          deviceProvider.findByDeviceId
+            .called.should.be.true;
+
+          alertProvider.update
+            .calledOnce.should.be.true;
+          alertProvider.update
+            .calledWith({
+              gateway: 'TESTGW',
+              date: eventDate,
+              deviceId: '11:22:33:44:55',
+              message: 'lamp_test could be broken, power is 0 while state is on',
+              read: false,
+              level: 'critical',
+            });
+
+          socket.emit.calledOnce.should.be.true;
+          done();
         });
-
-        deviceProvider.findByDeviceId
-          .called.should.be.true;
-
-        done();
-      };
-
-      subject.process(event);
     });
   });
 
