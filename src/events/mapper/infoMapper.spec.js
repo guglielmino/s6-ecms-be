@@ -20,7 +20,7 @@ describe('info message mapper', () => {
         AppName: SONOFF_POW,
         Version: '1.2.3',
         FallbackTopic: 'sonoffback',
-        GroupTopic: 'sonoff',
+        GroupTopic: 'gdevs',
         Topic: 'cmnd/sonoff',
       },
     };
@@ -28,7 +28,7 @@ describe('info message mapper', () => {
     const result = infoMapper(rawPayload);
 
     result.Payload.deviceId.should.be.eq('00:00:00:00:00:00');
-  });
+   });
 
   it('should add specific command when device type is SONOFF_POW', () => {
     const rawPayload = {
@@ -59,7 +59,7 @@ describe('info message mapper', () => {
         AppName: SONOFF_POW,
         Version: '1.2.3',
         FallbackTopic: 'sonoffback',
-        GroupTopic: 'sonoff',
+        GroupTopic: 'sogroup',
         DeviceId: '2d:5f:22:99:73:d5',
         Topic: 'cmnd/sonoff',
       },
@@ -70,6 +70,11 @@ describe('info message mapper', () => {
     result.Payload.gateway.should.be.eq('testGateway');
     result.Payload.deviceType.should.be.eq(SONOFF_POW);
     result.Payload.deviceId.should.be.eq('2d:5f:22:99:73:d5');
+    result.Payload.name.should.be.eq('sonoff');
+    result.Payload.description.should.be.eq('sonoff');
+    result.Payload.swVersion.should.be.eq('1.2.3');
+    Object.keys(result).length.should.be.eq(2)
+    Object.keys(result.Payload).length.should.be.eq(8);
   });
 
   it('should map name of device', () => {

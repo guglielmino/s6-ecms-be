@@ -49,7 +49,7 @@ describe('Devices API endpoints', () => {
   });
 
   it('should returns devices with required fields', (done) => {
-    const getDevicesStub = sinon.stub(deviceProvider, "getDevices")
+    const getDevicesStub = sinon.stub(deviceProvider, 'getDevices')
       .returns(Promise.resolve([{
           name: 'Sample',
           gateway: 'samplegw',
@@ -207,6 +207,69 @@ describe('Devices API endpoints', () => {
     request
       .get('/api/devices/11:22:33:44:55:66')
       .expect(403, (err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          done();
+        }
+      });
+  });
+
+
+  it('should accept device description change', (done) => {
+    const getDeviceStub = sinon.stub(deviceProvider, 'findByDeviceId')
+      .returns(Promise.resolve({
+          name: 'Sample',
+          description: 'Sample description',
+          gateway: 'samplegw',
+          deviceId: '11:22:33:44:55:66',
+          deviceType: 'Sonoff Pow Module',
+          swVersion: '1.0',
+        }),
+      );
+
+    sinon.stub(deviceProvider, 'updateByDeviceId')
+      .returns(Promise.resolve({ status: true, id: 'aaasaaa' }));
+
+    Devices(app, FakeAuthMiddleware(['samplegw']), null, { deviceProvider });
+
+    request
+      .patch('/api/devices/11:22:33:44:55:66')
+      .send({ op: 'replace', path: '/description', value: 'new descripion' })
+      .expect(200, (err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          deviceProvider.updateByDeviceId
+            .calledWith('11:22:33:44:55:66', sinon.match({ description: 'new descripion' }))
+            .should.be.true;
+          done();
+        }
+      });
+  });
+
+
+  it('should not accept device name change', (done) => {
+    const getDeviceStub = sinon.stub(deviceProvider, 'findByDeviceId')
+      .returns(Promise.resolve({
+          name: 'Sample',
+          description: 'Sample description',
+          gateway: 'samplegw',
+          deviceId: '11:22:33:44:55:66',
+          deviceType: 'Sonoff Pow Module',
+          swVersion: '1.0',
+        }),
+      );
+
+    sinon.stub(deviceProvider, 'updateByDeviceId')
+      .returns(Promise.resolve({ status: true, id: 'aaasaaa' }));
+
+    Devices(app, FakeAuthMiddleware(['samplegw']), null, { deviceProvider });
+
+    request
+      .patch('/api/devices/11:22:33:44:55:66')
+      .send({ op: 'replace', path: '/name', value: 'new descripion' })
+      .expect(400, (err, res) => {
         if (err) {
           done(err);
         } else {
