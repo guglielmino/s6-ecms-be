@@ -1,5 +1,9 @@
 import chai from 'chai';
 import sinon from 'sinon';
+
+import helper from './processor_tests_helper.spec';
+helper('./powerFeedbackProcessor');
+
 import PowerFeedbackProcessor from './powerFeedbackProcessor';
 
 chai.should();

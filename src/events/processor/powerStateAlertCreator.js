@@ -21,8 +21,14 @@ const PowerStateAlertCreator = (providers, socket) => ({
       level: ALERT_CRITICAL,
     };
 
-    providers.alertProvider.add(alarmObj);
-    socket.emit(event.GatewayId, WS_DEVICE_ALARM, alarmObj);
+    return new Promise((resolve, reject) => {
+      providers.alertProvider.add(alarmObj)
+        .then(() => {
+          socket.emit(event.GatewayId, WS_DEVICE_ALARM, alarmObj);
+          resolve();
+        })
+        .catch(err => reject(err));
+    });
   },
 });
 
