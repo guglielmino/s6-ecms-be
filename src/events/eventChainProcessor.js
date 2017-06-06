@@ -15,12 +15,16 @@ EventsChainProcessor.prototype.add = function add({ predicate, fn }) {
 };
 
 EventsChainProcessor.prototype.handle = function handle(message) {
+  let handled = false;
   this
     .chain
     .forEach((m) => {
       if (m.predicate(message)) {
         m.fn(message);
-      } else {
+        handled = true;
+      }
+
+      if (!handled) {
         logger.log('error', `Unknown ${JSON.stringify(message)}`);
       }
     });
