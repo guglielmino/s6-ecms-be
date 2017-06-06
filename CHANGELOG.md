@@ -1,5 +1,5 @@
-<a name="1.9.0"></a>
-# 1.9.0 (2017-05-22)
+<a name="1.10.0"></a>
+# 1.10.0 (2017-06-06)
 
 
 ### Bug Fixes
@@ -24,6 +24,7 @@
 * Add endpoint to get single device data ([e416b35](https://gitlab.com/smart-office-iot/iot-project-server/commit/e416b35))
 * Add endpoint to mark alert read/unread ([8331828](https://gitlab.com/smart-office-iot/iot-project-server/commit/8331828))
 * Add energy alerts (power == 0 when device is on) aggregation for same device/gateway in given ([7c4e7f0](https://gitlab.com/smart-office-iot/iot-project-server/commit/7c4e7f0))
+* Add gateway field to device DTO ([32a2397](https://gitlab.com/smart-office-iot/iot-project-server/commit/32a2397))
 * Add id to api response ([4665b38](https://gitlab.com/smart-office-iot/iot-project-server/commit/4665b38))
 * Add level to alerts and expose it in API responses ([00c76e4](https://gitlab.com/smart-office-iot/iot-project-server/commit/00c76e4))
 * Add logging of unknown events ([acdfd4c](https://gitlab.com/smart-office-iot/iot-project-server/commit/acdfd4c))
