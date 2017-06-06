@@ -3,6 +3,7 @@
 const transformDevice = device => ({
   name: device.name,
   description: device.description,
+  gateway: device.gateway,
   deviceId: device.deviceId,
   type: device.deviceType,
   version: device.swVersion,
