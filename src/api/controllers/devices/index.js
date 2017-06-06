@@ -1,5 +1,6 @@
 import express from 'express';
 import validate from 'express-validation';
+import jsonpatch from 'fast-json-patch';
 import emitter from '../../../streams/emitter';
 import logger from '../../../common/logger';
 
@@ -7,6 +8,7 @@ import { transformDevice } from './deviceTransformer';
 import { getOverlapped } from '../../api-utils';
 
 import deviceCommandValidator from './device.command.validation';
+import devicePatchValidator from './device.patch.validation';
 
 export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
   const router = express.Router();
@@ -71,6 +73,34 @@ export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
           res.json(stat.map(e => transformDevice(e)));
         }
       })
+      .catch((err) => {
+        logger.log('error', err);
+        res.sendStatus(500);
+      });
+  });
+
+
+  router.patch('/:deviceId', [AuthCheck(), validate(devicePatchValidator)], (req, res) => {
+    const ownedGws = req.user.app_metadata.gateways;
+    const deviceId = req.params.deviceId;
+
+    deviceProvider
+      .findByDeviceId(deviceId)
+      .then((dev) => {
+        if (!dev) {
+          return Promise.resolve(404);
+        }
+
+        if (ownedGws.indexOf(dev.gateway) === -1) {
+          return Promise.resolve(403);
+        }
+
+        const newObj = jsonpatch.applyOperation(dev, req.body).newDocument;
+        return deviceProvider
+          .updateByDeviceId(deviceId, newObj)
+          .then(() => Promise.resolve(200));
+      })
+      .then(status => res.sendStatus(status))
       .catch((err) => {
         logger.log('error', err);
         res.sendStatus(500);

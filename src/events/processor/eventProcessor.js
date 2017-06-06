@@ -8,10 +8,15 @@ import logger from '../../common/logger';
 const EventProcessor = providers => ({
   process: (event) => {
     logger.log('debug', `event processor ${JSON.stringify(event)}`);
-
-    providers
-      .eventProvider
-      .add(event);
+    return new Promise((resolve, reject) => {
+      providers
+        .eventProvider
+        .add(event)
+        .then(() => {
+          resolve();
+        })
+        .catch(err => reject(err));
+    });
   },
 });
 

@@ -48,6 +48,7 @@ export default function infoMapper(e) {
     Type: e.Type,
     Payload: {
       name: namePerDevice(e.Payload.AppName, e.Payload.Topic),
+      description: namePerDevice(e.Payload.AppName, e.Payload.Topic),
       gateway: e.GatewayId,
       swVersion: e.Payload.Version,
       deviceType: e.Payload.AppName,
