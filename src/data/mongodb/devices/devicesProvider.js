@@ -44,6 +44,9 @@ export default function (database) {
 
       return queryDataProvider.getOne(query);
     },
+    findByName(name) {
+      return queryDataProvider.getOne({ name });
+    },
     findByDeviceId(deviceId) {
       return queryDataProvider.getOne({ deviceId });
     },

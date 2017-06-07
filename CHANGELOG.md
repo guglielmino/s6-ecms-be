@@ -1,11 +1,12 @@
-<a name="1.10.0"></a>
-# 1.10.0 (2017-06-06)
+<a name="1.11.0"></a>
+# 1.11.0 (2017-06-07)
 
 
 ### Bug Fixes
 
 * Add log for device null in energy processor ([25ec4ef](https://gitlab.com/smart-office-iot/iot-project-server/commit/25ec4ef))
 * Fix device command handling after paylod change ([9b4610c](https://gitlab.com/smart-office-iot/iot-project-server/commit/9b4610c))
+* Fix duplicate logging for unknow messages ([50c6609](https://gitlab.com/smart-office-iot/iot-project-server/commit/50c6609))
 * Fix event API read feedback ([c89fffc](https://gitlab.com/smart-office-iot/iot-project-server/commit/c89fffc))
 * Fix get alert in update read status endpoint ([612d7ba](https://gitlab.com/smart-office-iot/iot-project-server/commit/612d7ba))
 * Fix get of nonexistent device and read of device id from path ([07c7f16](https://gitlab.com/smart-office-iot/iot-project-server/commit/07c7f16))
@@ -29,6 +30,7 @@
 * Add level to alerts and expose it in API responses ([00c76e4](https://gitlab.com/smart-office-iot/iot-project-server/commit/00c76e4))
 * Add logging of unknown events ([acdfd4c](https://gitlab.com/smart-office-iot/iot-project-server/commit/acdfd4c))
 * Add Power Action feedback alert infrastructure ([b70ca42](https://gitlab.com/smart-office-iot/iot-project-server/commit/b70ca42))
+* Add processor to handle LWT event ([a009cfd](https://gitlab.com/smart-office-iot/iot-project-server/commit/a009cfd))
 * Add socketio timeout authentication in config ([5b035de](https://gitlab.com/smart-office-iot/iot-project-server/commit/5b035de))
 * Alerts provider refactoring to decrease code duplication ([4292dad](https://gitlab.com/smart-office-iot/iot-project-server/commit/4292dad))
 * Change endpoint for device commands ([b3bc564](https://gitlab.com/smart-office-iot/iot-project-server/commit/b3bc564))

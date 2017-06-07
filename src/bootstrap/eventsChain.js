@@ -14,6 +14,7 @@ import PowerStateProcessor from '../events/processor/powerStateProcessor';
 import PowerStateAlertProcessor from '../events/processor/powerStateAlertProcessor';
 import PowerStateAlertCreator from '../events/processor/powerStateAlertCreator';
 import EnergyAlertProcessor from '../events/processor/energyAlertProcessor';
+import LwtProcessor from '../events/processor/lwtProcessor';
 
 const BootstapEventsChain = (providers, pnub, socket) => {
   const eventProcessor = EventProcessor(providers);
@@ -25,6 +26,7 @@ const BootstapEventsChain = (providers, pnub, socket) => {
   const powerStateAlertProcessor = PowerStateAlertProcessor();
   const energyEventProcessor = EnergyAlertProcessor(providers, socket);
   const powerStateAlertCreator = PowerStateAlertCreator(providers, socket);
+  const lwtProcessor = LwtProcessor(providers);
 
   const eventsChain = new EventsChainProcessor();
 
@@ -76,6 +78,13 @@ const BootstapEventsChain = (providers, pnub, socket) => {
     predicate: msg => msg.type === consts.APPEVENT_TYPE_POWER_ALERT,
     fn: msg => powerStateAlertCreator.process(msg),
   });
+
+  /* -- LWT event processing -- */
+  eventsChain.add({
+    predicate: msg => msg.Type === consts.EVENT_TYPE_LWT,
+    fn: msg => lwtProcessor.process(msg),
+  });
+
 
   return eventsChain;
 };

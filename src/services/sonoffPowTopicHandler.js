@@ -27,11 +27,11 @@ const SonoffPowTopicHanlders = () => ({
     }
     return ret;
   },
-  extractNameFromStatTopic: (statTopic, defaultName = '') => {
+  extractNameFromTopic: (rootTopic, topic, defaultName = '') => {
     let ret = defaultName;
 
-    const re = /stat\/(\w*)*/;
-    const parts = re.exec(statTopic);
+    const re = new RegExp(`${rootTopic}/(\\w*)*`);
+    const parts = re.exec(topic);
 
     if (parts && parts.length === 2) {
       ret = parts[1];
