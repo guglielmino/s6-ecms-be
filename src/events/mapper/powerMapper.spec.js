@@ -13,6 +13,7 @@ describe('power status message mapper', () => {
       Payload: {
         Topic: 'stat/sonoff/RESULT',
         Power: 'ON',
+        DeviceId: '00:11:22:33:44:55',
       },
     };
 
@@ -20,6 +21,6 @@ describe('power status message mapper', () => {
 
     result.Payload.Power.should.be.eq('on');
     result.Payload.Topic.should.be.eq('stat/sonoff/RESULT');
-    result.Payload.PowerCommand.should.be.eq('mqtt:cmnd/sonoff/POWER');
+    result.Payload.DeviceId.should.be.eq('00:11:22:33:44:55');
   });
 });
