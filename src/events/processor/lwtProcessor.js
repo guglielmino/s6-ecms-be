@@ -1,7 +1,5 @@
 import logger from '../../common/logger';
-import SonoffPowTopicHanlders from '../../services/sonoffPowTopicHandler';
 
-const topicHanlders = SonoffPowTopicHanlders();
 const STATUS_OFFLINE = 'Offline';
 const STATUS_ONLINE = 'Online';
 
