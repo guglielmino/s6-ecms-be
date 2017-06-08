@@ -36,11 +36,7 @@ describe('LwtProcessor', () => {
         created: new Date(),
       };
 
-      sinon.stub(deviceProvider, 'updateByDeviceId', () => {
-        deviceProvider.findByName.calledWith('lamp3').should.be.true;
-        deviceProvider.updateByDeviceId.calledWith('12:22:44:1a:d6:fa', sinon.match({status: {online: true}})).should.be.true;
-        done();
-      });
+      sinon.stub(deviceProvider, 'updateByDeviceId').returns(Promise.resolve());
 
       sinon.stub(deviceProvider, 'findByName').returns(Promise.resolve(device));
 
@@ -52,7 +48,12 @@ describe('LwtProcessor', () => {
           Status: 'Online',
         },
       };
-      subject.process(event);
+      subject.process(event)
+        .then(() => {
+          deviceProvider.findByName.calledWith('lamp3').should.be.true;
+          deviceProvider.updateByDeviceId.calledWith('12:22:44:1a:d6:fa', sinon.match({status: {online: true}})).should.be.true;
+          done();
+        });
     });
   });
 });

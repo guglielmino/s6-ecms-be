@@ -1,29 +1,34 @@
 import chai from 'chai';
 import sinon from 'sinon';
-import DeviceProcessor from './deviceProcessor';
-import { DevicesProvider } from '../../data/mongodb';
+import * as consts from '../../../consts';
+import PowerStateProcessor from './powerStateProcessor';
 
 import helper from './processor_tests_helper.spec';
-helper('./deviceProcessor');
+helper('./powerStateProcessor');
+
+import { DevicesProvider } from '../../data/mongodb';
 
 chai.should();
 const expect = chai.expect;
 
-describe('DeviceProcessor', () => {
+describe('LwtProcessor', () => {
   let subject;
   let deviceProvider;
+  let pnub;
 
   beforeEach(() => {
     const db = {
       collection: () => {
-      },
+      }
     };
     deviceProvider = DevicesProvider(db);
-    subject = new DeviceProcessor({ deviceProvider });
+    pnub = {};
+    subject = new PowerStateProcessor({ deviceProvider }, pnub);
   });
 
-  it('should call add in device provider', (done) => {
-    sinon.stub(deviceProvider, 'updateByDeviceId')
+  it('should publish elcosed mqtt message on PubNub', (done) => {
+    pnub.publish = sinon.stub();
+    sinon.stub(deviceProvider, 'findByDeviceId')
       .returns(Promise.resolve({
         gateway: 'agateway',
         swVersion: '1.2.3',
@@ -52,10 +57,9 @@ describe('DeviceProcessor', () => {
 
     subject.process(event)
       .then(() => {
-        deviceProvider.updateByDeviceId
-          .calledOnce.should.be.true;
+
         done();
-      })
-      .catch(err => done(err));
+      });
   });
+
 });

@@ -9,17 +9,23 @@ const LwtProcessor = providers => ({
   process: (event) => {
     logger.log('info', `lwt processor ${JSON.stringify(event)}`);
 
-    const deviceName = topicHanlders.extractNameFromTopic('tele', event.Payload.Topic);
+    return new Promise((resolve, reject) => {
+      const deviceName = topicHanlders.extractNameFromTopic('tele', event.Payload.Topic);
 
-    providers.deviceProvider.findByName(deviceName).then((dev) => {
-      if (event.Payload.Status === STATUS_OFFLINE) {
-        providers.deviceProvider.updateByDeviceId(dev.deviceId,
-          { ...dev, status: { online: false } });
-      } else if (event.Payload.Status === STATUS_ONLINE) {
-        providers.deviceProvider.updateByDeviceId(dev.deviceId,
-          { ...dev, status: { online: true } });
-      }
-    }).catch(err => logger.log('error', err));
+      providers.deviceProvider.findByName(deviceName).then((dev) => {
+        if (event.Payload.Status === STATUS_OFFLINE) {
+          providers.deviceProvider
+            .updateByDeviceId(dev.deviceId,
+              { ...dev, status: { online: false } })
+            .then(() => resolve());
+        } else if (event.Payload.Status === STATUS_ONLINE) {
+          providers.deviceProvider
+            .updateByDeviceId(dev.deviceId,
+              { ...dev, status: { online: true } })
+            .then(() => resolve());
+        }
+      }).catch(err => reject(err));
+    });
   },
 });
 
