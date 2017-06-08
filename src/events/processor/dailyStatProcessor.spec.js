@@ -19,7 +19,7 @@ describe('Daily stat processor', () => {
     dailyStatsProvider = DailyStatsProvider(db);
   });
 
-  it('should update stats', () => {
+  it('should update stats', (done) => {
     const event = {
       GatewayId: 'test',
       Payload: {
@@ -31,9 +31,12 @@ describe('Daily stat processor', () => {
     const statsStub = sinon.stub(dailyStatsProvider, 'updateDailyStat').returns(Promise.resolve());
 
     subject = new DailyStatProcessor({ dailyStatsProvider });
-    subject.process(event).then(() => {
-      statsStub.calledOnce.should.be.true;
-      statsStub.calledWith({ date: '00', gateway: 'test', today: 1233 }).should.be.true;
-    });
+    subject.process(event)
+      .then(() => {
+        statsStub.calledOnce.should.be.true;
+        statsStub.calledWith({ date: '00', gateway: 'test', today: 1233 }).should.be.true;
+        done();
+      })
+      .catch(err => done(err));
   });
 });

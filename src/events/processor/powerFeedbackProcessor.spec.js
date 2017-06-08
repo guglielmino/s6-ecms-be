@@ -59,7 +59,6 @@ describe('PowerFeedbackProcessor', () => {
           .calledWith('00:11:22:33:44:55')
           .should.be.true;
 
-
         deviceProvider
           .update.calledWith(sinon.match.any, sinon.match({ status: { power: 'off' } }))
           .should.be.true;
