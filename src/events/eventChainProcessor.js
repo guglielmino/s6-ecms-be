@@ -23,11 +23,11 @@ EventsChainProcessor.prototype.handle = function handle(message) {
         m.fn(message);
         handled = true;
       }
-
-      if (!handled) {
-        logger.log('error', `Unknown ${JSON.stringify(message)}`);
-      }
     });
+
+  if (!handled) {
+    logger.log('error', `Unknown ${JSON.stringify(message)}`);
+  }
 };
 
 export default EventsChainProcessor;
