@@ -10,16 +10,23 @@ const LwtProcessor = providers => ({
     logger.log('info', `lwt processor ${JSON.stringify(event)}`);
 
     const deviceName = topicHanlders.extractNameFromTopic('tele', event.Payload.Topic);
-
-    providers.deviceProvider.findByName(deviceName).then((dev) => {
-      if (event.Payload.Status === STATUS_OFFLINE) {
-        providers.deviceProvider.updateByDeviceId(dev.deviceId,
-          { ...dev, status: { online: false } });
-      } else if (event.Payload.Status === STATUS_ONLINE) {
-        providers.deviceProvider.updateByDeviceId(dev.deviceId,
-          { ...dev, status: { online: true } });
-      }
-    }).catch(err => logger.log('error', err));
+    return new Promise((resolve, reject) => {
+      providers.deviceProvider.findByName(deviceName)
+        .then((dev) => {
+          if (event.Payload.Status === STATUS_OFFLINE) {
+            providers.deviceProvider.updateByDeviceId(dev.deviceId,
+              { ...dev, status: { online: false } });
+          } else if (event.Payload.Status === STATUS_ONLINE) {
+            providers.deviceProvider.updateByDeviceId(dev.deviceId,
+              { ...dev, status: { online: true } });
+          }
+          resolve();
+        })
+        .catch((err) => {
+          logger.log('error', err);
+          reject(err);
+        });
+    });
   },
 });
 
