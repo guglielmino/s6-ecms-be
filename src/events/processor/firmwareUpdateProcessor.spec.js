@@ -22,7 +22,6 @@ describe('FirmwareUpdateProcessor', () => {
     };
     deviceProvider = DevicesProvider(db);
     subject = new FirmwareUpdateProcessor({ deviceProvider }, pnub);
-
   });
 
   it('should send MQTT command with right payload', (done) => {
@@ -51,13 +50,12 @@ describe('FirmwareUpdateProcessor', () => {
         param: {},
       },
     };
-    subject.process(event).then(() => {
-      publishStub.called.should.be.true;
-      publishStub.calledWith('TESTGW', sinon.match({ payload: { topic: 'cmnd/lamp3/Upgrade' } })).should.be.true;
-      done();
-    }).catch((err) => {
-      done();
-    });
-
+    subject.process(event)
+      .then(() => {
+        publishStub.called.should.be.true;
+        publishStub.calledWith('TESTGW', sinon.match({ payload: { topic: 'cmnd/lamp3/Upgrade' } })).should.be.true;
+        done();
+      })
+      .catch(err => done(err));
   });
 });

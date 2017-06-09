@@ -20,7 +20,7 @@ describe('HourlyStatProcessor', () => {
 
     const db = {
       collection: () => {
-      }
+      },
     };
 
     hourlyStatsProvider = HourlyStatsProvider(db);

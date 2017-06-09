@@ -43,23 +43,26 @@ describe('LwtProcessor', () => {
 
     const event =
       {
-        GatewayId: 'testGateway',
+        GatewayId: 'agateway',
         Type: 'INFO',
         Payload: {
-          AppName: 'Sonoff Pow',
+          AppName: 'Sonoff Pow Module',
           Version: '1.2.3',
           FallbackTopic: 'sonoffback',
           GroupTopic: 'sogroup',
           DeviceId: '2d:5f:22:99:73:d5',
-          Topic: 'cmnd/sonoff',
+          Topic: 'cmnd/test6',
         },
       };
 
     subject.process(event)
       .then(() => {
-
+        pnub.publish
+          .calledWith(sinon.match.any, sinon.match({ payload: { topic: 'cmnd/test6/POWER' } }))
+          .should.be.true;
         done();
-      });
+      })
+      .catch(err => done(err));
   });
 
 });
