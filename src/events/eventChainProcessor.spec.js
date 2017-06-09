@@ -15,7 +15,7 @@ describe('event processor mediator', () => {
   it('should add an item in the chain', () => {
     subject.add({
       predicate: (msg) => true,
-      fn: (msg) => console.log('help'),
+      fn: (msg) => msg,
     });
   });
 

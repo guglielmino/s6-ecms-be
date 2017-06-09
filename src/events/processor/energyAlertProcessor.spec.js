@@ -55,6 +55,7 @@ describe('EnergyAlertProcessor', () => {
             .called.should.be.false;
           done();
         })
+        .catch(err => done(err));
     });
 
     it('should create alert when power > 0, device status is on and there aren\'t previous alerts for the device/gateway', (done) => {
@@ -119,7 +120,8 @@ describe('EnergyAlertProcessor', () => {
 
           socket.emit.calledOnce.should.be.true;
           done();
-        });
+        })
+        .catch(err => done(err));
     });
   });
 

@@ -12,8 +12,9 @@ const PowerFeedbackProcessor = (providers, socket) => ({
     logger.log('info', `power feedback processor ${JSON.stringify(event)}`);
 
     return new Promise((resolve, reject) => {
-      providers.deviceProvider
-        .findByCommand('power', event.Payload.PowerCommand)
+      providers
+        .deviceProvider
+        .findByDeviceId(event.Payload.DeviceId)
         .then((res) => {
           const updatedObj = { ...res, status: { power: event.Payload.Power } };
           // Remove device from delayed queue

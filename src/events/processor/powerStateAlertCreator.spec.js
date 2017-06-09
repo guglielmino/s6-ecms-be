@@ -43,6 +43,7 @@ describe('PowerStateAlertCreator', () => {
         socket.emit
           .calledOnce.should.be.true;
         done();
-      });
+      })
+      .catch(err => done(err));
   });
 });

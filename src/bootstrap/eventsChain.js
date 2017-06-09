@@ -15,6 +15,7 @@ import PowerStateAlertProcessor from '../events/processor/powerStateAlertProcess
 import PowerStateAlertCreator from '../events/processor/powerStateAlertCreator';
 import EnergyAlertProcessor from '../events/processor/energyAlertProcessor';
 import LwtProcessor from '../events/processor/lwtProcessor';
+import FirmwareUpdateProcessor from '../events/processor/firmwareUpdateProcessor';
 
 const BootstapEventsChain = (providers, pnub, socket) => {
   const eventProcessor = EventProcessor(providers);
@@ -27,6 +28,7 @@ const BootstapEventsChain = (providers, pnub, socket) => {
   const energyEventProcessor = EnergyAlertProcessor(providers, socket);
   const powerStateAlertCreator = PowerStateAlertCreator(providers, socket);
   const lwtProcessor = LwtProcessor(providers);
+  const firmwareUpdateProcessor = FirmwareUpdateProcessor(providers, pnub);
 
   const eventsChain = new EventsChainProcessor();
 
@@ -83,6 +85,12 @@ const BootstapEventsChain = (providers, pnub, socket) => {
   eventsChain.add({
     predicate: msg => msg.Type === consts.EVENT_TYPE_LWT,
     fn: msg => lwtProcessor.process(msg),
+  });
+
+  /* -- Firmware update event processing -- */
+  eventsChain.add({
+    predicate: msg => msg.command === consts.APPEVENT_TYPE_FIRMWARE,
+    fn: msg => firmwareUpdateProcessor.process(msg),
   });
 
 

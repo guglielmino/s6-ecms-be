@@ -9,10 +9,16 @@ const DailyStatProcessor = providers => ({
   process: (event) => {
     logger.log('debug', `daily stat processor ${JSON.stringify(event)}`);
 
-    providers.dailyStatsProvider.updateDailyStat({
-      date: event.Payload.Time,
-      gateway: event.GatewayId,
-      today: event.Payload.Today,
+    return new Promise((resolve, reject) => {
+      providers.dailyStatsProvider.updateDailyStat({
+        date: event.Payload.Time,
+        gateway: event.GatewayId,
+        today: event.Payload.Today,
+      }).then(() => resolve())
+        .catch((err) => {
+          logger.log(err);
+          reject(err);
+        });
     });
   },
 });
