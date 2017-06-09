@@ -1,11 +1,12 @@
-<a name="1.13.0"></a>
-# 1.13.0 (2017-06-07)
+<a name="1.14.0"></a>
+# 1.14.0 (2017-06-09)
 
 
 ### Bug Fixes
 
 * Add log for device null in energy processor ([25ec4ef](https://gitlab.com/smart-office-iot/iot-project-server/commit/25ec4ef))
 * Fix device command handling after paylod change ([9b4610c](https://gitlab.com/smart-office-iot/iot-project-server/commit/9b4610c))
+* Fix device status update in lwtProcessor and powerFeedbackProcessor ([e9261ab](https://gitlab.com/smart-office-iot/iot-project-server/commit/e9261ab))
 * Fix duplicate logging for unknow messages ([50c6609](https://gitlab.com/smart-office-iot/iot-project-server/commit/50c6609))
 * Fix event API read feedback ([c89fffc](https://gitlab.com/smart-office-iot/iot-project-server/commit/c89fffc))
 * Fix get alert in update read status endpoint ([612d7ba](https://gitlab.com/smart-office-iot/iot-project-server/commit/612d7ba))
@@ -34,6 +35,7 @@
 * Add socketio timeout authentication in config ([5b035de](https://gitlab.com/smart-office-iot/iot-project-server/commit/5b035de))
 * Alerts provider refactoring to decrease code duplication ([4292dad](https://gitlab.com/smart-office-iot/iot-project-server/commit/4292dad))
 * Change endpoint for device commands ([b3bc564](https://gitlab.com/smart-office-iot/iot-project-server/commit/b3bc564))
+* Device command to update firmware ([17533b8](https://gitlab.com/smart-office-iot/iot-project-server/commit/17533b8))
 * Devices provider refactoring to decrease code duplication ([de4f749](https://gitlab.com/smart-office-iot/iot-project-server/commit/de4f749))
 * Events provider refactoring to decrease code duplication ([5dbce28](https://gitlab.com/smart-office-iot/iot-project-server/commit/5dbce28))
 * Gateway provider refactoring to reduce code duplication ([b7128b1](https://gitlab.com/smart-office-iot/iot-project-server/commit/b7128b1))
