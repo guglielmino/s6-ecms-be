@@ -2,7 +2,7 @@ import logger from '../../common/logger';
 
 const FirmwareUpdateProcessor = (providers, pnub) => ({
   process: (event) => {
-    logger.log('info', `power action processor ${JSON.stringify(event)}`);
+    logger.log('info', `firmware update action processor ${JSON.stringify(event)}`);
     return new Promise((resolve, reject) => {
       providers
         .deviceProvider
@@ -11,8 +11,8 @@ const FirmwareUpdateProcessor = (providers, pnub) => ({
           pnub.publish(event.gateway, {
             type: 'MQTT',
             payload: {
-              topic: `cmnd/${dev.name}/Update`,
-              value: '',
+              topic: `cmnd/${dev.name}/Upgrade`,
+              value: '1',
             },
           });
           resolve();
