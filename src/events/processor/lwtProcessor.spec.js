@@ -51,8 +51,12 @@ describe('LwtProcessor', () => {
 
       subject.process(event)
         .then(() => {
-          deviceProvider.findByDeviceId.calledWith('12:22:44:1a:d6:fa').should.be.true;
-          deviceProvider.updateByDeviceId.calledWith('12:22:44:1a:d6:fa', sinon.match({status: {online: true}})).should.be.true;
+          deviceProvider.findByDeviceId.calledWith('12:22:44:1a:d6:fa')
+            .should.be.true;
+          deviceProvider.updateByDeviceId
+            .calledWith('12:22:44:1a:d6:fa',
+              sinon.match({ status: { online: true } }))
+            .should.be.true;
           done();
         })
         .catch(err => done(err));
@@ -70,7 +74,10 @@ describe('LwtProcessor', () => {
         commands: {
           power: 'mqtt:cmnd/sonoff/POWER',
         },
-        status: {},
+        status: {
+          online: false,
+          power: 'off',
+        },
         created: new Date(),
       };
 
@@ -89,8 +96,12 @@ describe('LwtProcessor', () => {
 
       subject.process(event)
         .then(() => {
-          deviceProvider.findByDeviceId.calledWith('12:22:44:1a:d6:fa').should.be.true;
-          deviceProvider.updateByDeviceId.calledWith('12:22:44:1a:d6:fa', sinon.match({status: {online: false}})).should.be.true;
+          deviceProvider.findByDeviceId
+            .calledWith('12:22:44:1a:d6:fa').should.be.true;
+          deviceProvider.updateByDeviceId
+            .calledWith('12:22:44:1a:d6:fa',
+            sinon.match({status: { online: false, power: 'off' } }))
+            .should.be.true;
           done();
         })
         .catch(err => done(err));

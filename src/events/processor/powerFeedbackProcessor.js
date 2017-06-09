@@ -16,7 +16,7 @@ const PowerFeedbackProcessor = (providers, socket) => ({
         .deviceProvider
         .findByDeviceId(event.Payload.DeviceId)
         .then((res) => {
-          const updatedObj = { ...res, status: { power: event.Payload.Power } };
+          const updatedObj = { ...res, status: { ...res.status, power: event.Payload.Power } };
           // Remove device from delayed queue
           // (used for alerting if response doesn't come in a defined delay)
           sharedDelayedQueue.remove(item => item.deviceId === res.deviceId);

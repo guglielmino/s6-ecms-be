@@ -12,12 +12,12 @@ const LwtProcessor = providers => ({
         if (event.Payload.Status === STATUS_OFFLINE) {
           providers.deviceProvider
             .updateByDeviceId(dev.deviceId,
-              { ...dev, status: { online: false } })
+              { ...dev, status: { ...dev.status, online: false } })
             .then(() => resolve());
         } else if (event.Payload.Status === STATUS_ONLINE) {
           providers.deviceProvider
             .updateByDeviceId(dev.deviceId,
-              { ...dev, status: { online: true } })
+              { ...dev, status: { ...dev.status, online: true } })
             .then(() => resolve());
         }
       }).catch(err => reject(err));

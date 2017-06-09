@@ -1,6 +1,9 @@
 import chai from 'chai';
 import sinon from 'sinon';
+
+
 import EventsChainProcessor from './eventChainProcessor';
+import logger from '../common/logger';
 
 chai.should();
 const expect = chai.expect;
@@ -8,19 +11,23 @@ const expect = chai.expect;
 describe('event processor mediator', () => {
   let subject;
 
+  before(() => {
+    sinon.stub(logger);
+  });
+
   beforeEach(() => {
     subject = new EventsChainProcessor();
   });
 
   it('should add an item in the chain', () => {
     subject.add({
-      predicate: (msg) => true,
-      fn: (msg) => msg,
+      predicate: msg => true,
+      fn: msg => msg,
     });
   });
 
   it('should throw if added item isn\'t made of predicate and fn', () => {
-   subject.add({
+    subject.add({
       prop1: 'sample',
       prop2: 'test',
     });
@@ -65,5 +72,20 @@ describe('event processor mediator', () => {
     fnexec2.called.should.be.true;
   });
 
+  it('should log unprocessed event one time only', () => {
+    subject.add({
+      predicate: msg => msg.type === 'type1',
+      fn: msg => msg,
+    });
 
+    subject.add({
+      predicate: msg => msg.type === 'type2',
+      fn: msg => msg,
+    });
+
+    subject.handle({ type: 'type3' });
+    logger.log.calledOnce.should.be.true;
+    logger.log.calledWith('error', 'Unknown {"type":"type3"}')
+      .should.be.true;
+  });
 });

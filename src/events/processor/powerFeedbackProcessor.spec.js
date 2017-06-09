@@ -35,6 +35,10 @@ describe('PowerFeedbackProcessor', () => {
       commands: {
         power: 'mqtt:cmnd/test6/POWER',
       },
+      status: {
+        power: 'on',
+        online: false,
+      },
       created: new Date(),
     })));
 
@@ -60,7 +64,7 @@ describe('PowerFeedbackProcessor', () => {
           .should.be.true;
 
         deviceProvider
-          .update.calledWith(sinon.match.any, sinon.match({ status: { power: 'off' } }))
+          .update.calledWith(sinon.match.any, sinon.match({ status: { power: 'off', online: false } }))
           .should.be.true;
         done();
       })
