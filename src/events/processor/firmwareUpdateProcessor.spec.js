@@ -53,7 +53,7 @@ describe('FirmwareUpdateProcessor', () => {
     subject.process(event)
       .then(() => {
         publishStub.called.should.be.true;
-        publishStub.calledWith('TESTGW', sinon.match({ payload: { topic: 'cmnd/lamp3/Update' } })).should.be.true;
+        publishStub.calledWith('TESTGW', sinon.match({ payload: { topic: 'cmnd/lamp3/Upgrade' } })).should.be.true;
         done();
       })
       .catch(err => done(err));
