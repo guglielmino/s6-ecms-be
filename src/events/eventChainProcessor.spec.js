@@ -10,9 +10,10 @@ const expect = chai.expect;
 
 describe('event processor mediator', () => {
   let subject;
+  let loggerStub;
 
   before(() => {
-    sinon.stub(logger);
+    loggerStub = sinon.stub(logger);
   });
 
   beforeEach(() => {
