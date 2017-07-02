@@ -2,7 +2,7 @@ import chai from 'chai';
 import sinon from 'sinon';
 
 
-import EventsChainProcessor from './eventChainProcessor';
+import EventsChainProcessor from './eventsRuleEngine';
 import logger from '../common/logger';
 
 chai.should();
@@ -20,7 +20,7 @@ describe('event processor mediator', () => {
     subject = new EventsChainProcessor();
   });
 
-  it('should add an item in the chain', () => {
+  it('should add an item in the rules', () => {
     subject.add({
       predicate: msg => true,
       fn: msg => msg,

@@ -3,7 +3,7 @@ import * as consts from '../../consts';
 import infoMapper from '../events/mapper/infoMapper';
 import energyMapper from '../events/mapper/energyMapper';
 import powerMapper from '../events/mapper/powerMapper';
-import EventsChainProcessor from '../events/eventChainProcessor';
+import EventsRuleEngine from '../events/eventsRuleEngine';
 
 import EventProcessor from '../events/processor/eventProcessor';
 import DailyStatProcessor from '../events/processor/dailyStatProcessor';
@@ -17,7 +17,7 @@ import EnergyAlertProcessor from '../events/processor/energyAlertProcessor';
 import LwtProcessor from '../events/processor/lwtProcessor';
 import FirmwareUpdateProcessor from '../events/processor/firmwareUpdateProcessor';
 
-const BootstapEventsChain = (providers, pnub, socket) => {
+const BootstapRuleEngine = (providers, pnub, socket) => {
   const eventProcessor = EventProcessor(providers);
   const dailyProcessor = DailyStatProcessor(providers);
   const hourlyProcessor = HourlyStatProcessor(providers);
@@ -30,71 +30,71 @@ const BootstapEventsChain = (providers, pnub, socket) => {
   const lwtProcessor = LwtProcessor(providers);
   const firmwareUpdateProcessor = FirmwareUpdateProcessor(providers, pnub);
 
-  const eventsChain = new EventsChainProcessor();
+  const ruleEngine = new EventsRuleEngine();
 
   /* -- Energy event processing -- */
-  eventsChain.add({
+  ruleEngine.add({
     predicate: msg => msg.Type === consts.EVENT_TYPE_ENERGY,
     fn: msg => eventProcessor.process(energyMapper(msg)),
   });
 
-  eventsChain.add({
+  ruleEngine.add({
     predicate: msg => msg.Type === consts.EVENT_TYPE_ENERGY,
     fn: msg => dailyProcessor.process(energyMapper(msg)),
   });
 
-  eventsChain.add({
+  ruleEngine.add({
     predicate: msg => msg.Type === consts.EVENT_TYPE_ENERGY,
     fn: msg => hourlyProcessor.process(energyMapper(msg)),
   });
 
-  eventsChain.add({
+  ruleEngine.add({
     predicate: msg => msg.Type === consts.EVENT_TYPE_ENERGY,
     fn: msg => energyEventProcessor.process(energyMapper(msg)),
   });
 
   /* -- Info event processing -- */
-  eventsChain.add({
+  ruleEngine.add({
     predicate: msg => msg.Type === consts.EVENT_TYPE_INFO,
     fn: msg => deviceProcessor.process(infoMapper(msg)),
   });
 
   /* -- Power event processing -- */
-  eventsChain.add({
+  ruleEngine.add({
     predicate: msg => msg.Type === consts.EVENT_POWER_STATUS,
     fn: msg => powerFeedbackProcessor.process(powerMapper(msg)),
   });
 
   /* -- Power command  processing -- */
-  eventsChain.add({
+  ruleEngine.add({
     predicate: msg => msg.command === consts.APPEVENT_TYPE_POWER,
     fn: msg => powerStateProcessor.process(msg),
   });
 
-  eventsChain.add({
+  ruleEngine.add({
     predicate: msg => msg.command === consts.APPEVENT_TYPE_POWER,
     fn: msg => powerStateAlertProcessor.process(msg),
   });
 
-  eventsChain.add({
+  ruleEngine.add({
     predicate: msg => msg.type === consts.APPEVENT_TYPE_POWER_ALERT,
     fn: msg => powerStateAlertCreator.process(msg),
   });
 
   /* -- LWT event processing -- */
-  eventsChain.add({
+  ruleEngine.add({
     predicate: msg => msg.Type === consts.EVENT_TYPE_LWT,
     fn: msg => lwtProcessor.process(msg),
   });
 
   /* -- Firmware update event processing -- */
-  eventsChain.add({
+  ruleEngine.add({
     predicate: msg => msg.command === consts.APPEVENT_TYPE_FIRMWARE,
     fn: msg => firmwareUpdateProcessor.process(msg),
   });
 
 
-  return eventsChain;
+  return ruleEngine;
 };
 
-export default BootstapEventsChain;
+export default BootstapRuleEngine;

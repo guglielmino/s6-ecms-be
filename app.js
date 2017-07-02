@@ -9,7 +9,7 @@ import {
 
 import { Database } from './src/data/mongodb/data';
 import bootstrapDataProvider from './src/bootstrap/dataProviders';
-import BootstapEventsChain from './src/bootstrap/eventsChain';
+import BootstapRuleEngine from './src/bootstrap/ruleEngine';
 
 import emitter from './src/streams/emitter';
 import socketServer from './src/socketServer';
@@ -36,13 +36,13 @@ database.connect()
 
     const pub$ = pnub.fromChannel(consts.PUBNUB_EVENTS_CHANNEL);
 
-    const eventsChain = BootstapEventsChain(providers, pnub, socket);
+    const ruleEngine = BootstapRuleEngine(providers, pnub, socket);
 
     Rx.Observable
       .merge(getPNEventObservable(pub$), getEmitterEventObservable(emitter))
       .subscribe(
         (event) => {
-          eventsChain.handle(event);
+          ruleEngine.handle(event);
         },
         error => logger.log('error', error),
       );
