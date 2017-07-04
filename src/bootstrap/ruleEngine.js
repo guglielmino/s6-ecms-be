@@ -3,19 +3,19 @@ import * as consts from '../../consts';
 import infoMapper from '../events/mapper/infoMapper';
 import energyMapper from '../events/mapper/energyMapper';
 import powerMapper from '../events/mapper/powerMapper';
-import EventsRuleEngine from '../events/eventsRuleEngine';
+import EventsRuleEngine from '../services/eventsRuleEngine';
 
-import EventProcessor from '../events/processor/eventProcessor';
-import DailyStatProcessor from '../events/processor/dailyStatProcessor';
-import HourlyStatProcessor from '../events/processor/hourlyStatProcessor';
-import DeviceProcessor from '../events/processor/deviceProcessor';
-import PowerFeedbackProcessor from '../events/processor/powerFeedbackProcessor';
-import PowerStateProcessor from '../events/processor/powerStateProcessor';
-import PowerStateAlertProcessor from '../events/processor/powerStateAlertProcessor';
-import PowerStateAlertCreator from '../events/processor/powerStateAlertCreator';
-import EnergyAlertProcessor from '../events/processor/energyAlertProcessor';
-import LwtProcessor from '../events/processor/lwtProcessor';
-import FirmwareUpdateProcessor from '../events/processor/firmwareUpdateProcessor';
+import EventProcessor from '../events/handlers/device/energy/eventHandler';
+import DailyStatProcessor from '../events/handlers/device/energy/dailyStatHandler';
+import HourlyStatProcessor from '../events/handlers/device/energy/hourlyStatHandler';
+import DeviceProcessor from '../events/handlers/device/info/deviceHandler';
+import PowerFeedbackProcessor from '../events/handlers/device/powerstatus/powerFeedbackHandler';
+import PowerStateProcessor from '../events/handlers/internal/api/powerStateHandler';
+import PowerStateAlertProcessor from '../events/handlers/internal/api/powerStateAlertHandler';
+import PowerStateAlertCreator from '../events/handlers/internal/handler/powerSwitchFailAlertHandler';
+import EnergyAlertProcessor from '../events/handlers/device/energy/energyAlertHandler';
+import LwtProcessor from '../events/handlers/device/lwt/lwtHandler';
+import FirmwareUpdateProcessor from '../events/handlers/internal/api/firmwareUpdateHandler';
 
 const BootstapRuleEngine = (providers, pnub, socket) => {
   const eventProcessor = EventProcessor(providers);

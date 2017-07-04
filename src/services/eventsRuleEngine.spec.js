@@ -8,7 +8,7 @@ import logger from '../common/logger';
 chai.should();
 const expect = chai.expect;
 
-describe('event processor mediator', () => {
+describe('event handlers mediator', () => {
   let subject;
   let loggerStub;
 

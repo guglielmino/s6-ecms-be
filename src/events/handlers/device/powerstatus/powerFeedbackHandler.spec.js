@@ -1,16 +1,16 @@
 import chai from 'chai';
 import sinon from 'sinon';
 
-import helper from './processor_tests_helper.spec';
+import helper from '../../processor_tests_helper.spec';
 helper('./powerFeedbackProcessor');
-import { DevicesProvider } from '../../data/mongodb';
+import { DevicesProvider } from '../../../../data/mongodb/index';
 
-import PowerFeedbackProcessor from './powerFeedbackProcessor';
+import PowerFeedbackHandler from './powerFeedbackHandler';
 
 chai.should();
 const expect = chai.expect;
 
-describe('PowerFeedbackProcessor', () => {
+describe('PowerFeedbackHandler', () => {
   let subject;
   let deviceProvider;
   let socket;
@@ -22,7 +22,7 @@ describe('PowerFeedbackProcessor', () => {
     };
     deviceProvider = DevicesProvider(db);
     socket = {};
-    subject = new PowerFeedbackProcessor({ deviceProvider }, socket);
+    subject = new PowerFeedbackHandler({ deviceProvider }, socket);
   });
 
   it('should update device power status based on received Payload', (done) => {

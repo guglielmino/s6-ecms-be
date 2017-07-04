@@ -1,23 +1,23 @@
 import chai from 'chai';
 import sinon from 'sinon';
-import * as consts from '../../../consts';
-import PowerStateAlertCreator from './powerStateAlertCreator';
+import * as consts from '../../../../../consts';
+import PowerSwitchFailAlertHandler from './powerSwitchFailAlertHandler';
 
-import helper from './processor_tests_helper.spec';
+import helper from '../../processor_tests_helper.spec';
 helper('./powerStateAlertCreator');
 
-import { AlertsProvider } from '../../data/mongodb';
+import { AlertsProvider } from '../../../../data/mongodb/index';
 
 chai.should();
 const expect = chai.expect;
 
-describe('PowerStateAlertCreator', () => {
+describe('PowerSwitchFailAlertHandler', () => {
   let subject;
   let alertProvider, socket = {};
 
   beforeEach(() => {
     alertProvider = AlertsProvider({});
-    subject = PowerStateAlertCreator({ alertProvider }, socket);
+    subject = PowerSwitchFailAlertHandler({ alertProvider }, socket);
   });
 
   it('should add the alert and send it over the socket', (done) => {

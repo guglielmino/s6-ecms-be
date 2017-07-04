@@ -1,9 +1,9 @@
-import logger from '../../common/logger';
+import logger from '../../../../common/logger';
 
 const STATUS_OFFLINE = 'Offline';
 const STATUS_ONLINE = 'Online';
 
-const LwtProcessor = providers => ({
+const LwtHandler = providers => ({
   process: (event) => {
     logger.log('info', `lwt processor ${JSON.stringify(event)}`);
 
@@ -25,4 +25,4 @@ const LwtProcessor = providers => ({
   },
 });
 
-export default LwtProcessor;
+export default LwtHandler;

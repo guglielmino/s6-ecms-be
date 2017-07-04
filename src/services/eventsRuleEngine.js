@@ -21,7 +21,7 @@ EventsRuleEngine.prototype.add = function add({ predicate, fn }) {
 };
 
 /**
- * Handle passed messagge applying predicate to it and eventually executing
+ * Handle passed message applying predicate to it and eventually executing
  * fn with message as parameter
  * @param message
  */

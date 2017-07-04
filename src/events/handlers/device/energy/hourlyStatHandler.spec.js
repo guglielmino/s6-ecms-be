@@ -1,18 +1,18 @@
 import chai from 'chai';
 import sinon from 'sinon';
 
-import HourlyStatProcessor  from './hourlyStatProcessor';
+import HourlyStatHandler  from './hourlyStatHandler';
 
-import helper from './processor_tests_helper.spec';
+import helper from '../../processor_tests_helper.spec';
 helper('./hourlyStatProcessor');
 
-import { HourlyStatsProvider } from '../../data/mongodb';
+import { HourlyStatsProvider } from '../../../../data/mongodb/index';
 
 chai.should();
 const expect = chai.expect;
 
 
-describe('HourlyStatProcessor', () => {
+describe('HourlyStatHandler', () => {
   let hourlyStatsProvider;
   let subject;
 
@@ -24,7 +24,7 @@ describe('HourlyStatProcessor', () => {
     };
 
     hourlyStatsProvider = HourlyStatsProvider(db);
-    subject = new HourlyStatProcessor({ hourlyStatsProvider });
+    subject = new HourlyStatHandler({ hourlyStatsProvider });
   });
 
   it('should call updateHourlyStat passing right payload data', (done) => {

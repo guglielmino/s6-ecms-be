@@ -1,12 +1,12 @@
 import chai from 'chai';
 import sinon from 'sinon';
-import DailyStatProcessor from './dailyStatProcessor';
-import DailyStatsProvider from '../../data/mongodb/stats/dailyStatsProvider';
+import DailyStatHandler from './dailyStatHandler';
+import DailyStatsProvider from '../../../../data/mongodb/stats/dailyStatsProvider';
 
 chai.should();
 const expect = chai.expect();
 
-describe('Daily stat processor', () => {
+describe('DailyStatHandler', () => {
   let subject;
   let dailyStatsProvider;
 
@@ -30,7 +30,7 @@ describe('Daily stat processor', () => {
 
     const statsStub = sinon.stub(dailyStatsProvider, 'updateDailyStat').returns(Promise.resolve());
 
-    subject = new DailyStatProcessor({ dailyStatsProvider });
+    subject = new DailyStatHandler({ dailyStatsProvider });
     subject.process(event)
       .then(() => {
         statsStub.calledOnce.should.be.true;
