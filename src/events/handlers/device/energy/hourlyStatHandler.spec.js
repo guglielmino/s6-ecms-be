@@ -45,13 +45,12 @@ describe('HourlyStatHandler', () => {
       },
     };
 
-    sinon.stub(hourlyStatsProvider, 'updateHourlyStat')
+    const statsStub = sinon.stub(hourlyStatsProvider, 'updateHourlyStat')
       .returns(Promise.resolve());
 
     subject.process(event)
       .then(() => {
-        hourlyStatsProvider
-          .updateHourlyStat
+        statsStub
           .calledWith(sinon.match({ power: 123, gateway: 'TESTGW', deviceId: '00:11:22:33:44:55' }))
           .should.be.true;
         done();
