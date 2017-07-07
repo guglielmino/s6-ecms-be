@@ -1,34 +1,29 @@
 import chai from 'chai';
 import sinon from 'sinon';
-import * as consts from '../../../consts';
-import PowerStateProcessor from './powerStateProcessor';
+import DeviceHandler from './deviceHandler';
+import { DevicesProvider } from '../../../../data/mongodb/index';
 
-import helper from './processor_tests_helper.spec';
-helper('./powerStateProcessor');
-
-import { DevicesProvider } from '../../data/mongodb';
+import helper from '../../processor_tests_helper.spec';
+helper('./deviceProcessor');
 
 chai.should();
 const expect = chai.expect;
 
-describe('LwtProcessor', () => {
+describe('DeviceHandler', () => {
   let subject;
   let deviceProvider;
-  let pnub;
 
   beforeEach(() => {
     const db = {
       collection: () => {
-      }
+      },
     };
     deviceProvider = DevicesProvider(db);
-    pnub = {};
-    subject = new PowerStateProcessor({ deviceProvider }, pnub);
+    subject = new DeviceHandler({ deviceProvider });
   });
 
-  it('should publish elcosed mqtt message on PubNub', (done) => {
-    pnub.publish = sinon.stub();
-    sinon.stub(deviceProvider, 'findByDeviceId')
+  it('should call add in device provider', (done) => {
+    sinon.stub(deviceProvider, 'updateByDeviceId')
       .returns(Promise.resolve({
         gateway: 'agateway',
         swVersion: '1.2.3',
@@ -43,26 +38,24 @@ describe('LwtProcessor', () => {
 
     const event =
       {
-        GatewayId: 'agateway',
+        GatewayId: 'testGateway',
         Type: 'INFO',
         Payload: {
-          AppName: 'Sonoff Pow Module',
+          AppName: 'Sonoff Pow',
           Version: '1.2.3',
           FallbackTopic: 'sonoffback',
           GroupTopic: 'sogroup',
           DeviceId: '2d:5f:22:99:73:d5',
-          Topic: 'cmnd/test6',
+          Topic: 'cmnd/sonoff',
         },
       };
 
     subject.process(event)
       .then(() => {
-        pnub.publish
-          .calledWith(sinon.match.any, sinon.match({ payload: { topic: 'cmnd/test6/POWER' } }))
-          .should.be.true;
+        deviceProvider.updateByDeviceId
+          .calledOnce.should.be.true;
         done();
       })
       .catch(err => done(err));
   });
-
 });

@@ -1,17 +1,17 @@
 import chai from 'chai';
 import sinon from 'sinon';
-import EnergyAlertProcessor, { needsNewAlert, makeAlertKey }  from './energyAlertProcessor';
+import EnergyAlertHandler, { needsNewAlert, makeAlertKey }  from './energyAlertHandler';
 
-import helper from './processor_tests_helper.spec';
+import helper from '../../processor_tests_helper.spec';
 helper('./energyAlertProcessor');
 
-import { AlertsProvider, DevicesProvider } from '../../data/mongodb';
+import { AlertsProvider, DevicesProvider } from '../../../../data/mongodb/index';
 
 chai.should();
 const expect = chai.expect;
 
 
-describe('EnergyAlertProcessor', () => {
+describe('EnergyAlertHandler', () => {
 
  context('Main module', () => {
     let subject;
@@ -26,7 +26,7 @@ describe('EnergyAlertProcessor', () => {
       deviceProvider = DevicesProvider(db);
       alertProvider = AlertsProvider(db);
       socket = {};
-      subject = new EnergyAlertProcessor({ deviceProvider, alertProvider }, socket);
+      subject = new EnergyAlertHandler({ deviceProvider, alertProvider }, socket);
     });
 
     it('should do nothing if power is greater than 0', (done) => {

@@ -1,13 +1,13 @@
 import chai from 'chai';
 import sinon from 'sinon';
-import LwtProcessor from './lwtProcessor';
-import { DevicesProvider } from '../../data/mongodb';
+import LwtHandler from './lwtHandler';
+import { DevicesProvider } from '../../../../data/mongodb/index';
 
 
 chai.should();
 const expect = chai.expect;
 
-describe('LwtProcessor', () => {
+describe('LwtHandler', () => {
   let subject;
   let deviceProvider;
 
@@ -17,7 +17,7 @@ describe('LwtProcessor', () => {
       }
     };
     deviceProvider = DevicesProvider(db);
-    subject = new LwtProcessor({ deviceProvider });
+    subject = new LwtHandler({ deviceProvider });
 
   });
 

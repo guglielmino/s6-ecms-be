@@ -1,4 +1,4 @@
-import logger from '../../common/logger';
+import logger from '../../../../common/logger';
 
 /**
  * Process the power switch request (typically coming from an API call).
@@ -8,7 +8,7 @@ import logger from '../../common/logger';
  * @param pnub
  * @constructor
  */
-const PowerStateProcessor = (providers, pnub) => ({
+const PowerStateHandler = (providers, pnub) => ({
   process: (event) => {
     logger.log('info', `power action processor ${JSON.stringify(event)}`);
 
@@ -36,4 +36,4 @@ const PowerStateProcessor = (providers, pnub) => ({
   },
 });
 
-export default PowerStateProcessor;
+export default PowerStateHandler;

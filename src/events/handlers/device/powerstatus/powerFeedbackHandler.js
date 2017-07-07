@@ -1,13 +1,13 @@
-import logger from '../../common/logger';
-import { WS_DEVICE_POWER_FEEDBACK } from './socketConsts';
-import sharedDelayedQueue from '../../bootstrap/sharedDelayedQueue';
+import logger from '../../../../common/logger';
+import { WS_DEVICE_POWER_FEEDBACK } from '../../socketConsts';
+import sharedDelayedQueue from '../../../../bootstrap/sharedDelayedQueue';
 /**
  * Process power status change message coming from devices
  * updating their status on database
  * @param providers
  * @constructor
  */
-const PowerFeedbackProcessor = (providers, socket) => ({
+const PowerFeedbackHandler = (providers, socket) => ({
   process: (event) => {
     logger.log('info', `power feedback processor ${JSON.stringify(event)}`);
 
@@ -35,4 +35,4 @@ const PowerFeedbackProcessor = (providers, socket) => ({
   },
 });
 
-export default PowerFeedbackProcessor;
+export default PowerFeedbackHandler;

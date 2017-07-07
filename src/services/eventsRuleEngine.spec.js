@@ -2,24 +2,25 @@ import chai from 'chai';
 import sinon from 'sinon';
 
 
-import EventsChainProcessor from './eventChainProcessor';
+import EventsChainProcessor from './eventsRuleEngine';
 import logger from '../common/logger';
 
 chai.should();
 const expect = chai.expect;
 
-describe('event processor mediator', () => {
+describe('event handlers mediator', () => {
   let subject;
+  let loggerStub;
 
   before(() => {
-    sinon.stub(logger);
+    loggerStub = sinon.stub(logger);
   });
 
   beforeEach(() => {
     subject = new EventsChainProcessor();
   });
 
-  it('should add an item in the chain', () => {
+  it('should add an item in the rules', () => {
     subject.add({
       predicate: msg => true,
       fn: msg => msg,

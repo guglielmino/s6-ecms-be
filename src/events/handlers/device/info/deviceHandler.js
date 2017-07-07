@@ -1,11 +1,11 @@
-import logger from '../../common/logger';
+import logger from '../../../../common/logger';
 
 /**
  * Processes the info event creating a device in the storage
  * @param providers
  * @constructor
  */
-const DeviceProcessor = providers => ({
+const DeviceHandler = providers => ({
   process: (event) => {
     logger.log('debug', `device processor ${JSON.stringify(event)}`);
 
@@ -19,4 +19,4 @@ const DeviceProcessor = providers => ({
   },
 });
 
-export default DeviceProcessor;
+export default DeviceHandler;

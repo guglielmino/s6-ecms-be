@@ -1,6 +1,6 @@
-import logger from '../../common/logger';
+import logger from '../../../../common/logger';
 
-const FirmwareUpdateProcessor = (providers, pnub) => ({
+const FirmwareUpdateHandler = (providers, pnub) => ({
   process: (event) => {
     logger.log('info', `firmware update action processor ${JSON.stringify(event)}`);
     return new Promise((resolve, reject) => {
@@ -25,4 +25,4 @@ const FirmwareUpdateProcessor = (providers, pnub) => ({
   },
 });
 
-export default FirmwareUpdateProcessor;
+export default FirmwareUpdateHandler;

@@ -1,11 +1,11 @@
-import logger from '../../common/logger';
+import logger from '../../../../common/logger';
 
 /**
  * Process Energy event creating daily stats
  * @param providers
  * @constructor
  */
-const DailyStatProcessor = providers => ({
+const DailyStatHandler = providers => ({
   process: (event) => {
     logger.log('debug', `daily stat processor ${JSON.stringify(event)}`);
 
@@ -23,4 +23,4 @@ const DailyStatProcessor = providers => ({
   },
 });
 
-export default DailyStatProcessor;
+export default DailyStatHandler;

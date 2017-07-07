@@ -1,18 +1,18 @@
 import chai from 'chai';
 import sinon from 'sinon';
 
-import HourlyStatProcessor  from './hourlyStatProcessor';
+import HourlyStatHandler  from './hourlyStatHandler';
 
-import helper from './processor_tests_helper.spec';
+import helper from '../../processor_tests_helper.spec';
 helper('./hourlyStatProcessor');
 
-import { HourlyStatsProvider } from '../../data/mongodb';
+import { HourlyStatsProvider } from '../../../../data/mongodb/index';
 
 chai.should();
 const expect = chai.expect;
 
 
-describe('HourlyStatProcessor', () => {
+describe('HourlyStatHandler', () => {
   let hourlyStatsProvider;
   let subject;
 
@@ -24,7 +24,7 @@ describe('HourlyStatProcessor', () => {
     };
 
     hourlyStatsProvider = HourlyStatsProvider(db);
-    subject = new HourlyStatProcessor({ hourlyStatsProvider });
+    subject = new HourlyStatHandler({ hourlyStatsProvider });
   });
 
   it('should call updateHourlyStat passing right payload data', (done) => {
@@ -45,13 +45,12 @@ describe('HourlyStatProcessor', () => {
       },
     };
 
-    sinon.stub(hourlyStatsProvider, 'updateHourlyStat')
+    const statsStub = sinon.stub(hourlyStatsProvider, 'updateHourlyStat')
       .returns(Promise.resolve());
 
     subject.process(event)
       .then(() => {
-        hourlyStatsProvider
-          .updateHourlyStat
+        statsStub
           .calledWith(sinon.match({ power: 123, gateway: 'TESTGW', deviceId: '00:11:22:33:44:55' }))
           .should.be.true;
         done();

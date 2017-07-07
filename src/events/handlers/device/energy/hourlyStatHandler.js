@@ -1,4 +1,4 @@
-import logger from '../../common/logger';
+import logger from '../../../../common/logger';
 
 /**
  * Process Energy payload updating hourly stats.
@@ -6,7 +6,7 @@ import logger from '../../common/logger';
  * @param providers
  * @constructor
  */
-const HourlyStatProcessor = providers => ({
+const HourlyStatHandler = providers => ({
   process: (event) => {
     logger.log('debug', `hourly stat processor ${JSON.stringify(event)}`);
 
@@ -27,4 +27,4 @@ const HourlyStatProcessor = providers => ({
   },
 });
 
-export default HourlyStatProcessor;
+export default HourlyStatHandler;

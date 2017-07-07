@@ -1,13 +1,13 @@
 import chai from 'chai';
 import sinon from 'sinon';
-import * as consts from '../../../consts';
-import FirmwareUpdateProcessor from './firmwareUpdateProcessor';
-import { DevicesProvider } from '../../data/mongodb';
+import * as consts from '../../../../../consts';
+import FirmwareUpdateHandler from './firmwareUpdateHandler';
+import { DevicesProvider } from '../../../../data/mongodb/index';
 
 chai.should();
 const expect = chai.expect;
 
-describe('FirmwareUpdateProcessor', () => {
+describe('FirmwareUpdateHandler', () => {
   let deviceProvider;
   let subject;
   const pnub = {
@@ -21,7 +21,7 @@ describe('FirmwareUpdateProcessor', () => {
       }
     };
     deviceProvider = DevicesProvider(db);
-    subject = new FirmwareUpdateProcessor({ deviceProvider }, pnub);
+    subject = new FirmwareUpdateHandler({ deviceProvider }, pnub);
   });
 
   it('should send MQTT command with right payload', (done) => {

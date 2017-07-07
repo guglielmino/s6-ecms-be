@@ -1,16 +1,16 @@
-import logger from '../../common/logger';
-import { WS_DEVICE_ALARM } from './socketConsts';
-import { ALERT_CRITICAL } from '../../common/alertConsts';
+import logger from '../../../../common/logger';
+import { WS_DEVICE_ALARM } from '../../socketConsts';
+import { ALERT_CRITICAL } from '../../../../common/alertConsts';
 
 /**
  * Create the alert for the timeout on receiving feedback after a power command
  * @param providers
  * @constructor
  */
-const PowerStateAlertCreator = (providers, socket) => ({
+const PowerSwitchFailAlertHandler = (providers, socket) => ({
 
   process: (event) => {
-    logger.log('info', `power state alert creator ${JSON.stringify(event)}`);
+    logger.log('info', `power switch fail alert creator ${JSON.stringify(event)}`);
 
     const alarmObj = {
       gateway: event.gateway,
@@ -32,4 +32,4 @@ const PowerStateAlertCreator = (providers, socket) => ({
   },
 });
 
-export default PowerStateAlertCreator;
+export default PowerSwitchFailAlertHandler;

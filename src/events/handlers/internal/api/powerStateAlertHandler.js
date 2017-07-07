@@ -1,9 +1,13 @@
-import logger from '../../common/logger';
-import sharedDelayedQueue from '../../bootstrap/sharedDelayedQueue';
-import * as consts from '../../../consts';
+import logger from '../../../../common/logger';
+import sharedDelayedQueue from '../../../../bootstrap/sharedDelayedQueue';
+import * as consts from '../../../../../consts';
 
-
-const PowerStateAlertProcessor = () => ({
+/**
+ * Add an item in expiring queue to handle an alert in a response doesn't come back
+ * in a specific time interval
+ * @constructor
+ */
+const PowerStateAlertHandler = () => ({
 
   process: (event) => {
     logger.log('info', `device power status alert processor ${JSON.stringify(event)}`);
@@ -23,4 +27,4 @@ const PowerStateAlertProcessor = () => ({
   },
 });
 
-export default PowerStateAlertProcessor;
+export default PowerStateAlertHandler;
