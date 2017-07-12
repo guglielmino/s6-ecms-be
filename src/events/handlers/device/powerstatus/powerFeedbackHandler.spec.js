@@ -22,7 +22,7 @@ describe('PowerFeedbackHandler', () => {
     };
     deviceProvider = DevicesProvider(db);
     socket = {};
-    subject = new PowerFeedbackHandler({ deviceProvider }, socket);
+    subject = new PowerFeedbackHandler(deviceProvider, socket);
   });
 
   it('should update device power status based on received Payload', (done) => {

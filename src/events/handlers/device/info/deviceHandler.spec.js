@@ -19,7 +19,7 @@ describe('DeviceHandler', () => {
       },
     };
     deviceProvider = DevicesProvider(db);
-    subject = new DeviceHandler({ deviceProvider });
+    subject = new DeviceHandler(deviceProvider);
   });
 
   it('should call add in device provider', (done) => {

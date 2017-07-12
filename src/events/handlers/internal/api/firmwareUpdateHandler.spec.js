@@ -21,7 +21,7 @@ describe('FirmwareUpdateHandler', () => {
       }
     };
     deviceProvider = DevicesProvider(db);
-    subject = new FirmwareUpdateHandler({ deviceProvider }, pnub);
+    subject = new FirmwareUpdateHandler(deviceProvider, pnub);
   });
 
   it('should send MQTT command with right payload', (done) => {

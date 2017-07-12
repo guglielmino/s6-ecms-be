@@ -5,12 +5,12 @@ import logger from '../../../../common/logger';
  * @param providers
  * @constructor
  */
-const DailyStatHandler = providers => ({
+const DailyStatHandler = dailyStatsProvider => ({
   process: (event) => {
     logger.log('debug', `daily stat processor ${JSON.stringify(event)}`);
 
     return new Promise((resolve, reject) => {
-      providers.dailyStatsProvider.updateDailyStat({
+      dailyStatsProvider.updateDailyStat({
         date: event.Payload.Time,
         gateway: event.GatewayId,
         today: event.Payload.Today,

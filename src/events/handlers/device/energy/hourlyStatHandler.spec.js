@@ -24,7 +24,7 @@ describe('HourlyStatHandler', () => {
     };
 
     hourlyStatsProvider = HourlyStatsProvider(db);
-    subject = new HourlyStatHandler({ hourlyStatsProvider });
+    subject = new HourlyStatHandler(hourlyStatsProvider);
   });
 
   it('should call updateHourlyStat passing right payload data', (done) => {

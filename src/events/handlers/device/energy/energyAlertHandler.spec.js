@@ -26,7 +26,7 @@ describe('EnergyAlertHandler', () => {
       deviceProvider = DevicesProvider(db);
       alertProvider = AlertsProvider(db);
       socket = {};
-      subject = new EnergyAlertHandler({ deviceProvider, alertProvider }, socket);
+      subject = new EnergyAlertHandler(deviceProvider, alertProvider, socket);
     });
 
     it('should do nothing if power is greater than 0', (done) => {

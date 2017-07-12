@@ -7,7 +7,7 @@ import { ALERT_CRITICAL } from '../../../../common/alertConsts';
  * @param providers
  * @constructor
  */
-const PowerSwitchFailAlertHandler = (providers, socket) => ({
+const PowerSwitchFailAlertHandler = (alertProvider, socket) => ({
 
   process: (event) => {
     logger.log('info', `power switch fail alert creator ${JSON.stringify(event)}`);
@@ -22,7 +22,7 @@ const PowerSwitchFailAlertHandler = (providers, socket) => ({
     };
 
     return new Promise((resolve, reject) => {
-      providers.alertProvider.add(alarmObj)
+      alertProvider.add(alarmObj)
         .then(() => {
           socket.emit(event.GatewayId, WS_DEVICE_ALARM, alarmObj);
           resolve();

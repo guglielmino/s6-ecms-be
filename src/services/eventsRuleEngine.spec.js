@@ -1,7 +1,6 @@
 import chai from 'chai';
 import sinon from 'sinon';
 
-
 import EventsChainProcessor from './eventsRuleEngine';
 import logger from '../common/logger';
 
@@ -12,9 +11,14 @@ describe('event handlers mediator', () => {
   let subject;
   let loggerStub;
 
-  before(() => {
-    loggerStub = sinon.stub(logger);
+  before(() => {
+    loggerStub = sinon.stub(logger, 'log');
   });
+
+  after(() => {
+    loggerStub.restore();
+  });
+
 
   beforeEach(() => {
     subject = new EventsChainProcessor();

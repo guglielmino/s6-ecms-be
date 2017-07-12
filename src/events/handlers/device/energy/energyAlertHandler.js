@@ -23,16 +23,14 @@ const makeAlertKey = device => (`alert:energy:${device.gateway}:${device.deviceI
  * @param providers
  * @constructor
  */
-const EnergyAlertHandler = (providers, socket) => {
+const EnergyAlertHandler = (deviceProvider, alertProvider, socket) => {
   const getDevice = deviceId => (
-    providers
-      .deviceProvider
+    deviceProvider
       .findByDeviceId(deviceId)
   );
 
   const getAlert = key => (
-    providers
-      .alertProvider
+    alertProvider
       .getLastAlertByKey(key)
   );
 
@@ -69,7 +67,7 @@ const EnergyAlertHandler = (providers, socket) => {
                         alarmObj = Object.assign(alarmObj, { lastUpdate: new Date() });
                       }
 
-                      providers.alertProvider.update(alarmObj);
+                      alertProvider.update(alarmObj);
                       socket.emit(event.GatewayId, WS_DEVICE_ALARM, alarmObj);
                       resolve();
                     });
