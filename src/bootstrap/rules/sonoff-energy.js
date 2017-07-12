@@ -25,6 +25,7 @@ const EnergyRules = (ruleEngine, {
   eventHandler,
   hourlyStatHandler,
   energyEventProcessor,
+  updateOnlineStatusHandler,
 }) => {
   ruleEngine.add({
     predicate: msg => msg.Type === consts.EVENT_TYPE_ENERGY,
@@ -44,6 +45,11 @@ const EnergyRules = (ruleEngine, {
   ruleEngine.add({
     predicate: msg => msg.Type === consts.EVENT_TYPE_ENERGY,
     fn: msg => energyEventProcessor.process(energyMapper(msg)),
+  });
+
+  ruleEngine.add({
+    predicate: msg => msg.Type === consts.EVENT_TYPE_ENERGY,
+    fn: msg => updateOnlineStatusHandler.process(energyMapper(msg)),
   });
 };
 

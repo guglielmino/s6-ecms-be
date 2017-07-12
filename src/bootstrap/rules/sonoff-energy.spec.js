@@ -6,6 +6,7 @@ import EventHandler from '../../events/handlers/device/energy/eventHandler';
 import DailyStatHandler from '../../events/handlers/device/energy/dailyStatHandler';
 import HourlyStatHandler from '../../events/handlers/device/energy/hourlyStatHandler';
 import EnergyAlertHandler from '../../events/handlers/device/energy/energyAlertHandler';
+import UpdateOnlineStatusHandler from '../../events/handlers/device/energy/updateOnlineStatusHandler';
 import EnergyRules from './sonoff-energy';
 
 chai.should();
@@ -17,17 +18,20 @@ describe('Sonoff Energy Rules', () => {
   let eventHandler;
   let hourlyStatHandler;
   let energyEventProcessor;
+  let updateOnlineStatusHandler;
 
   beforeEach(() => {
     dailyHandler = DailyStatHandler();
     eventHandler = EventHandler();
     hourlyStatHandler = HourlyStatHandler();
     energyEventProcessor = EnergyAlertHandler();
+    updateOnlineStatusHandler = UpdateOnlineStatusHandler();
 
     sinon.stub(dailyHandler);
     sinon.stub(eventHandler);
     sinon.stub(hourlyStatHandler);
     sinon.stub(energyEventProcessor);
+    sinon.stub(updateOnlineStatusHandler);
 
     ruleEngine = new EventsRuleEngine();
     EnergyRules(ruleEngine, {
@@ -35,6 +39,7 @@ describe('Sonoff Energy Rules', () => {
       eventHandler,
       hourlyStatHandler,
       energyEventProcessor,
+      updateOnlineStatusHandler,
     });
   });
 
@@ -69,7 +74,8 @@ describe('Sonoff Energy Rules', () => {
     energyEventProcessor.process
       .calledOnce.should.be.true;
 
-
+    updateOnlineStatusHandler.process
+      .calledOnce.should.be.true;
   });
 
   it('Should NOT call \'process\' of every handler for generic message', () => {
@@ -98,6 +104,9 @@ describe('Sonoff Energy Rules', () => {
       .calledOnce.should.be.false;
 
     energyEventProcessor.process
+      .calledOnce.should.be.false;
+
+    updateOnlineStatusHandler.process
       .calledOnce.should.be.false;
   });
 

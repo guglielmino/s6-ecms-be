@@ -11,6 +11,7 @@ import PowerSwitchFailAlertHandler from '../events/handlers/internal/handler/pow
 import EnergyAlertHandler from '../events/handlers/device/energy/energyAlertHandler';
 import LwtHandler from '../events/handlers/device/lwt/lwtHandler';
 import FirmwareUpdateHandler from '../events/handlers/internal/api/firmwareUpdateHandler';
+import UpdateOnlineStatusHandler from '../events/handlers/device/energy/updateOnlineStatusHandler';
 
 import EnergyRules from './rules/sonoff-energy';
 import InfoRules from './rules/sonoff-info';
@@ -26,6 +27,7 @@ const BootstapRuleEngine = (providers, pnub, socket) => {
   const hourlyStatHandler = HourlyStatHandler(providers.hourlyStatsProvider);
   const energyEventProcessor = EnergyAlertHandler(providers.deviceProvider,
     providers.alertProvider, socket);
+  const updateOnlineStatusHandler = UpdateOnlineStatusHandler(providers.deviceProvider);
   const deviceHandler = DeviceHandler(providers.deviceProvider);
   const powerFeedbackHandler = PowerFeedbackHandler(providers.deviceProvider, socket);
   const powerStateHandler = PowerStateHandler(providers.deviceProvider, pnub);
@@ -33,6 +35,7 @@ const BootstapRuleEngine = (providers, pnub, socket) => {
   const powerSwitchFailAlertHandler = PowerSwitchFailAlertHandler(providers.alertProvider, socket);
   const lwtHandler = LwtHandler(providers.lwtHandler);
   const firmwareUpdateHandler = FirmwareUpdateHandler(providers.firmwareUpdateHandler, pnub);
+
 
   const ruleEngine = new EventsRuleEngine();
 
@@ -42,6 +45,7 @@ const BootstapRuleEngine = (providers, pnub, socket) => {
     eventHandler,
     hourlyStatHandler,
     energyEventProcessor,
+    updateOnlineStatusHandler,
   });
 
   /* -- Info event processing -- */

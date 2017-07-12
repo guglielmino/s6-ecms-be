@@ -1,7 +1,6 @@
 import sinon from 'sinon';
 import chai from 'chai';
 
-
 import * as consts from '../../../consts';
 
 import EventsRuleEngine from '../../services/eventsRuleEngine';
