@@ -7,13 +7,12 @@ import sharedDelayedQueue from '../../../../bootstrap/sharedDelayedQueue';
  * @param providers
  * @constructor
  */
-const PowerFeedbackHandler = (providers, socket) => ({
+const PowerFeedbackHandler = (deviceProvider, socket) => ({
   process: (event) => {
     logger.log('info', `power feedback processor ${JSON.stringify(event)}`);
 
     return new Promise((resolve, reject) => {
-      providers
-        .deviceProvider
+      deviceProvider
         .findByDeviceId(event.Payload.DeviceId)
         .then((res) => {
           const updatedObj = { ...res, status: { ...res.status, power: event.Payload.Power } };
@@ -21,8 +20,7 @@ const PowerFeedbackHandler = (providers, socket) => ({
           // (used for alerting if response doesn't come in a defined delay)
           sharedDelayedQueue.remove(item => item.deviceId === res.deviceId);
 
-          providers
-            .deviceProvider
+          deviceProvider
             .update(res, updatedObj);
           // WebSocket notify
           socket.emit(res.gateway, WS_DEVICE_POWER_FEEDBACK,

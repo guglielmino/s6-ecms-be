@@ -23,7 +23,7 @@ describe('LwtHandler', () => {
     };
     deviceProvider = DevicesProvider(db);
     pnub = {};
-    subject = new PowerStateHandler({ deviceProvider }, pnub);
+    subject = new PowerStateHandler(deviceProvider, pnub);
   });
 
   it('should publish elcosed mqtt message on PubNub', (done) => {

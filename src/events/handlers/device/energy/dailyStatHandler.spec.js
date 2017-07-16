@@ -3,12 +3,23 @@ import sinon from 'sinon';
 import DailyStatHandler from './dailyStatHandler';
 import DailyStatsProvider from '../../../../data/mongodb/stats/dailyStatsProvider';
 
+import logger from '../../../../common/logger';
+
 chai.should();
 const expect = chai.expect();
 
 describe('DailyStatHandler', () => {
   let subject;
   let dailyStatsProvider;
+  let loggerStub;
+
+  before(() => {
+    loggerStub = sinon.stub(logger, 'log');
+  });
+
+  after(() => {
+    loggerStub.restore();
+  });
 
   beforeEach(() => {
     const db = {
@@ -41,7 +52,7 @@ describe('DailyStatHandler', () => {
 
     const statsStub = sinon.stub(dailyStatsProvider, 'updateDailyStat').returns(Promise.resolve());
 
-    subject = new DailyStatHandler({ dailyStatsProvider });
+    subject = new DailyStatHandler(dailyStatsProvider);
     subject.process(event)
       .then(() => {
         statsStub.calledOnce.should.be.true;

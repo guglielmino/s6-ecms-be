@@ -17,7 +17,7 @@ describe('PowerSwitchFailAlertHandler', () => {
 
   beforeEach(() => {
     alertProvider = AlertsProvider({});
-    subject = PowerSwitchFailAlertHandler({ alertProvider }, socket);
+    subject = PowerSwitchFailAlertHandler(alertProvider, socket);
   });
 
   it('should add the alert and send it over the socket', (done) => {

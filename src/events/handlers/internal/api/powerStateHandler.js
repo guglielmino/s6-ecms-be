@@ -8,13 +8,12 @@ import logger from '../../../../common/logger';
  * @param pnub
  * @constructor
  */
-const PowerStateHandler = (providers, pnub) => ({
+const PowerStateHandler = (deviceProvider, pnub) => ({
   process: (event) => {
     logger.log('info', `power action processor ${JSON.stringify(event)}`);
 
     return new Promise((resolve, reject) => {
-      providers
-        .deviceProvider
+      deviceProvider
         .findByDeviceId(event.deviceId)
         .then((dev) => {
           if (dev.commands && dev.commands.power) {

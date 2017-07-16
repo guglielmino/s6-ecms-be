@@ -17,8 +17,7 @@ describe('LwtHandler', () => {
       }
     };
     deviceProvider = DevicesProvider(db);
-    subject = new LwtHandler({ deviceProvider });
-
+    subject = new LwtHandler(deviceProvider);
   });
 
   context('when event is LWT online', () => {

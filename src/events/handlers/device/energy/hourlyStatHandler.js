@@ -6,13 +6,12 @@ import logger from '../../../../common/logger';
  * @param providers
  * @constructor
  */
-const HourlyStatHandler = providers => ({
+const HourlyStatHandler = hourlyStatsProvider => ({
   process: (event) => {
     logger.log('debug', `hourly stat processor ${JSON.stringify(event)}`);
 
     return new Promise((resolve, reject) => {
-      providers
-        .hourlyStatsProvider
+      hourlyStatsProvider
         .updateHourlyStat({
           date: event.Payload.Time,
           gateway: event.GatewayId,

@@ -1,11 +1,10 @@
 import logger from '../../../../common/logger';
 
-const FirmwareUpdateHandler = (providers, pnub) => ({
+const FirmwareUpdateHandler = (deviceProvider, pnub) => ({
   process: (event) => {
     logger.log('info', `firmware update action processor ${JSON.stringify(event)}`);
     return new Promise((resolve, reject) => {
-      providers
-        .deviceProvider
+      deviceProvider
         .findByDeviceId(event.deviceId)
         .then((dev) => {
           pnub.publish(event.gateway, {

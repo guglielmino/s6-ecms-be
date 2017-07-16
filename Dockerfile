@@ -1,4 +1,7 @@
-FROM node:6
+
+# Changed from node image to Alpine to move from about 250Mb image to ~70Mb
+#FROM node:6
+FROM mhart/alpine-node:8
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
