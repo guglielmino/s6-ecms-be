@@ -1,10 +1,11 @@
-<a name="1.16.0"></a>
-# 1.16.0 (2017-07-07)
+<a name="1.18.0"></a>
+# 1.18.0 (2017-08-04)
 
 
 ### Bug Fixes
 
 * Add log for device null in energy processor ([25ec4ef](https://gitlab.com/smart-office-iot/iot-project-server/commit/25ec4ef))
+* Fix bug in bootstrap rule engine ([5f89661](https://gitlab.com/smart-office-iot/iot-project-server/commit/5f89661))
 * Fix device command handling after paylod change ([9b4610c](https://gitlab.com/smart-office-iot/iot-project-server/commit/9b4610c))
 * Fix device status update in lwtProcessor and powerFeedbackProcessor ([e9261ab](https://gitlab.com/smart-office-iot/iot-project-server/commit/e9261ab))
 * Fix duplicate logging for unknow messages ([50c6609](https://gitlab.com/smart-office-iot/iot-project-server/commit/50c6609))
@@ -34,6 +35,7 @@
 * Add Power Action feedback alert infrastructure ([b70ca42](https://gitlab.com/smart-office-iot/iot-project-server/commit/b70ca42))
 * Add processor to handle LWT event ([a009cfd](https://gitlab.com/smart-office-iot/iot-project-server/commit/a009cfd))
 * Add socketio timeout authentication in config ([5b035de](https://gitlab.com/smart-office-iot/iot-project-server/commit/5b035de))
+* Add update of device online status on Energy message receiving ([ba444ac](https://gitlab.com/smart-office-iot/iot-project-server/commit/ba444ac))
 * Alerts provider refactoring to decrease code duplication ([4292dad](https://gitlab.com/smart-office-iot/iot-project-server/commit/4292dad))
 * Change endpoint for device commands ([b3bc564](https://gitlab.com/smart-office-iot/iot-project-server/commit/b3bc564))
 * Device command to update firmware ([17533b8](https://gitlab.com/smart-office-iot/iot-project-server/commit/17533b8))
