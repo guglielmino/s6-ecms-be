@@ -1,6 +1,6 @@
-import logger from '../../../../common/logger';
-import { WS_DEVICE_POWER_FEEDBACK } from '../../socketConsts';
-import sharedDelayedQueue from '../../../../bootstrap/sharedDelayedQueue';
+import logger from '../../../../../common/logger';
+import { WS_DEVICE_POWER_FEEDBACK } from '../../../socketConsts';
+import sharedDelayedQueue from '../../../../../bootstrap/sharedDelayedQueue';
 /**
  * Process power status change message coming from devices
  * updating their status on database

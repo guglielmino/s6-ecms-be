@@ -2,11 +2,11 @@ import sinon from 'sinon';
 import chai from 'chai';
 
 import EventsRuleEngine from '../../services/eventsRuleEngine';
-import EventHandler from '../../events/handlers/device/energy/eventHandler';
-import DailyStatHandler from '../../events/handlers/device/energy/dailyStatHandler';
-import HourlyStatHandler from '../../events/handlers/device/energy/hourlyStatHandler';
-import EnergyAlertHandler from '../../events/handlers/device/energy/energyAlertHandler';
-import UpdateOnlineStatusHandler from '../../events/handlers/device/energy/updateOnlineStatusHandler';
+import EventHandler from '../../events/handlers/device/sonoff/energy/eventHandler';
+import DailyStatHandler from '../../events/handlers/device/sonoff/energy/dailyStatHandler';
+import HourlyStatHandler from '../../events/handlers/device/sonoff/energy/hourlyStatHandler';
+import EnergyAlertHandler from '../../events/handlers/device/sonoff/energy/energyAlertHandler';
+import UpdateOnlineStatusHandler from '../../events/handlers/device/sonoff/energy/updateOnlineStatusHandler';
 import EnergyRules from './sonoff-energy';
 
 chai.should();

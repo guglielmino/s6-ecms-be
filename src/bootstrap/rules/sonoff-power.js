@@ -15,7 +15,7 @@
  */
 
 import * as consts from '../../../consts';
-import powerMapper from '../../events/mapper/powerMapper';
+import powerMapper from '../../events/mapper/sonoff/powerMapper';
 
 const PowerRules = (ruleEngine, {
   powerFeedbackHandler,

@@ -1,7 +1,7 @@
 import chai from 'chai';
 import sinon from 'sinon';
 import LwtHandler from './lwtHandler';
-import { DevicesProvider } from '../../../../data/mongodb/index';
+import { DevicesProvider } from '../../../../../data/mongodb/index';
 
 
 chai.should();

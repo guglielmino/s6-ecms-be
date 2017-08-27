@@ -2,10 +2,10 @@ import chai from 'chai';
 import sinon from 'sinon';
 import EnergyAlertHandler, { needsNewAlert, makeAlertKey }  from './energyAlertHandler';
 
-import helper from '../../processor_tests_helper.spec';
+import helper from '../../../processor_tests_helper.spec';
 helper('./energyAlertProcessor');
 
-import { AlertsProvider, DevicesProvider } from '../../../../data/mongodb/index';
+import { AlertsProvider, DevicesProvider } from '../../../../../data/mongodb/index';
 
 chai.should();
 const expect = chai.expect;

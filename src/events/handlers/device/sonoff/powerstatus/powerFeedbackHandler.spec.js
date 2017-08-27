@@ -1,9 +1,9 @@
 import chai from 'chai';
 import sinon from 'sinon';
 
-import helper from '../../processor_tests_helper.spec';
+import helper from '../../../processor_tests_helper.spec';
 helper('./powerFeedbackProcessor');
-import { DevicesProvider } from '../../../../data/mongodb/index';
+import { DevicesProvider } from '../../../../../data/mongodb/index';
 
 import PowerFeedbackHandler from './powerFeedbackHandler';
 

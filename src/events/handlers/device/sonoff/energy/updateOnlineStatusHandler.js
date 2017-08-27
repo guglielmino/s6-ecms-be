@@ -1,4 +1,4 @@
-import logger from '../../../../common/logger';
+import logger from '../../../../../common/logger';
 
 /**
  * This handler set the online flag for the device who sent the energy message.

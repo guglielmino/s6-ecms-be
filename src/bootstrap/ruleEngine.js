@@ -1,17 +1,17 @@
 import EventsRuleEngine from '../services/eventsRuleEngine';
 
-import EventHandler from '../events/handlers/device/energy/eventHandler';
-import DailyStatHandler from '../events/handlers/device/energy/dailyStatHandler';
-import HourlyStatHandler from '../events/handlers/device/energy/hourlyStatHandler';
-import DeviceHandler from '../events/handlers/device/info/deviceHandler';
-import PowerFeedbackHandler from '../events/handlers/device/powerstatus/powerFeedbackHandler';
+import EventHandler from '../events/handlers/device/sonoff/energy/eventHandler';
+import DailyStatHandler from '../events/handlers/device/sonoff/energy/dailyStatHandler';
+import HourlyStatHandler from '../events/handlers/device/sonoff/energy/hourlyStatHandler';
+import DeviceHandler from '../events/handlers/device/sonoff/info/deviceHandler';
+import PowerFeedbackHandler from '../events/handlers/device/sonoff/powerstatus/powerFeedbackHandler';
 import PowerStateHandler from '../events/handlers/internal/api/powerStateHandler';
 import PowerStateAlertHandler from '../events/handlers/internal/api/powerStateAlertHandler';
 import PowerSwitchFailAlertHandler from '../events/handlers/internal/handler/powerSwitchFailAlertHandler';
-import EnergyAlertHandler from '../events/handlers/device/energy/energyAlertHandler';
-import LwtHandler from '../events/handlers/device/lwt/lwtHandler';
+import EnergyAlertHandler from '../events/handlers/device/sonoff/energy/energyAlertHandler';
+import LwtHandler from '../events/handlers/device/sonoff/lwt/lwtHandler';
 import FirmwareUpdateHandler from '../events/handlers/internal/api/firmwareUpdateHandler';
-import UpdateOnlineStatusHandler from '../events/handlers/device/energy/updateOnlineStatusHandler';
+import UpdateOnlineStatusHandler from '../events/handlers/device/sonoff/energy/updateOnlineStatusHandler';
 
 import EnergyRules from './rules/sonoff-energy';
 import InfoRules from './rules/sonoff-info';

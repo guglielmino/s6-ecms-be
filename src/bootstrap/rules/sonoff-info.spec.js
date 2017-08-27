@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import chai from 'chai';
 
 import EventsRuleEngine from '../../services/eventsRuleEngine';
-import DeviceHandler from '../../events/handlers/device/info/deviceHandler';
+import DeviceHandler from '../../events/handlers/device/sonoff/info/deviceHandler';
 
 import InfoRules from './sonoff-info';
 

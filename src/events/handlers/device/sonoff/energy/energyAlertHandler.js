@@ -1,6 +1,6 @@
-import logger from '../../../../common/logger';
-import { WS_DEVICE_ALARM } from '../../socketConsts';
-import { ALERT_CRITICAL } from '../../../../common/alertConsts';
+import logger from '../../../../../common/logger';
+import { WS_DEVICE_ALARM } from '../../../socketConsts';
+import { ALERT_CRITICAL } from '../../../../../common/alertConsts';
 
 // When same alert (same device and gateway) is received in less than
 // ALERT_DELAY_SEC old alert is updated. Else a new one is created

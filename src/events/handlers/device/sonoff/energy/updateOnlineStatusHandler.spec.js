@@ -2,9 +2,9 @@ import chai from 'chai';
 import sinon from 'sinon';
 
 import UpdateOnlineStatusHandler from './updateOnlineStatusHandler';
-import { DevicesProvider } from '../../../../data/mongodb/index';
+import { DevicesProvider } from '../../../../../data/mongodb/index';
 
-import logger from '../../../../common/logger';
+import logger from '../../../../../common/logger';
 
 chai.should();
 const expect = chai.expect;

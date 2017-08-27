@@ -4,7 +4,7 @@ import chai from 'chai';
 import sinon from 'sinon';
 import {
 	EVENT_TYPE_INFO,
-} from '../../../consts';
+} from '../../../../consts';
 
 import infoMapper, { SONOFF_POW } from './infoMapper';
 

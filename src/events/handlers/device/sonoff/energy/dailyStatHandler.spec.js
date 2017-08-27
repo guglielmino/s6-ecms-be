@@ -1,9 +1,9 @@
 import chai from 'chai';
 import sinon from 'sinon';
 import DailyStatHandler from './dailyStatHandler';
-import DailyStatsProvider from '../../../../data/mongodb/stats/dailyStatsProvider';
+import DailyStatsProvider from '../../../../../data/mongodb/stats/dailyStatsProvider';
 
-import logger from '../../../../common/logger';
+import logger from '../../../../../common/logger';
 
 chai.should();
 const expect = chai.expect();

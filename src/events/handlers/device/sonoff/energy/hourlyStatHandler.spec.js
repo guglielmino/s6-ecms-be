@@ -3,10 +3,10 @@ import sinon from 'sinon';
 
 import HourlyStatHandler  from './hourlyStatHandler';
 
-import helper from '../../processor_tests_helper.spec';
+import helper from '../../../processor_tests_helper.spec';
 helper('./hourlyStatProcessor');
 
-import { HourlyStatsProvider } from '../../../../data/mongodb/index';
+import { HourlyStatsProvider } from '../../../../../data/mongodb/index';
 
 chai.should();
 const expect = chai.expect;

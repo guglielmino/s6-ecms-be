@@ -2,7 +2,7 @@ import sinon from 'sinon';
 import chai from 'chai';
 
 import EventsRuleEngine from '../../services/eventsRuleEngine';
-import PowerFeedbackHandler from '../../events/handlers/device/powerstatus/powerFeedbackHandler';
+import PowerFeedbackHandler from '../../events/handlers/device/sonoff/powerstatus/powerFeedbackHandler';
 
 import PowerRules from './sonoff-power';
 

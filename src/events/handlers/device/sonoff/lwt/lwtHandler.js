@@ -1,4 +1,4 @@
-import logger from '../../../../common/logger';
+import logger from '../../../../../common/logger';
 
 const STATUS_OFFLINE = 'Offline';
 const STATUS_ONLINE = 'Online';
