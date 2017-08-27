@@ -3,7 +3,7 @@ import EventsRuleEngine from '../services/eventsRuleEngine';
 import EventHandler from '../events/handlers/device/sonoff/energy/eventHandler';
 import DailyStatHandler from '../events/handlers/device/sonoff/energy/dailyStatHandler';
 import HourlyStatHandler from '../events/handlers/device/sonoff/energy/hourlyStatHandler';
-import DeviceHandler from '../events/handlers/device/sonoff/info/deviceHandler';
+import DeviceHandler from '../events/handlers/device/common/info/deviceHandler';
 import PowerFeedbackHandler from '../events/handlers/device/sonoff/powerstatus/powerFeedbackHandler';
 import PowerStateHandler from '../events/handlers/internal/api/powerStateHandler';
 import PowerStateAlertHandler from '../events/handlers/internal/api/powerStateAlertHandler';
@@ -13,6 +13,7 @@ import LwtHandler from '../events/handlers/device/sonoff/lwt/lwtHandler';
 import FirmwareUpdateHandler from '../events/handlers/internal/api/firmwareUpdateHandler';
 import UpdateOnlineStatusHandler from '../events/handlers/device/sonoff/energy/updateOnlineStatusHandler';
 
+// Sonoff
 import EnergyRules from './rules/sonoff-energy';
 import InfoRules from './rules/sonoff-info';
 import PowerRules from './rules/sonoff-power';
@@ -20,6 +21,9 @@ import ApiPowerRules from './rules/api-power';
 import LwtRules from './rules/sonoff-lwt';
 import ApiFirmwareUpdateRules from './rules/api-firmware-update';
 import PowerSwitchFailAlertRules from './rules/handler-powerswitch-fail-alert';
+
+// S6 Fresnell
+import S6FresnelInfoRules from './rules/s6fresnel-info';
 
 const BootstapRuleEngine = (providers, pnub, socket) => {
   const eventHandler = EventHandler(providers.eventProvider);
@@ -50,6 +54,7 @@ const BootstapRuleEngine = (providers, pnub, socket) => {
 
   /* -- Info event processing -- */
   InfoRules(ruleEngine, { deviceHandler });
+  S6FresnelInfoRules(ruleEngine, { deviceHandler });
 
   /* -- Power event processing -- */
   PowerRules(ruleEngine, { powerFeedbackHandler });

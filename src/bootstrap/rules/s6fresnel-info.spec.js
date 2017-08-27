@@ -5,7 +5,7 @@ import chai from 'chai';
 import EventsRuleEngine from '../../services/eventsRuleEngine';
 import DeviceHandler from '../../events/handlers/device/common/info/deviceHandler';
 
-import InfoRules from './sonoff-info';
+import InfoRules from './s6fresnel-info';
 
 chai.should();
 const expect = chai.expect();
@@ -29,14 +29,14 @@ describe('Sonoff Info Rules', () => {
     const event =
       {
         GatewayId: 'testGateway',
-        Type: 'INFO',
+        Type: 'FRESNEL_INFO',
         Payload: {
-          AppName: 'Sonoff Pow Module',
-          Version: '1.2.3',
-          FallbackTopic: 'sonoffback',
-          GroupTopic: 'sogroup',
-          DeviceId: '2d:5f:22:99:73:d5',
-          Topic: 'cmnd/sonoff',
+          topic: 'building/room1/sensors/00:11:22:33:44:55/info',
+          deviceId: '00:11:22:33:44:55',
+          appName: 'S6 Fresnel Module',
+          version: '0.0.1',
+          location: 'room1',
+
         },
       };
 
@@ -46,21 +46,17 @@ describe('Sonoff Info Rules', () => {
       .calledOnce.should.be.true;
   });
 
-  it('Should NOT call \'process\' of every handler for generic message', () => {
+  it('Should NOT call \'process\' for wrong INFO message', () => {
     const event = {
-      GatewayId: 'test',
-      Type: 'ENERGY',
+      GatewayId: 'testGateway',
+      Type: 'INFO',
       Payload: {
-        DeviceId: 'tele/lamp_test/TELEMETRY',
-        Yesterday: 0.031,
-        Today: 0.013,
-        Period: 0,
-        Power: 123,
-        Factor: 0,
-        Voltage: 0,
-        Current: 0,
-        Time: new Date(),
-        created: new Date(),
+        AppName: 'Sonoff Pow Module',
+        Version: '1.2.3',
+        FallbackTopic: 'sonoffback',
+        GroupTopic: 'sogroup',
+        DeviceId: '2d:5f:22:99:73:d5',
+        Topic: 'cmnd/sonoff',
       },
     };
     ruleEngine.handle(event);
