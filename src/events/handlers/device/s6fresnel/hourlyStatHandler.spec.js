@@ -1,18 +1,19 @@
 import chai from 'chai';
 import sinon from 'sinon';
 
-import HourlyStatHandler  from './hourlyStatHandler';
+import HourlyStatHandler from './hourlyStatHandler';
 
-import helper from '../../../processor_tests_helper.spec';
-helper('./hourlyStatHandler');
+import helper from '../../processor_tests_helper.spec';
 
-import { HourlyStatsProvider } from '../../../../../data/mongodb/index';
+helper('./hourlyStatProcessor');
+
+import {HourlyStatsProvider} from '../../../../data/mongodb/index';
 
 chai.should();
 const expect = chai.expect;
 
 
-describe('HourlyStatHandler', () => {
+describe('S6 Fresnel HourlyStatHandler', () => {
   let hourlyStatsProvider;
   let subject;
 
@@ -29,19 +30,13 @@ describe('HourlyStatHandler', () => {
 
   it('should call updateHourlyStat passing right payload data', (done) => {
     const event = {
-      GatewayId: 'TESTGW',
-      Type: 'ENERGY',
+      GatewayId: 'CASAFG',
+      Type: 'FRESNEL_POWER_CONSUME',
       Payload: {
-        DeviceId: '00:11:22:33:44:55',
-        Yesterday: 0.031,
-        Today: 0.013,
-        Period: 0,
-        Power: 123,
-        Factor: 0,
-        Voltage: 0,
-        Current: 0,
-        Time: new Date(),
-        created: new Date(),
+        topic: 'building/room1/sensors/00:11:22:33:44:55/power',
+        deviceId: '00:11:22:33:44:55',
+        timestamp: '2017-08-27T07:56:23.642Z',
+        power: 9.4,
       },
     };
 
@@ -51,11 +46,11 @@ describe('HourlyStatHandler', () => {
     subject.process(event)
       .then(() => {
         statsStub
-          .calledWith(sinon.match({ power: 123, gateway: 'TESTGW', deviceId: '00:11:22:33:44:55' }))
+          .calledWith(sinon.match({ power: 9.4, gateway: 'CASAFG', deviceId: '00:11:22:33:44:55' }))
           .should.be.true;
         done();
       })
       .catch(err => done(err));
-   });
+  });
 
 });

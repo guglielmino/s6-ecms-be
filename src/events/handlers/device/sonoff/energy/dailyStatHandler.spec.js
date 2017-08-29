@@ -13,7 +13,7 @@ describe('DailyStatHandler', () => {
   let dailyStatsProvider;
   let loggerStub;
 
-  before(() => {
+  before(() => {
     loggerStub = sinon.stub(logger, 'log');
   });
 
@@ -56,7 +56,7 @@ describe('DailyStatHandler', () => {
     subject.process(event)
       .then(() => {
         statsStub.calledOnce.should.be.true;
-        statsStub.calledWith({ date: date, gateway: 'test', today: 0.013 }).should.be.true;
+        statsStub.calledWith({date: date, gateway: 'test', today: 0.013}).should.be.true;
         done();
       })
       .catch(err => done(err));

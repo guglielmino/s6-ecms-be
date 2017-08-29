@@ -12,6 +12,8 @@ import EnergyAlertHandler from '../events/handlers/device/sonoff/energy/energyAl
 import LwtHandler from '../events/handlers/device/sonoff/lwt/lwtHandler';
 import FirmwareUpdateHandler from '../events/handlers/internal/api/firmwareUpdateHandler';
 import UpdateOnlineStatusHandler from '../events/handlers/device/sonoff/energy/updateOnlineStatusHandler';
+// S6 Fresnel
+import S6HourlyStatHandler from '../events/handlers/device/s6fresnel/hourlyStatHandler';
 
 // Sonoff
 import EnergyRules from './rules/sonoff-energy';
@@ -24,6 +26,7 @@ import PowerSwitchFailAlertRules from './rules/handler-powerswitch-fail-alert';
 
 // S6 Fresnell
 import S6FresnelInfoRules from './rules/s6fresnel-info';
+import S6PowerConsumeRules from './rules/s6fresnel-power-consume';
 
 const BootstapRuleEngine = (providers, pnub, socket) => {
   const eventHandler = EventHandler(providers.eventProvider);
@@ -39,6 +42,7 @@ const BootstapRuleEngine = (providers, pnub, socket) => {
   const powerSwitchFailAlertHandler = PowerSwitchFailAlertHandler(providers.alertProvider, socket);
   const lwtHandler = LwtHandler(providers.lwtHandler);
   const firmwareUpdateHandler = FirmwareUpdateHandler(providers.deviceProvider, pnub);
+  const s6hourlyStatHandler = S6HourlyStatHandler(providers.hourlyStatsProvider);
 
 
   const ruleEngine = new EventsRuleEngine();
@@ -50,6 +54,9 @@ const BootstapRuleEngine = (providers, pnub, socket) => {
     hourlyStatHandler,
     energyEventProcessor,
     updateOnlineStatusHandler,
+  });
+  S6PowerConsumeRules(ruleEngine, {
+    s6hourlyStatHandler,
   });
 
   /* -- Info event processing -- */
