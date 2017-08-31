@@ -4,7 +4,7 @@ import EventHandler from '../events/handlers/device/sonoff/energy/eventHandler';
 import DailyStatHandler from '../events/handlers/device/sonoff/energy/dailyStatHandler';
 import HourlyStatHandler from '../events/handlers/device/sonoff/energy/hourlyStatHandler';
 import DeviceHandler from '../events/handlers/device/common/info/deviceHandler';
-import PowerFeedbackHandler from '../events/handlers/device/sonoff/powerstatus/powerFeedbackHandler';
+import PowerFeedbackHandler from '../events/handlers/device/common/powerstatus/powerFeedbackHandler';
 import PowerStateHandler from '../events/handlers/internal/api/powerStateHandler';
 import PowerStateAlertHandler from '../events/handlers/internal/api/powerStateAlertHandler';
 import PowerSwitchFailAlertHandler from '../events/handlers/internal/handler/powerSwitchFailAlertHandler';
@@ -27,6 +27,7 @@ import PowerSwitchFailAlertRules from './rules/handler-powerswitch-fail-alert';
 // S6 Fresnell
 import S6FresnelInfoRules from './rules/s6fresnel-info';
 import S6PowerConsumeRules from './rules/s6fresnel-power-consume';
+import S6PowerFeedbackRules from './rules/s6fresnel-powerfeedback';
 
 const BootstapRuleEngine = (providers, pnub, socket) => {
   const eventHandler = EventHandler(providers.eventProvider);
@@ -43,7 +44,6 @@ const BootstapRuleEngine = (providers, pnub, socket) => {
   const lwtHandler = LwtHandler(providers.lwtHandler);
   const firmwareUpdateHandler = FirmwareUpdateHandler(providers.deviceProvider, pnub);
   const s6hourlyStatHandler = S6HourlyStatHandler(providers.hourlyStatsProvider);
-
 
   const ruleEngine = new EventsRuleEngine();
 
@@ -63,8 +63,9 @@ const BootstapRuleEngine = (providers, pnub, socket) => {
   InfoRules(ruleEngine, { deviceHandler });
   S6FresnelInfoRules(ruleEngine, { deviceHandler });
 
-  /* -- Power event processing -- */
+  /* -- Power feedback event processing -- */
   PowerRules(ruleEngine, { powerFeedbackHandler });
+  S6PowerFeedbackRules(ruleEngine, { powerFeedbackHandler });
 
   /* -- Power command  processing -- */
 

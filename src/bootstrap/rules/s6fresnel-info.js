@@ -1,7 +1,7 @@
 import * as consts from '../../../consts';
 import infoMapper from '../../events/mapper/s6fresnel/infoMapper';
 
-const InfoRules = (ruleEngine, {
+const S6InfoRules = (ruleEngine, {
   deviceHandler,
 }) => {
   ruleEngine.add({
@@ -10,4 +10,4 @@ const InfoRules = (ruleEngine, {
   });
 };
 
-export default InfoRules;
+export default S6InfoRules;

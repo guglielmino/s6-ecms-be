@@ -2,8 +2,9 @@ import chai from 'chai';
 import sinon from 'sinon';
 
 import helper from '../../../processor_tests_helper.spec';
+
 helper('./powerFeedbackProcessor');
-import { DevicesProvider } from '../../../../../data/mongodb/index';
+import {DevicesProvider} from '../../../../../data/mongodb/index';
 
 import PowerFeedbackHandler from './powerFeedbackHandler';
 
@@ -25,9 +26,9 @@ describe('PowerFeedbackHandler', () => {
     subject = new PowerFeedbackHandler(deviceProvider, socket);
   });
 
-  it('should update device power status based on received Payload', (done) => {
+  it('should update SONOFF device power status based on received Payload', (done) => {
     sinon.stub(deviceProvider, 'findByDeviceId').returns(Promise.resolve(Promise.resolve({
-      gateway: 'agateway',
+      gateway: 'TESTGW',
       swVersion: '1.2.3',
       deviceType: 'Sonoff Pow Module',
       deviceId: '11:44:41:9f:66:ea',
@@ -69,6 +70,53 @@ describe('PowerFeedbackHandler', () => {
         done();
       })
       .catch(err => done(err));
+  });
+
+  it('should update S6 FRESNEL device power status based on received Payload', (done) => {
+    sinon.stub(deviceProvider, 'findByDeviceId').returns(Promise.resolve(Promise.resolve({
+      gateway: 'CASAFG',
+      swVersion: '1.2.3',
+      deviceType: 'S6 Fresnel Module',
+      deviceId: '00:11:22:33:44:55',
+      name: 'UpsertDevice',
+      commands: {
+        power: 'mqtt:building/room1/events/00:11:22:33:44:55/power',
+      },
+      status: {
+        power: 'on',
+        online: false,
+      },
+      created: new Date(),
+    })));
+
+    sinon.stub(deviceProvider, 'update');
+    socket.emit = sinon.stub();
+
+    const event = {
+      GatewayId: 'CASAFG',
+      Type: 'FRESNEL_POWER_FEEDBACK',
+      Payload: {
+        topic: 'building/room1/events/00:11:22:33:44:55/power',
+        deviceId: '00:11:22:33:44:55',
+        status: 'off',
+      },
+    };
+
+    subject.process(event)
+      .then(() => {
+        deviceProvider
+          .findByDeviceId
+          .calledWith('00:11:22:33:44:55')
+          .should.be.true;
+
+        deviceProvider
+          .update.calledWith(sinon.match.any, sinon.match({ status: { power: 'off', online: false } }))
+          .should.be.true;
+        done();
+      })
+      .catch(err => done(err));
+
 
   });
+
 });
