@@ -5,12 +5,12 @@ import chai from 'chai';
 import EventsRuleEngine from '../../services/eventsRuleEngine';
 import DeviceHandler from '../../events/handlers/device/common/info/deviceHandler';
 
-import InfoRules from './s6fresnel-info';
+import S6InfoRules from './s6fresnel-info';
 
 chai.should();
 const expect = chai.expect();
 
-describe('Sonoff Info Rules', () => {
+describe('S6 Fresnel Info Rules', () => {
   let ruleEngine;
   let deviceHandler;
 
@@ -20,7 +20,7 @@ describe('Sonoff Info Rules', () => {
     sinon.stub(deviceHandler);
 
     ruleEngine = new EventsRuleEngine();
-    InfoRules(ruleEngine, {
+    S6InfoRules(ruleEngine, {
       deviceHandler,
     });
   });
