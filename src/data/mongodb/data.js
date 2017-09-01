@@ -51,7 +51,8 @@ const DataProvider = ({ db, collectionName }) => ({
   },
 
   update(obj, newObj) {
-    return this.updateById(obj._id, newObj); // eslint-disable-line no-underscore-dangle
+    return this.updateById(obj._id  // eslint-disable-line no-underscore-dangle
+      || new ObjectId(), newObj);
   },
 
   updateById(id, newObj) {
@@ -70,7 +71,7 @@ const DataProvider = ({ db, collectionName }) => ({
           newObj,
           {
             upsert: true,
-            returnOriginal: true,
+            returnOriginal: false,
           },
           (error, r) => {
             if (error) {

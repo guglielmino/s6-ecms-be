@@ -63,7 +63,7 @@ describe('EnergyAlertHandler', () => {
         GatewayId: 'TESTGW',
         Type: 'ENERGY',
         Payload: {
-          DeviceId: 'tele/lamp_test/TELEMETRY',
+          DeviceId: '11:22:33:44:55',
           Yesterday: 0.031,
           Today: 0.013,
           Period: 0,
@@ -108,15 +108,16 @@ describe('EnergyAlertHandler', () => {
 
           alertProvider.update
             .calledOnce.should.be.true;
-          alertProvider.update
-            .calledWith({
+
+            alertProvider.update
+            .calledWith(sinon.match({
               gateway: 'TESTGW',
-              date: eventDate,
               deviceId: '11:22:33:44:55',
               message: 'lamp_test could be broken, power is 0 while state is on',
               read: false,
               level: 'critical',
-            });
+              key: 'alert:energy:TESTGW:11:22:33:44:55',
+            })).should.be.true;
 
           socket.emit.calledOnce.should.be.true;
           done();

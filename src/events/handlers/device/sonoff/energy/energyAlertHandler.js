@@ -4,7 +4,7 @@ import { ALERT_CRITICAL } from '../../../../../common/alertConsts';
 
 // When same alert (same device and gateway) is received in less than
 // ALERT_DELAY_SEC old alert is updated. Else a new one is created
-const ALERT_DELAY_SEC = 900;
+const ALERT_DELAY_SEC = 10;
 
 
 const needsNewAlert = (alert, now, alertDelay) => {
@@ -57,17 +57,15 @@ const EnergyAlertHandler = (deviceProvider, alertProvider, socket) => {
               if (device) {
                 if (device.status && device.status.power === 'on') {
                   const alertKey = makeAlertKey(device);
-
                   getAlert(alertKey)
                     .then((alert) => {
-                      let alarmObj = null;
+                      let alarmObj = {};
                       if (needsNewAlert(alert, new Date(), ALERT_DELAY_SEC)) {
                         alarmObj = createAlert(event, device, alertKey);
                       } else {
-                        alarmObj = Object.assign(alarmObj, { lastUpdate: new Date() });
+                        alarmObj = Object.assign(alert, { lastUpdate: new Date() });
                       }
-
-                      alertProvider.update(alarmObj);
+                      alertProvider.update(alarmObj, alarmObj);
                       socket.emit(event.GatewayId, WS_DEVICE_ALARM, alarmObj);
                       resolve();
                     });
