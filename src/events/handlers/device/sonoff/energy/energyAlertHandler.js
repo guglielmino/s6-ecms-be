@@ -1,6 +1,7 @@
 import logger from '../../../../../common/logger';
 import { WS_DEVICE_ALARM } from '../../../socketConsts';
 import { ALERT_CRITICAL } from '../../../../../common/alertConsts';
+import AlertBuilder from '../../../builders/alertBuilder';
 
 // When same alert (same device and gateway) is received in less than
 // ALERT_DELAY_SEC old alert is updated. Else a new one is created
@@ -34,16 +35,14 @@ const EnergyAlertHandler = (deviceProvider, alertProvider, socket) => {
       .getLastAlertByKey(key)
   );
 
-  const createAlert = (event, device, alertKey) => ({
-    gateway: event.GatewayId,
-    date: new Date(),
-    lastUpdate: new Date(),
-    deviceId: event.Payload.DeviceId,
-    message: `${device.name} could be broken, power is 0 while state is on`,
-    read: false,
-    level: ALERT_CRITICAL,
-    key: alertKey,
-  });
+  const createAlert = (event, device, alertKey) => {
+    const alarmBuilder = new AlertBuilder(event.GatewayId, event.Payload.DeviceId,
+      `${device.name} could be broken, power is 0 while state is on`);
+    alarmBuilder.setLevel(ALERT_CRITICAL);
+    alarmBuilder.setKey(alertKey);
+
+    return alarmBuilder.build();
+  };
 
 
   return {
