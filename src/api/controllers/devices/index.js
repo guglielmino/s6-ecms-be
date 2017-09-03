@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import express from 'express';
 import validate from 'express-validation';
 import jsonpatch from 'fast-json-patch';
@@ -10,7 +11,7 @@ import { getOverlapped } from '../../api-utils';
 import deviceCommandValidator from './device.command.validation';
 import devicePatchValidator from './device.patch.validation';
 
-export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
+export default function (app, middlewares, { deviceProvider }) {
   const router = express.Router();
 
   app.use('/api/devices', router);
@@ -58,7 +59,7 @@ export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
    *           items:
    *             $ref: '#/definitions/Device'
    */
-  router.get('/', [AuthCheck()], (req, res) => {
+  router.get('/', middlewares, (req, res) => {
     const ownedGws = req.user.app_metadata.gateways;
     const reqGateways = req.query.gw;
 
@@ -80,7 +81,7 @@ export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
   });
 
 
-  router.patch('/:deviceId', [AuthCheck(), validate(devicePatchValidator)], (req, res) => {
+  router.patch('/:deviceId', _.concat(middlewares, validate(devicePatchValidator)), (req, res) => {
     const ownedGws = req.user.app_metadata.gateways;
     const deviceId = req.params.deviceId;
 
@@ -124,7 +125,7 @@ export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
    *         schema:
    *           $ref: '#/definitions/Device'
    */
-  router.get('/:deviceId', [AuthCheck()], (req, res) => {
+  router.get('/:deviceId', middlewares, (req, res) => {
     const ownedGws = req.user.app_metadata.gateways;
     const deviceId = req.params.deviceId;
 
@@ -178,7 +179,7 @@ export default function (app, AuthCheck, RoleCheck, { deviceProvider }) {
    *       200:
    *         description: done
    */
-  router.post('/:deviceId/command', [AuthCheck(), validate(deviceCommandValidator)], (req, res) => {
+  router.post('/:deviceId/command', _.concat(middlewares, validate(deviceCommandValidator)), (req, res) => {
     const reqDevice = req.params.deviceId;
     const ownedGws = req.user.app_metadata.gateways;
 

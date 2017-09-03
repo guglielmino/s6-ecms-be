@@ -1,6 +1,6 @@
 import config from '../config';
 import JwtCheck from './middleware/auth-check-middleware';
-import RoleCheck from './middleware/roles-middleware';
+import RoleCheck from './middleware/roles-middleware';          // eslint-disable-line no-unused-vars
 import GatewayAuth from './middleware/gateway-auth-middleware';
 
 import Events from './controllers/events';
@@ -16,9 +16,9 @@ module.exports = (app, providers) => {
   // NOTE: The validation function is fake for the moment,
   //       it should be validate, on the persistence layer, the pair gw,token
   Events(app, [GatewayAuth((gw, token) => true)], providers); // eslint-disable-line no-unused-vars
-  HourlyStats(app, AuthCheck, RoleCheck, providers);
-  DailyStats(app, AuthCheck, RoleCheck, providers);
-  Gateways(app, AuthCheck, RoleCheck, providers);
-  Devices(app, AuthCheck, RoleCheck, providers);
-  Alerts(app, AuthCheck, RoleCheck, providers);
+  HourlyStats(app, [AuthCheck()], providers);
+  DailyStats(app, [AuthCheck()], providers);
+  Gateways(app, [AuthCheck()], providers);
+  Devices(app, [AuthCheck()], providers);
+  Alerts(app, [AuthCheck()], providers);
 };

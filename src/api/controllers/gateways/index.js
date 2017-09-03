@@ -2,7 +2,7 @@ import express from 'express';
 import logger from '../../../common/logger';
 import { transformGateway } from './gatewayTransformer';
 
-export default function (app, AuthCheck, RoleCheck, { gatewayProvider }) {
+export default function (app, middlewares, { gatewayProvider }) {
   const router = express.Router();
 
   app.use('/api/gateways', router);
@@ -46,7 +46,7 @@ export default function (app, AuthCheck, RoleCheck, { gatewayProvider }) {
    *         schema:
    *           $ref: '#/definitions/Gateway'
    */
-  router.get('/:gateway', [AuthCheck()], (req, res) => {
+  router.get('/:gateway', middlewares, (req, res) => {
     const gateways = req.user.app_metadata.gateways;
     const reqGateway = req.params.gateway;
 
