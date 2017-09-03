@@ -56,7 +56,7 @@ const BootstapRuleEngine = (providers, pnub, socket) => {
     updateOnlineStatusHandler,
   });
   S6PowerConsumeRules(ruleEngine, {
-    s6hourlyStatHandler,
+    hourlyStatHandler: s6hourlyStatHandler,
   });
 
   /* -- Info event processing -- */
