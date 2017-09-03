@@ -7,6 +7,7 @@ import httpMocks from 'node-mocks-http';
 chai.should();
 const expect = chai.expect;
 
+
 describe('Middleware test', () => {
   let request = {};
   let response = {};
@@ -24,7 +25,7 @@ describe('Middleware test', () => {
       });
       response = httpMocks.createResponse();
 
-      gatewayAuthMiddleware(() => true)(request, response, function next(error) {
+      gatewayAuthMiddleware((gw, token) => Promise.resolve(true))(request, response, function next(error) {
         response.statusCode.should.be.eq(401);
         done();
       });
@@ -42,7 +43,7 @@ describe('Middleware test', () => {
 
       response = httpMocks.createResponse();
 
-      gatewayAuthMiddleware(() => true)(request, response, function next(error) {
+      gatewayAuthMiddleware((gw, token) => Promise.resolve(true))(request, response, function next(error) {
         response.statusCode.should.be.eq(401);
         done();
       });
@@ -60,7 +61,7 @@ describe('Middleware test', () => {
 
       response = httpMocks.createResponse();
 
-      gatewayAuthMiddleware(() => true)(request, response, function next(error) {
+      gatewayAuthMiddleware((gw, token) => Promise.resolve(true))(request, response, function next(error) {
         response.statusCode.should.be.eq(401);
         done();
       });
@@ -79,7 +80,7 @@ describe('Middleware test', () => {
 
       response = httpMocks.createResponse();
 
-      gatewayAuthMiddleware((gw, token) => true)(request, response, function next(error) {
+      gatewayAuthMiddleware((gw, token) => Promise.resolve(true))(request, response, function next(error) {
         response.statusCode.should.be.eq(200);
         done();
       });
@@ -98,7 +99,7 @@ describe('Middleware test', () => {
 
       response = httpMocks.createResponse();
 
-      gatewayAuthMiddleware((gw, token) => false)(request, response, function next(error) {
+      gatewayAuthMiddleware((gw, token) => Promise.resolve(false))(request, response, function next(error) {
         response.statusCode.should.be.eq(401);
         done();
       });

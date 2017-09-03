@@ -7,10 +7,19 @@ export default gatewayTokenValidator => (req, res, next) => {
   if (!gatewayId || !authToken) {
     res.sendStatus(401);
     next(new Error('Unauthorized'));
-  } else if (gatewayTokenValidator(gatewayId, authToken)) {
-    next();
   } else {
-    res.sendStatus(401);
-    next(new Error('Unauthorized'));
+    gatewayTokenValidator(gatewayId, authToken)
+      .then((result) => {
+        if (result) {
+          next();
+        } else {
+          res.sendStatus(401);
+          next();
+        }
+      })
+      .catch(() => {
+        res.sendStatus(401);
+        next();
+      });
   }
 };

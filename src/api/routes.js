@@ -10,12 +10,23 @@ import Gateways from './controllers/gateways';
 import Devices from './controllers/devices';
 import Alerts from './controllers/alerts';
 
+
 module.exports = (app, providers) => {
   const AuthCheck = JwtCheck(config.auth0);
 
-  // NOTE: The validation function is fake for the moment,
-  //       it should be validate, on the persistence layer, the pair gw,token
-  Events(app, [GatewayAuth((gw, token) => true)], providers); // eslint-disable-line no-unused-vars
+  const gatewayAuthValidator = (gateway, token) => providers
+      .gatewayProvider
+      .getGateway(gateway)
+      .then((gw) => {
+        if (gw && gw.authKey) {
+          return Promise.resolve(gw.authKey === token);
+        } else {  // eslint-disable-line no-else-return
+          return Promise.resolve(false);
+        }
+      })
+      .catch(err => Promise.resolve(false)); // eslint-disable-line no-unused-vars
+
+  Events(app, [GatewayAuth(gatewayAuthValidator)], providers); // eslint-disable-line no-unused-vars
   HourlyStats(app, [AuthCheck()], providers);
   DailyStats(app, [AuthCheck()], providers);
   Gateways(app, [AuthCheck()], providers);

@@ -24,7 +24,7 @@ describe('Events API endpoints', () => {
   });
 
   it('should call post for a result event', (done) => {
-    Events(app, [GatewayAuth((a, b) => true)], { eventProvider });
+    Events(app, [GatewayAuth((a, b) => Promise.resolve(true))], { eventProvider });
 
     request
       .post('/api/events/')

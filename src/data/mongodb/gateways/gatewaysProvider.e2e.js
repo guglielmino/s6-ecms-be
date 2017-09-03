@@ -44,6 +44,31 @@ describe('gatewayProvider', () => {
         done();
       })
       .catch(err => done(err));
+  });
+
+  it('should returns a single gateway matching the passed code', (done) => {
+
+    subject = GatewaysProvider(db);
+    subject
+      .add({
+        code: "zara2",
+        description: "Negozio Zara 2, Milano"
+      })
+      .then(res => subject.add({
+        code: "zara1",
+        description: "Negozio Zara 1, Milano"
+      }))
+      .then(res => subject.add({
+        code: "DevelopmentGateway",
+        description: "Test gateway"
+      }))
+      .then(res => subject.getGateway('zara2'))
+      .then((res) => {
+        res.code.should.be.eq('zara2');
+        res.description.should.be.eq('Negozio Zara 2, Milano');
+        done();
+      })
+      .catch(err => done(err));
   })
 
 });
