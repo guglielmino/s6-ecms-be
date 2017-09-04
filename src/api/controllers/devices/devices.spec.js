@@ -59,7 +59,7 @@ describe('Devices API endpoints', () => {
         }]),
       );
 
-    Devices(app, FakeAuthMiddleware(['samplegw']), null, { deviceProvider });
+    Devices(app, [FakeAuthMiddleware(['samplegw'])()], { deviceProvider });
 
     request
       .get('/api/devices/?gw=samplegw')
@@ -79,7 +79,7 @@ describe('Devices API endpoints', () => {
   });
 
   it('should reject invalid payload', (done) => {
-    Devices(app, FakeAuthMiddleware(['samplegw']), null, { deviceProvider });
+    Devices(app, [FakeAuthMiddleware(['samplegw'])()], { deviceProvider });
 
     request
       .post('/api/devices/11:22:33:44:55:66/command')
@@ -94,7 +94,7 @@ describe('Devices API endpoints', () => {
   });
 
   it('should reject invalid command', (done) => {
-    Devices(app, FakeAuthMiddleware(['samplegw']), null, { deviceProvider });
+    Devices(app, [FakeAuthMiddleware(['samplegw'])()], { deviceProvider });
 
     request
       .post('/api/devices/11:22:33:44:55:66/command')
@@ -109,7 +109,7 @@ describe('Devices API endpoints', () => {
   });
 
   it('should process device command', (done) => {
-    Devices(app, FakeAuthMiddleware(['samplegw']), null, { deviceProvider });
+    Devices(app, [FakeAuthMiddleware(['samplegw'])()], { deviceProvider });
 
     request
       .post('/api/devices/11:22:33:44:55:66/command')
@@ -127,7 +127,7 @@ describe('Devices API endpoints', () => {
   });
 
   it('should get 403 for gateway not owned by user', (done) => {
-    Devices(app, FakeAuthMiddleware(['samplegw']), null, { deviceProvider });
+    Devices(app, [FakeAuthMiddleware(['samplegw'])()], { deviceProvider });
 
     request
       .post('/api/devices/11:22:33:44:55:66/command')
@@ -152,7 +152,7 @@ describe('Devices API endpoints', () => {
         }),
       );
 
-    Devices(app, FakeAuthMiddleware(['samplegw']), null, { deviceProvider });
+    Devices(app, [FakeAuthMiddleware(['samplegw'])()], { deviceProvider });
 
     request
       .get('/api/devices/11:22:33:44:55:66')
@@ -178,7 +178,7 @@ describe('Devices API endpoints', () => {
       .returns(Promise.resolve(null),
       );
 
-    Devices(app, FakeAuthMiddleware(['samplegw']), null, { deviceProvider });
+    Devices(app, [FakeAuthMiddleware(['samplegw'])()], { deviceProvider });
 
     request
       .get('/api/devices/11:22:33:44:55:66')
@@ -202,7 +202,7 @@ describe('Devices API endpoints', () => {
         }),
       );
 
-    Devices(app, FakeAuthMiddleware(['samplegw']), null, { deviceProvider });
+    Devices(app, [FakeAuthMiddleware(['samplegw'])()], { deviceProvider });
 
     request
       .get('/api/devices/11:22:33:44:55:66')
@@ -231,7 +231,7 @@ describe('Devices API endpoints', () => {
     sinon.stub(deviceProvider, 'updateByDeviceId')
       .returns(Promise.resolve({ status: true, id: 'aaasaaa' }));
 
-    Devices(app, FakeAuthMiddleware(['samplegw']), null, { deviceProvider });
+    Devices(app, [FakeAuthMiddleware(['samplegw'])()], { deviceProvider });
 
     request
       .patch('/api/devices/11:22:33:44:55:66')
@@ -264,7 +264,7 @@ describe('Devices API endpoints', () => {
     sinon.stub(deviceProvider, 'updateByDeviceId')
       .returns(Promise.resolve({ status: true, id: 'aaasaaa' }));
 
-    Devices(app, FakeAuthMiddleware(['samplegw']), null, { deviceProvider });
+    Devices(app, [FakeAuthMiddleware(['samplegw'])()], { deviceProvider });
 
     request
       .patch('/api/devices/11:22:33:44:55:66')

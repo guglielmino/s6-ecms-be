@@ -3,7 +3,7 @@ import { transformAlert } from './alertTransformer';
 import logger from '../../../common/logger';
 import { getOverlapped } from '../../api-utils';
 
-export default function (app, AuthCheck, RoleCheck, { alertProvider }) {
+export default function (app, middlewares, { alertProvider }) {
   const router = express.Router();
 
   app.use('/api/alerts', router);
@@ -68,7 +68,7 @@ export default function (app, AuthCheck, RoleCheck, { alertProvider }) {
    *           items:
    *             $ref: '#/definitions/Alert'
    */
-  router.get('/', [AuthCheck()], (req, res) => {
+  router.get('/', middlewares, (req, res) => {
     const ownedGws = req.user.app_metadata.gateways;
     const reqGateways = req.query.gw;
 
@@ -105,7 +105,7 @@ export default function (app, AuthCheck, RoleCheck, { alertProvider }) {
    *       200:
    *         description: Ok
    */
-  router.delete('/:alertId', [AuthCheck()], (req, res) => {
+  router.delete('/:alertId', middlewares, (req, res) => {
     const ownedGws = req.user.app_metadata.gateways;
     const alertId = req.query.alertId;
 
@@ -141,7 +141,7 @@ export default function (app, AuthCheck, RoleCheck, { alertProvider }) {
    *       200:
    *         description: Ok
    */
-  router.put('/:alertId/read', [AuthCheck()], (req, res) => {
+  router.put('/:alertId/read', middlewares, (req, res) => {
     const reqAlertId = req.params.alertId;
 
     alertProvider.getAlertById(reqAlertId)

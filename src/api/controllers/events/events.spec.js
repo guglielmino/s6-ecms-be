@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import supertest from 'supertest';
 import express from 'express';
 
-import { FakeAuthMiddleware } from '../../test-helper';
+import GatewayAuth from '../../middleware/gateway-auth-middleware';
 import Events from './';
 
 import { EventsProvider } from '../../../data/mongodb';
@@ -24,10 +24,12 @@ describe('Events API endpoints', () => {
   });
 
   it('should call post for a result event', (done) => {
-    Events(app, FakeAuthMiddleware(['samplegw']), null, { eventProvider });
+    Events(app, [GatewayAuth((a, b) => Promise.resolve(true))], { eventProvider });
 
     request
       .post('/api/events/')
+      .set('x-s6-gatewayid', 'CASAFG')
+      .set('x-s6-auth-token', '123455')
       .send({ name: 'a device' })
       .expect(201, (err, res) => {
         if (err) {

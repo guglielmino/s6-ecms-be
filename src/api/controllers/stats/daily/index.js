@@ -3,7 +3,7 @@ import logger from '../../../../common/logger';
 import { getDate, getOverlapped } from '../../../api-utils';
 import { transformDailyStat } from './dailyStatTransformer';
 
-export default function (app, AuthCheck, RoleCheck, { dailyStatsProvider }) {
+export default function (app, middlewares, { dailyStatsProvider }) {
   const router = express.Router();
   app.use('/api/stats/daily', router);
   /**
@@ -45,7 +45,7 @@ export default function (app, AuthCheck, RoleCheck, { dailyStatsProvider }) {
    *           items:
    *             $ref: '#/definitions/DailyStat'
    */
-  router.get('/', [AuthCheck()], (req, res) => {
+  router.get('/', middlewares, (req, res) => {
     const date = getDate(req);
     const ownedGws = req.user.app_metadata.gateways;
     const reqGateways = req.query.gw;

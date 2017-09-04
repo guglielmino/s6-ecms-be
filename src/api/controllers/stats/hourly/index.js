@@ -14,7 +14,7 @@ function getHourlyDates(date) {
   return todayHours;
 }
 
-export default function (app, AuthCheck, RoleCheck, { hourlyStatsProvider }) {
+export default function (app, middlewares, { hourlyStatsProvider }) {
   const router = express.Router();
   app.use('/api/stats/hourly', router);
 
@@ -56,7 +56,7 @@ export default function (app, AuthCheck, RoleCheck, { hourlyStatsProvider }) {
    *           items:
    *             $ref: '#/definitions/HourlyStat'
    */
-  router.get('/', [AuthCheck()], (req, res) => {
+  router.get('/', middlewares, (req, res) => {
     const date = getDate(req);
     const ownedGws = req.user.app_metadata.gateways;
     const reqGateways = req.query.gw;

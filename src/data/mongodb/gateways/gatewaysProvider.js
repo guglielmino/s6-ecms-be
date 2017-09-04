@@ -23,6 +23,10 @@ export default function (database) {
         },
       });
     },
+
+    getGateway(gatewayCode) {
+      return queryDataProvider.getOne({ code: gatewayCode });
+    },
   });
 
   return Object.assign({}, dataProvider, GatewaysProvider());

@@ -2,7 +2,7 @@ import sinon from 'sinon';
 import chai from 'chai';
 
 import EventsRuleEngine from '../../services/eventsRuleEngine';
-import LwtHandler from '../../events/handlers/device/lwt/lwtHandler';
+import LwtHandler from '../../events/handlers/device/sonoff/lwt/lwtHandler';
 import LwtRules from './sonoff-lwt';
 
 chai.should();

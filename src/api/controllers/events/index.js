@@ -4,7 +4,7 @@ import emitter from '../../../streams/emitter';
 import logger from '../../../common/logger';
 
 /* eslint-disable no-unused-vars */
-export default function (app, AuthCheck, RoleCheck, { eventProvider }) {
+export default function (app, middlewares, { eventProvider }) {
   const router = express.Router();
 
 /* eslint-enable no-unused-vars */
@@ -23,7 +23,7 @@ export default function (app, AuthCheck, RoleCheck, { eventProvider }) {
    *       201:
    *         description: Created
    */
-  router.post('/', (req, res) => {
+  router.post('/', middlewares, (req, res) => {
     try {
       emitter.emit('event', req.body);
       res.sendStatus(201);

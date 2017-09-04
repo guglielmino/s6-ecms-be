@@ -18,7 +18,7 @@
  */
 
 import * as consts from '../../../consts';
-import energyMapper from '../../events/mapper/energyMapper';
+import energyMapper from '../../events/mapper/sonoff/energyMapper';
 
 const EnergyRules = (ruleEngine, {
   dailyHandler,

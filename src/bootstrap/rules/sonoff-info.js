@@ -19,7 +19,7 @@
  */
 
 import * as consts from '../../../consts';
-import infoMapper from '../../events/mapper/infoMapper';
+import infoMapper from '../../events/mapper/sonoff/infoMapper';
 
 const InfoRules = (ruleEngine, {
   deviceHandler,

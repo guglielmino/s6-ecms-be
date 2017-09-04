@@ -51,7 +51,7 @@ describe('HourlyStats API endpoints', () => {
         }]),
       );
 
-    HourlyStats(app, FakeAuthMiddleware(['gwtest']), null, { hourlyStatsProvider });
+    HourlyStats(app, [FakeAuthMiddleware(['gwtest'])()], { hourlyStatsProvider });
 
     request
       .get('/api/stats/hourly?gw=gwtest')

@@ -38,7 +38,7 @@ describe('Alerts API endpoints', () => {
   });
 
   it('should get alerts for a passed gateway', (done) => {
-    Alerts(app, FakeAuthMiddleware(['samplegw', 'testgw']), null, { alertProvider });
+    Alerts(app, [FakeAuthMiddleware(['samplegw', 'testgw'])()], { alertProvider });
     const stub = sinon.stub(alertProvider, 'getAlerts')
       .returns(Promise.resolve([{
           gateway: 'samplegw',
@@ -64,7 +64,7 @@ describe('Alerts API endpoints', () => {
   });
 
   it('should get alerts for some gateways', (done) => {
-    Alerts(app, FakeAuthMiddleware(['samplegw', 'testgw']), null, { alertProvider });
+    Alerts(app, [FakeAuthMiddleware(['samplegw', 'testgw'])()], { alertProvider });
     const stub = sinon.stub(alertProvider, 'getAlerts')
       .returns(Promise.resolve([{
           gateway: 'samplegw',
@@ -90,7 +90,7 @@ describe('Alerts API endpoints', () => {
   });
 
   it('should responds 204 for not owned gateways', (done) => {
-    Alerts(app, FakeAuthMiddleware(['samplegw', 'testgw']), null, { alertProvider });
+    Alerts(app, [FakeAuthMiddleware(['samplegw', 'testgw'])()], { alertProvider });
     const stub = sinon.stub(alertProvider, 'getAlerts')
       .returns(Promise.resolve([]),
       );
@@ -121,7 +121,7 @@ describe('Alerts API endpoints', () => {
       status: true,
     });
 
-    Alerts(app, FakeAuthMiddleware(['samplegw']), null, { alertProvider });
+    Alerts(app, [FakeAuthMiddleware(['samplegw'])()], { alertProvider });
 
     request
       .put('/api/alerts/58c7b3e46b835bf90cfdffeb/read')
@@ -148,7 +148,7 @@ describe('Alerts API endpoints', () => {
 
     const stubDelete = sinon.stub(alertProvider, 'deleteById').returns(true);
 
-    Alerts(app, FakeAuthMiddleware(['samplegw']), null, { alertProvider });
+    Alerts(app, [FakeAuthMiddleware(['samplegw'])()], { alertProvider });
 
     request
       .delete('/api/alerts/58c7b3e46b835bf90cfdffeb')
@@ -173,7 +173,7 @@ describe('Alerts API endpoints', () => {
         id: '58c7b3e46b835bf90cfdffeb',
       }));
 
-    Alerts(app, FakeAuthMiddleware(['samplegw']), null, { alertProvider });
+    Alerts(app, [FakeAuthMiddleware(['samplegw'])()], { alertProvider });
 
     request
       .delete('/api/alerts/58c7b3e46b835bf90cfdffeb')

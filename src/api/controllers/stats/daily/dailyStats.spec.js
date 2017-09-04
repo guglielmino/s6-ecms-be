@@ -49,7 +49,7 @@ describe('DailyStats API endpoints', () => {
         }]),
       );
 
-    DailyStats(app, FakeAuthMiddleware(['gwtest']), null, { dailyStatsProvider });
+    DailyStats(app, [FakeAuthMiddleware(['gwtest'])()], { dailyStatsProvider });
 
     request
       .get('/api/stats/daily/?gw=gwtest')

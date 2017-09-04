@@ -50,7 +50,7 @@ describe('Gateway API endpoints', () => {
         }]),
       );
 
-    Gateways(app, FakeAuthMiddleware(['gwtest', 'gwtest2', 'gwtest3']), null, { gatewayProvider });
+    Gateways(app, [FakeAuthMiddleware(['gwtest', 'gwtest2', 'gwtest3'])()], { gatewayProvider });
 
     request
       .get('/api/gateways/gwtest')
