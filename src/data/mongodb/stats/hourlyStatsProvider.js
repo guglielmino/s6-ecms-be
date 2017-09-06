@@ -81,8 +81,6 @@ export default function (database) {
             grouping = groupFields.map(field => ({ [field]: `$${field}` }));
           }
 
-          console.log(dayDates);
-
           col.aggregate([{
             $match: {
               $and: [
@@ -103,7 +101,6 @@ export default function (database) {
               if (error) {
                 reject(error);
               } else {
-                console.log(docs);
                 resolve(docs);
               }
             });
