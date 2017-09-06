@@ -43,13 +43,12 @@ describe('HourlyStats API endpoints', () => {
     const stub = sinon.stub(hourlyStatsProvider, 'getHourlyStat')
       .returns(Promise.resolve(
         [{
-          _id: 12,
+          _id: { hour: 12, deviceId: '11:22:33:44:55:66' },
           date: Date.parse('2017-03-16T12:00:00.000Z'),
-          deviceId: '11:22:33:44:55:66',
           gateway: 'test_gateway1',
           power: 20,
         }]),
-      );
+    );
 
     HourlyStats(app, [FakeAuthMiddleware(['gwtest'])()], { hourlyStatsProvider });
 

@@ -22,7 +22,7 @@ const getQueryDate = (date) => {
     query = {
       date: {
         $gte: getRefDate(date[0]),
-        $lt: getRefDate(date[1]),
+        $lte: getRefDate(date[1]),
       },
     };
   } else {
@@ -87,7 +87,8 @@ export default function (database) {
               _id: '$date',
               today: { $sum: '$today' },
             },
-          }])
+          },
+          ])
             .toArray((error, docs) => {
               if (error) {
                 reject(error);

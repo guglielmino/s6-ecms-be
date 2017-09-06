@@ -5,7 +5,7 @@ import AlertBuilder from '../../../builders/alertBuilder';
 
 // When same alert (same device and gateway) is received in less than
 // ALERT_DELAY_SEC old alert is updated. Else a new one is created
-const ALERT_DELAY_SEC = 10;
+const ALERT_DELAY_SEC = 900;
 
 
 const needsNewAlert = (alert, now, alertDelay) => {

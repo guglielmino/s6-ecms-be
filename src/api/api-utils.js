@@ -7,6 +7,14 @@ const getDate = (req) => {
   return date;
 };
 
+const getGroupField = (req) => {
+  let group = null;
+  if (req.query.groupBy) {
+    group = req.query.groupBy.split(',');
+  }
+  return group;
+};
+
 const getOverlapped = (owned, requested) => (
   owned.filter(item => requested.indexOf(item) !== -1)
 );
@@ -14,10 +22,11 @@ const getOverlapped = (owned, requested) => (
 const createExcelConf = (data) => {
   const conf = {};
   conf.cols = Object.keys(data[0]).map(c => ({ caption: c, type: 'string' }));
-  conf.rows = data.map(r => Object.values(r));
+  conf.rows = data.map(r => Object.values(r).map(v => v.toString()));
   return conf;
 };
 
 export { getDate,
   getOverlapped,
-  createExcelConf }; // eslint-disable-line import/prefer-default-export
+  createExcelConf,
+  getGroupField }; // eslint-disable-line import/prefer-default-export

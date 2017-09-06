@@ -1,11 +1,13 @@
 import express from 'express';
+import nodeExcel from 'excel-export';
+import * as _ from 'lodash';
 import logger from '../../../../common/logger';
-import { getDate, getOverlapped } from '../../../api-utils';
+import { getDate, getOverlapped, getGroupField, createExcelConf } from '../../../api-utils';
 import { transformHourlyStat } from './hourlyStatTransformer';
 
-function getHourlyDates(date) {
+function getHourlyDates(date, startHour) {
   const todayHours = [];
-  date.setUTCHours(7);
+  date.setUTCHours(startHour || 7);
   while (date.getUTCHours() < 23) {
     date.setUTCHours(date.getUTCHours() + 1);
     todayHours.push(new Date(date));
@@ -60,16 +62,29 @@ export default function (app, middlewares, { hourlyStatsProvider }) {
     const date = getDate(req);
     const ownedGws = req.user.app_metadata.gateways;
     const reqGateways = req.query.gw;
+    const format = req.query.format;
+    const group = getGroupField(req);
+    const startHour = req.query.startHour;
 
     const gws = getOverlapped(ownedGws, reqGateways);
 
     hourlyStatsProvider
-      .getHourlyStat(getHourlyDates(date), gws)
+      .getHourlyStat(getHourlyDates(date, startHour), gws, group)
       .then((stat) => {
         if (stat.length === 0) {
           res.sendStatus(204);
         } else {
-          res.json(stat.map(s => transformHourlyStat(s)));
+          const result = stat.filter(s => !_.isEmpty(s))
+          .map(s => transformHourlyStat(s));
+          if (format === 'excel') {
+            const conf = createExcelConf(result);
+            const excel = nodeExcel.execute(conf);
+            res.setHeader('Content-Type', 'application/vnd.openxmlformats');
+            res.setHeader('Content-Disposition', 'attachment');
+            res.end(excel, 'binary');
+          } else {
+            res.json(result);
+          }
         }
       })
       .catch((err) => {

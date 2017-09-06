@@ -63,7 +63,7 @@ export default function (database) {
       });
     },
 
-    getHourlyStat(dates, gateways) {
+    getHourlyStat(dates, gateways, groupFields) {
       const dayDates = dates.map(d => getRefDateTime(d));
 
       return new Promise((resolve, reject) => {
@@ -71,6 +71,17 @@ export default function (database) {
           if (err) {
             reject(err);
           }
+
+          let grouping = [];
+
+          if (groupFields) {
+            if (!Array.isArray(groupFields)) {
+              reject('Group field must be an array');
+            }
+            grouping = groupFields.map(field => ({ [field]: `$${field}` }));
+          }
+
+          console.log(dayDates);
 
           col.aggregate([{
             $match: {
@@ -81,16 +92,18 @@ export default function (database) {
             },
           }, {
             $group: {
-              _id: { $hour: '$date' },
+              _id: Object.assign({}, { hour: { $hour: '$date' } }, ...grouping),
               power: {
                 $sum: '$power',
               },
             },
-          }])
+          },
+          ])
             .toArray((error, docs) => {
               if (error) {
                 reject(error);
               } else {
+                console.log(docs);
                 resolve(docs);
               }
             });
