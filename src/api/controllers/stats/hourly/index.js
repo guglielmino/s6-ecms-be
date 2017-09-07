@@ -77,7 +77,7 @@ export default function (app, middlewares, { hourlyStatsProvider }) {
           const result = stat.filter(s => !_.isEmpty(s))
           .map(s => transformHourlyStat(s));
           if (format === 'excel') {
-            const conf = createExcelConf(result);
+            const conf = createExcelConf(_.orderBy(result, 'hour'));
             const excel = nodeExcel.execute(conf);
             res.setHeader('Content-Type', 'application/vnd.openxmlformats');
             res.setHeader('Content-Disposition', 'attachment');

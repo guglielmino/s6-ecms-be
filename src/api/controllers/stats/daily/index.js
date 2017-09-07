@@ -65,7 +65,7 @@ export default function (app, middlewares, { dailyStatsProvider }) {
           const result = stat.filter(s => !_.isEmpty(s))
           .map(s => transformDailyStat(s, format));
           if (format === 'excel') {
-            const conf = createExcelConf(result);
+            const conf = createExcelConf(_.orderBy(result, 'date'));
             const excel = nodeExcel.execute(conf);
             res.setHeader('Content-Type', 'application/vnd.openxmlformats');
             res.setHeader('Content-Disposition', 'attachment');
