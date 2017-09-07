@@ -92,7 +92,7 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jasmine": "^2.2.0",
     "mocha": "^3.2.0",
-    "mockery": "^2.1.1",
+    "mockery": "2.1.0",
     "node-mocks-http": "^1.6.4",
     "nodemon": "^1.11.0",
     "rewire": "^2.5.2",
