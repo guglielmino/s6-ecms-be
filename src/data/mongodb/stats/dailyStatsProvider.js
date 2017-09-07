@@ -15,6 +15,22 @@ const getRefDate = (date) => {
   return dayDate;
 };
 
+/* If date is an array of dates create the query to  */
+const getQueryDate = (date) => {
+  let query = {};
+  if (Array.isArray(date)) {
+    query = {
+      date: {
+        $gte: getRefDate(date[0]),
+        $lte: getRefDate(date[1]),
+      },
+    };
+  } else {
+    query = { date: { $eq: getRefDate(date) } };
+  }
+  return query;
+};
+
 export default function (database) {
   const params = {
     db: database,
@@ -54,19 +70,16 @@ export default function (database) {
     },
 
     getDailyStat(date, gateways) {
-      const dayDate = getRefDate(date);
-
       return new Promise((resolve, reject) => {
         db.collection(collectionName, (err, col) => {
           if (err) {
             reject(err);
           }
-
           col.aggregate([{
             $match: {
               $and: [
                 { gateway: { $in: gateways } },
-                { date: { $eq: dayDate } },
+                getQueryDate(date),
               ],
             },
           }, {
@@ -74,7 +87,8 @@ export default function (database) {
               _id: '$date',
               today: { $sum: '$today' },
             },
-          }])
+          },
+          ])
             .toArray((error, docs) => {
               if (error) {
                 reject(error);

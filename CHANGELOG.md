@@ -1,5 +1,5 @@
-<a name="2.0.0"></a>
-# 2.0.0 (2017-09-04)
+<a name="2.1.0"></a>
+# 2.1.0 (2017-09-07)
 
 
 ### Bug Fixes
@@ -49,7 +49,11 @@
 * Device command to update firmware ([17533b8](https://gitlab.com/smart-office-iot/iot-project-server/commit/17533b8))
 * Devices provider refactoring to decrease code duplication ([de4f749](https://gitlab.com/smart-office-iot/iot-project-server/commit/de4f749))
 * Events provider refactoring to decrease code duplication ([5dbce28](https://gitlab.com/smart-office-iot/iot-project-server/commit/5dbce28))
+* Export excel for daily statics ([d6b1d11](https://gitlab.com/smart-office-iot/iot-project-server/commit/d6b1d11))
+* Export excel for hourly statistics ([4281b11](https://gitlab.com/smart-office-iot/iot-project-server/commit/4281b11))
 * Gateway provider refactoring to reduce code duplication ([b7128b1](https://gitlab.com/smart-office-iot/iot-project-server/commit/b7128b1))
+* Order data for export excel ([029b772](https://gitlab.com/smart-office-iot/iot-project-server/commit/029b772))
+* Remove gateway field in excel export for daily stats ([d6bdbfd](https://gitlab.com/smart-office-iot/iot-project-server/commit/d6bdbfd))
 * Stats provider refactoring to decrease code duplication ([b0c6f5b](https://gitlab.com/smart-office-iot/iot-project-server/commit/b0c6f5b))
 
 

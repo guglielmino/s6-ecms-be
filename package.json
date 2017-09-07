@@ -1,6 +1,6 @@
 {
   "name": "server",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "",
   "main": "app.js",
   "scripts": {
@@ -55,7 +55,8 @@
     "auth0": "^2.6.0",
     "body-parser": "^1.17.0",
     "cors": "^2.8.1",
-    "dotenv": "^2.0.0",
+    "dotenv": "^2.1.0",
+    "excel-export": "^0.5.1",
     "express": "^4.14.0",
     "express-jwt": "^5.1.0",
     "express-validation": "^1.0.2",
@@ -91,7 +92,7 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jasmine": "^2.2.0",
     "mocha": "^3.2.0",
-    "mockery": "^2.0.0",
+    "mockery": "^2.1.0",
     "node-mocks-http": "^1.6.4",
     "nodemon": "^1.11.0",
     "rewire": "^2.5.2",
