@@ -1,5 +1,5 @@
-<a name="2.1.1"></a>
-## 2.1.1 (2017-09-07)
+<a name="2.1.2"></a>
+## 2.1.2 (2017-09-07)
 
 
 ### Bug Fixes
@@ -15,6 +15,7 @@
 * Fix get alert in update read status endpoint ([612d7ba](https://gitlab.com/smart-office-iot/iot-project-server/commit/612d7ba))
 * Fix get of nonexistent device and read of device id from path ([07c7f16](https://gitlab.com/smart-office-iot/iot-project-server/commit/07c7f16))
 * Fix modify of an existing device for Info1 event ([87a21d1](https://gitlab.com/smart-office-iot/iot-project-server/commit/87a21d1))
+* Fix package version ([727e893](https://gitlab.com/smart-office-iot/iot-project-server/commit/727e893))
 * Fix package versione ([c6e3d75](https://gitlab.com/smart-office-iot/iot-project-server/commit/c6e3d75))
 * Fix payload change for power command ([a9771d6](https://gitlab.com/smart-office-iot/iot-project-server/commit/a9771d6))
 * Fix processing command to update firmware ([26cb35e](https://gitlab.com/smart-office-iot/iot-project-server/commit/26cb35e))
