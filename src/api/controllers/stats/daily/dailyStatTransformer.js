@@ -6,7 +6,6 @@ const transformDailyStatForJson = stat => ({
 
 const transformDailyStatForExcel = stat => ({
   date: stat._id.toISOString().slice(0, 10), // eslint-disable-line no-underscore-dangle
-  gateway: stat.gateway ? stat.gateway : '',
   consume: stat.today,
 });
 
