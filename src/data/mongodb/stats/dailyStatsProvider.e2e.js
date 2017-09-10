@@ -38,6 +38,7 @@ describe('daily statistics provider', () => {
       .updateDailyStat({
         date: new Date(),
         gateway: 'test_gateway',
+        deviceId: '00:11:22:33:44:55',
         today: value,
       })
       .then((res) => {
@@ -47,7 +48,26 @@ describe('daily statistics provider', () => {
       .catch(err => done(err));
   });
 
-  it('should get daily stats for many gateways', (done) => {
+  it('should throws if deviceId is missing', (done) => {
+    const value = Math.random();
+    subject = DailyStatsProvider(db);
+    subject
+      .updateDailyStat({
+        date: new Date(),
+        gateway: 'test_gateway',
+        today: value,
+      })
+      .then((res) => {
+        done(new Error('Should not complete'));
+      })
+      .catch(err => {
+        err.should.be.not.null;
+        done();
+
+      });
+  });
+
+  it('should get daily stats for many gateways and devices', (done) => {
     const todayDate = new Date();
     const value = Math.random();
     subject = DailyStatsProvider(db);
@@ -55,6 +75,7 @@ describe('daily statistics provider', () => {
       .updateDailyStat({
         date: todayDate,
         gateway: 'test_gateway1',
+        deviceId: '00:11:22:33:44:55',
         today: 100,
       })
       .then(() => {
@@ -63,6 +84,7 @@ describe('daily statistics provider', () => {
           .updateDailyStat({
             date: todayDate,
             gateway: 'test_gateway2',
+            deviceId: '66:55:44:33:22:11',
             today: 25.4,
           });
       })
@@ -79,7 +101,7 @@ describe('daily statistics provider', () => {
   });
 
 
-  it('should get last daily compsumption', (done) => {
+  it('should get last daily compsumption for one gateway, on device and multiple events', (done) => {
     const todayDate = new Date();
 
     const value = Math.random();
@@ -88,6 +110,7 @@ describe('daily statistics provider', () => {
       .updateDailyStat({
         date: todayDate,
         gateway: 'test_gateway1',
+        deviceId: '00:11:22:33:44:55',
         today: 23.45,
       })
       .then(() => {
@@ -96,6 +119,7 @@ describe('daily statistics provider', () => {
           .updateDailyStat({
             date: todayDate,
             gateway: 'test_gateway1',
+            deviceId: '00:11:22:33:44:55',
             today: 25.4,
           });
       })
@@ -119,6 +143,7 @@ describe('daily statistics provider', () => {
       .updateDailyStat({
         date: todayDate,
         gateway: 'test_gateway1',
+        deviceId: '00:11:22:33:44:55',
         today: 23.45,
       })
       .then(() => {
@@ -126,6 +151,7 @@ describe('daily statistics provider', () => {
           .updateDailyStat({
             date: addDaysToDate(todayDate, 2),
             gateway: 'test_gateway1',
+            deviceId: '00:11:22:33:44:55',
             today: 10.3,
           });
       })
@@ -134,6 +160,7 @@ describe('daily statistics provider', () => {
           .updateDailyStat({
             date: addDaysToDate(todayDate, 5),
             gateway: 'test_gateway1',
+            deviceId: '00:11:22:33:44:55',
             today: 35.2,
           });
       })

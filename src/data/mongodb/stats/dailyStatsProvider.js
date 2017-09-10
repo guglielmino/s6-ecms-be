@@ -38,20 +38,22 @@ export default function (database) {
   };
 
   const dataProvider = DataProvider(params);
-  dataProvider.createIndex({ date: 1, gateway: 1 });
+  dataProvider.createIndex({ date: 1, gateway: 1, deviceId: 1 });
 
   const DailyStatsProvider = ({ db, collectionName }) => ({
-    updateDailyStat({ date, gateway, today }) {
+    updateDailyStat({ date, gateway, deviceId, today }) {
       const dayDate = getRefDate(date);
 
+
       return new Promise((resolve, reject) => {
+        if (!deviceId) reject('DeviceId is mandatory');
         db.collection(collectionName, (err, col) => {
           if (err) {
             reject(err);
           }
 
           col.updateOne(
-            { date: dayDate, gateway },
+            { date: dayDate, gateway, deviceId },
             {
               $set: { today },
             },

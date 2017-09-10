@@ -13,6 +13,7 @@ const DailyStatHandler = dailyStatsProvider => ({
       dailyStatsProvider.updateDailyStat({
         date: event.Payload.Time,
         gateway: event.GatewayId,
+        deviceId: event.Payload.DeviceId,
         today: event.Payload.Today,
       }).then(() => resolve())
         .catch((err) => {
