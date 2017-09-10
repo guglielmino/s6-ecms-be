@@ -15,4 +15,5 @@ const transformDailyStat = (stat, format) => {
     transformDailyStatForJson(stat);
 };
 
-export { transformDailyStat }; // eslint-disable-line import/prefer-default-export
+export { transformDailyStat, transformDailyStatForExcel,
+  transformDailyStatForJson };

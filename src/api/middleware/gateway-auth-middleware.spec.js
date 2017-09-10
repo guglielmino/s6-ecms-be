@@ -8,7 +8,7 @@ chai.should();
 const expect = chai.expect;
 
 
-describe('Middleware test', () => {
+describe('Gateway Auth Middleware test', () => {
   let request = {};
   let response = {};
 
