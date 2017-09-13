@@ -1,8 +1,7 @@
 import express from 'express';
-import nodeExcel from 'excel-export';
 import * as _ from 'lodash';
 import logger from '../../../../common/logger';
-import { getDate, getOverlapped, getGroupField, createExcelConf } from '../../../api-utils';
+import { getDate, getOverlapped, getGroupField } from '../../../api-utils';
 import { transformHourlyStat } from './hourlyStatTransformer';
 
 function getHourlyDates(date) {
@@ -62,7 +61,6 @@ export default function (app, middlewares, { hourlyStatsProvider }) {
     const date = getDate(req);
     const ownedGws = req.user.app_metadata.gateways;
     const reqGateways = req.query.gw;
-    const format = req.query.format;
     const group = getGroupField(req);
 
     const gws = getOverlapped(ownedGws, reqGateways);
@@ -73,17 +71,11 @@ export default function (app, middlewares, { hourlyStatsProvider }) {
         if (stat.length === 0) {
           res.sendStatus(204);
         } else {
-          const result = stat.filter(s => !_.isEmpty(s))
-          .map(s => transformHourlyStat(s));
-          if (format === 'excel') {
-            const conf = createExcelConf(_.orderBy(result, 'hour'));
-            const excel = nodeExcel.execute(conf);
-            res.setHeader('Content-Type', 'application/vnd.openxmlformats');
-            res.setHeader('Content-Disposition', 'attachment');
-            res.end(excel, 'binary');
-          } else {
-            res.json(result);
-          }
+          const result = stat.filter(s => !_.isEmpty(s));
+          res.sendData(result, {
+            'application/json': d => d.map(s => transformHourlyStat(s)),
+            'application/vnd.ms-excel': d => d.map(s => transformHourlyStat(s)),
+          });
         }
       })
       .catch((err) => {

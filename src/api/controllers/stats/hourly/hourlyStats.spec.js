@@ -7,6 +7,7 @@ import mockery from "mockery";
 
 import { FakeAuthMiddleware } from '../../../test-helper';
 import HourlyStats from './';
+import contentNegotiation from '../../../middleware/content-negotiation-middleware';
 
 import { HourlyStatsProvider } from '../../../../data/mongodb';
 
@@ -30,6 +31,8 @@ describe('HourlyStats API endpoints', () => {
     mockery.registerMock('../../common/logger', { log: console.log });
 
     app = express();
+    app.use(contentNegotiation());
+    
     request = supertest(app);
     const db = {
       collection: () => {
