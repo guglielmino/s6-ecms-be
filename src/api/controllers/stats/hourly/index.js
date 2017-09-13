@@ -5,9 +5,9 @@ import logger from '../../../../common/logger';
 import { getDate, getOverlapped, getGroupField, createExcelConf } from '../../../api-utils';
 import { transformHourlyStat } from './hourlyStatTransformer';
 
-function getHourlyDates(date, startHour) {
+function getHourlyDates(date) {
   const todayHours = [];
-  date.setUTCHours(startHour || 7);
+  date.setUTCHours(0);
   while (date.getUTCHours() < 23) {
     date.setUTCHours(date.getUTCHours() + 1);
     todayHours.push(new Date(date));
@@ -64,12 +64,11 @@ export default function (app, middlewares, { hourlyStatsProvider }) {
     const reqGateways = req.query.gw;
     const format = req.query.format;
     const group = getGroupField(req);
-    const startHour = req.query.startHour;
 
     const gws = getOverlapped(ownedGws, reqGateways);
 
     hourlyStatsProvider
-      .getHourlyStat(getHourlyDates(date, startHour), gws, group)
+      .getHourlyStat(getHourlyDates(date), gws, group)
       .then((stat) => {
         if (stat.length === 0) {
           res.sendStatus(204);
@@ -91,6 +90,24 @@ export default function (app, middlewares, { hourlyStatsProvider }) {
         logger.log('error', err);
         res.sendStatus(500);
       });
+  });
+
+  router.get('/:deviceId', middlewares, (req, res) => {
+    const deviceId = req.params.deviceId;
+    const date = req.query.date;
+    const reqGateways = req.query.gw;
+    const ownedGws = req.user.app_metadata.gateways;
+
+    const gws = getOverlapped(ownedGws, reqGateways);
+
+    hourlyStatsProvider.getHourlyStatByDevice(date, gws, deviceId)
+    .then((stat) => {
+      if (stat.length === 0) {
+        res.sendStatus(204);
+      } else {
+        res.json(stat.map(s => transformHourlyStat(s)));
+      }
+    });
   });
 
   return router;

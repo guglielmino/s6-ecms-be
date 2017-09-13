@@ -70,4 +70,35 @@ describe('HourlyStats API endpoints', () => {
         }
       });
   });
+
+  it('should get hourly consume for a given deviceId', (done) => {
+    const date = new Date();
+
+    const stub = sinon.stub(hourlyStatsProvider, 'getHourlyStatByDevice')
+      .returns(Promise.resolve(
+        [{
+          _id: 123,
+          deviceId: '11:22:33:44:55:66',
+          power: 20,
+        }]),
+    );
+
+    HourlyStats(app, [FakeAuthMiddleware(['gwtest'])()], { hourlyStatsProvider });
+
+    request
+      .get(`/api/stats/hourly/11:22:33:44:55:66?gw=gwtest&date=${date}`)
+      .expect(200, (err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          stub.calledWith(sinon.match.any, ['gwtest'], '11:22:33:44:55:66')
+            .should.be.true;
+          const response = res.body;
+          response.length.should.be.eq(1);
+          response[0].deviceId.should.be.eq('11:22:33:44:55:66');
+          response[0].power.should.be.eq(20);
+          done();
+        }
+      });
+  })
 });

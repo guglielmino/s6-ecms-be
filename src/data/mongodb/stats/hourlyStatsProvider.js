@@ -1,4 +1,4 @@
-import { DataProvider } from '../data';
+import { DataProvider, InternalDataProvider } from '../data';
 
 /**
  * Hourly stats are stored by convention in the event date
@@ -24,6 +24,8 @@ export default function (database) {
 
   const dataProvider = DataProvider(params);
   dataProvider.createIndex({ date: 1, gateway: 1, deviceId: 1 });
+
+  const queryDataProvider = InternalDataProvider(params);
 
   const HourlyStatsProvider = ({ db, collectionName }) => ({
     updateHourlyStat({ date, gateway, deviceId, power }) {
@@ -56,9 +58,9 @@ export default function (database) {
 
     getHourlyStatByDevice(date, gateway, deviceId) {
       const dayDate = getRefDateTime(date);
-      return dataProvider.getMany({
+      return queryDataProvider.getMany({
         date: dayDate,
-        gateway,
+        gateway: { $in: gateway },
         deviceId,
       });
     },

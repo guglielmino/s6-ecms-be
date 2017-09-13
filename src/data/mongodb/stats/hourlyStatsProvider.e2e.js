@@ -77,6 +77,42 @@ describe('hourly statistics provider', () => {
       .catch(err => done(err));
   });
 
+  it('should get stats for given device and hour', (done) => {
+    const randomHourDate = new Date();
+    const datePlusOneHour = new Date(randomHourDate);
+    datePlusOneHour.setHours(datePlusOneHour.getHours() + 1);
+
+    const value = Math.random();
+    subject = HourlyStatsProvider(db);
+    subject
+      .updateHourlyStat({
+        date: randomHourDate,
+        gateway: 'test_gateway1',
+        deviceId: '11:22:33:44:55:66',
+        power: 5.0,
+      })
+      .then(() => {
+        return subject
+          .updateHourlyStat({
+            date: datePlusOneHour,
+            gateway: 'test_gateway1',
+            deviceId: '22:44:11:44:77',
+            power: 6.0,
+          });
+      })
+      .then((res) => {
+        return subject
+          .getHourlyStatByDevice(datePlusOneHour, ['test_gateway1'], '22:44:11:44:77');
+      })
+      .then((res) => {
+        res.length.should.be.eq(1);
+        res[0].power.should.be.eq(6.0);
+        res[0].deviceId.should.be.eq('22:44:11:44:77');
+        done();
+      })
+      .catch(err => done(err));
+  });
+
   it('should get stats array for hours of today', (done) => {
     const randomHourDate = new Date();
     const datePlusOneHour = new Date(randomHourDate);
