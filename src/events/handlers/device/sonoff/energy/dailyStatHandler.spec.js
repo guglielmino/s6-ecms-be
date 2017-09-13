@@ -37,7 +37,7 @@ describe('DailyStatHandler', () => {
       GatewayId: 'test',
       Type: 'ENERGY',
       Payload: {
-        DeviceId: 'tele/lamp_test/TELEMETRY',
+        DeviceId: '00:11:22:33:44:55',
         Yesterday: 0.031,
         Today: 0.013,
         Period: 0,
@@ -50,13 +50,15 @@ describe('DailyStatHandler', () => {
       },
     };
 
-    const statsStub = sinon.stub(dailyStatsProvider, 'updateDailyStat').returns(Promise.resolve());
+    const statsStub = sinon.stub(dailyStatsProvider, 'updateDailyStat')
+      .returns(Promise.resolve());
 
     subject = new DailyStatHandler(dailyStatsProvider);
     subject.process(event)
       .then(() => {
         statsStub.calledOnce.should.be.true;
-        statsStub.calledWith({date: date, gateway: 'test', today: 0.013}).should.be.true;
+        statsStub.calledWith({ date: date, gateway: 'test', deviceId: '00:11:22:33:44:55', today: 0.013 })
+          .should.be.true;
         done();
       })
       .catch(err => done(err));

@@ -1,5 +1,3 @@
-
-
 import * as _ from 'lodash';
 
 export default roles => (req, res, next) => {
