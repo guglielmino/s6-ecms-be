@@ -4,7 +4,7 @@ import supertest from 'supertest';
 
 import express from 'express';
 import mockery from "mockery";
-
+import bodyParser from 'body-parser';
 import { FakeAuthMiddleware } from '../../test-helper';
 import Gateways from './index';
 
@@ -29,6 +29,7 @@ describe('Gateway API endpoints', () => {
     mockery.registerMock('../../common/logger', { log: console.log });
 
     app = express();
+    app.use(bodyParser.json());
     request = supertest(app);
 
     const db = {
@@ -71,4 +72,60 @@ describe('Gateway API endpoints', () => {
         }
       });
   });
+
+  it('should accept gateway description change', (done) => {
+    const getGatewayStub = sinon.stub(gatewayProvider, 'getGateway')
+      .returns(Promise.resolve({
+          description: 'Sample description',
+          code: 'samplegw',
+          authKey: '0123nhjk,',
+        }),
+      );
+
+    sinon.stub(gatewayProvider, 'updateByGatewayCode')
+      .returns(Promise.resolve({ status: true, id: 'aaasaaa' }));
+
+    Gateways(app, [FakeAuthMiddleware(['samplegw'])()], { gatewayProvider });      
+
+    request
+      .patch('/api/gateways/samplegw')
+      .send({ op: 'replace', path: '/description', value: 'new descripion' })
+      .expect(200, (err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          gatewayProvider.updateByGatewayCode
+            .calledWith('samplegw', sinon.match({ description: 'new descripion' }))
+            .should.be.true;
+          done();
+        }
+      });
+  });
+
+  it('should NOT accept gateway code change', (done) => {
+    const getGatewayStub = sinon.stub(gatewayProvider, 'getGateway')
+      .returns(Promise.resolve({
+          description: 'Sample description',
+          code: 'samplegw',
+          authKey: '0123nhjk,',
+        }),
+      );
+
+    sinon.stub(gatewayProvider, 'updateByGatewayCode')
+      .returns(Promise.resolve({ status: true, id: 'aaasaaa' }));
+
+    Gateways(app, [FakeAuthMiddleware(['samplegw'])()], { gatewayProvider });
+
+    request
+      .patch('/api/gateways/samplegw')
+      .send({ op: 'replace', path: '/code', value: 'new descripion' })
+      .expect(400, (err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          done();
+        }
+      });
+  });
+
 });

@@ -71,4 +71,36 @@ describe('gatewayProvider', () => {
       .catch(err => done(err));
   })
 
+  it('should update gateway with new object according to code provided', (done) => {
+    subject = GatewaysProvider(db);
+    subject
+      .add({
+        code: "zara2",
+        description: "Negozio Zara 2, Milano"
+      })
+      .then(res => subject.add({
+        code: "zara1",
+        description: "Negozio Zara 1, Milano"
+      }))
+      .then(res => subject.add({
+        code: "DevelopmentGateway",
+        description: "Test gateway"
+      }))
+      .then(res => subject.updateByGatewayCode("zara5", {
+        code: "zara5",
+        description: "upsert gateway",
+      }))
+      .then(res => subject.getGateway('zara5'))
+      .then(res => subject.updateByGatewayCode("zara5", {
+        code: "zara5",
+        description: "upsert gateway change",
+      }))
+      .then(res => subject.getGateway('zara5'))
+      .then(res => {
+        res.description.should.be.eq("upsert gateway change");
+        done();
+      })
+      .catch(err => done(err));
+  })
+
 });

@@ -240,6 +240,7 @@ describe('Devices API endpoints', () => {
         if (err) {
           done(err);
         } else {
+          console.log(deviceProvider.updateByDeviceId.args);
           deviceProvider.updateByDeviceId
             .calledWith('11:22:33:44:55:66', sinon.match({ description: 'new descripion' }))
             .should.be.true;
