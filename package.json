@@ -30,7 +30,8 @@
         "test",
         "chore",
         "revert",
-        "release"
+        "release",
+        "ci"
       ],
       "warnOnFail": false,
       "maxSubjectLength": 100,

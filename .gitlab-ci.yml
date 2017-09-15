@@ -10,5 +10,7 @@ build:
   script:
     - export IMG_VERSION=`cat package.json |grep version|cut -d ':' -f 2| sed 's/[" ,]//g'`
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
-    - docker build -t registry.gitlab.com/smart-office-iot/iot-project-server .
-    - docker push registry.gitlab.com/smart-office-iot/iot-project-server
+    - docker build -t registry.gitlab.com/smart-office-iot/iot-project-server:${IMG_VERSION} .
+    - docker build -t registry.gitlab.com/smart-office-iot/iot-project-server:latest .
+    - docker push registry.gitlab.com/smart-office-iot/iot-project-server:${IMG_VERSION}
+    - docker push registry.gitlab.com/smart-office-iot/iot-project-server:latest
