@@ -48,6 +48,7 @@ describe('Gateway API endpoints', () => {
           _id: '589334a6734d1d44bec9d20d',
           code: 'gwtest',
           description: 'Negozio Zara, Milano',
+          authKey: 'tttttt0',
         }]),
       );
 
@@ -67,6 +68,7 @@ describe('Gateway API endpoints', () => {
           response[0].code.should.be.eq('gwtest');
           response[0].description.should.be.eq('Negozio Zara, Milano');
           response[0].id.should.be.eq('589334a6734d1d44bec9d20d');
+          response[0].authKey.should.be.eql('tttttt0');
 
           done();
         }
