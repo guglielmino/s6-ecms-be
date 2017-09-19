@@ -1,4 +1,8 @@
 import express from 'express';
+import validate from 'express-validation';
+import jsonpatch from 'fast-json-patch';
+import * as _ from 'lodash';
+import gatewayPatchValidator from './gateway.patch.validation';
 import logger from '../../../common/logger';
 import { transformGateway } from './gatewayTransformer';
 
@@ -60,6 +64,32 @@ export default function (app, middlewares, { gatewayProvider }) {
       .then((stat) => {
         res.json(stat.map(s => transformGateway(s)));
       })
+      .catch((err) => {
+        logger.log('error', err);
+        res.sendStatus(500);
+      });
+  });
+
+  router.patch('/:gateway', _.concat(middlewares, validate(gatewayPatchValidator)), (req, res) => {
+    const ownedGateways = req.user.app_metadata.gateways;
+    const gateway = req.params.gateway;
+
+    if (ownedGateways.indexOf(gateway) === -1) {
+      res.sendStatus(204);
+      return;
+    }
+
+    gatewayProvider.getGateway(gateway)
+      .then((gtw) => {
+        if (!gtw) {
+          return Promise.resolve(404);
+        }
+        const newObj = jsonpatch.applyOperation(gtw, req.body).newDocument;
+        return gatewayProvider
+        .updateByGatewayCode(gateway, newObj)
+        .then(() => Promise.resolve(200));
+      })
+      .then(status => res.sendStatus(status))
       .catch((err) => {
         logger.log('error', err);
         res.sendStatus(500);
