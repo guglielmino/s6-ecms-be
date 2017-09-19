@@ -1,7 +1,6 @@
 import EventsRuleEngine from '../services/eventsRuleEngine';
 
 import EventHandler from '../events/handlers/device/sonoff/energy/eventHandler';
-import DailyStatHandler from '../events/handlers/device/sonoff/energy/dailyStatHandler';
 import DeviceHandler from '../events/handlers/device/common/info/deviceHandler';
 import PowerFeedbackHandler from '../events/handlers/device/common/powerstatus/powerFeedbackHandler';
 import PowerStateHandler from '../events/handlers/internal/api/powerStateHandler';
@@ -14,6 +13,7 @@ import UpdateOnlineStatusHandler from '../events/handlers/device/sonoff/energy/u
 
 // Common
 import HourlyStatHandler from '../events/handlers/device/common/powerconsumption/hourlyStatHandler';
+import DailyStatHandler from '../events/handlers/device/common/powerconsumption/dailyStatHandler';
 
 // Sonoff
 import EnergyRules from './rules/sonoff-energy';
@@ -35,7 +35,7 @@ import PowerConsumptionRules from './rules/powerConsumption';
 
 const BootstapRuleEngine = (providers, pnub, socket) => {
   const eventHandler = EventHandler(providers.eventProvider);
-  const dailyHandler = DailyStatHandler(providers.dailyStatsProvider);
+  const dailyStatHandler = DailyStatHandler(providers.dailyStatsProvider);
   const hourlyStatHandler = HourlyStatHandler(providers.hourlyStatsProvider);
   const energyEventProcessor = EnergyAlertHandler(providers.deviceProvider,
     providers.alertProvider, socket);
@@ -52,7 +52,6 @@ const BootstapRuleEngine = (providers, pnub, socket) => {
 
   /* -- Energy message rules processing -- */
   EnergyRules(ruleEngine, {
-    dailyHandler,
     eventHandler,
     energyEventProcessor,
     updateOnlineStatusHandler,
@@ -60,6 +59,7 @@ const BootstapRuleEngine = (providers, pnub, socket) => {
 
   PowerConsumptionRules(ruleEngine, {
     hourlyStatHandler,
+    dailyStatHandler,
   });
 
   /* -- Info event processing -- */

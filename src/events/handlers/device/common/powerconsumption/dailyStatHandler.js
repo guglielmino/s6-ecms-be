@@ -6,15 +6,15 @@ import logger from '../../../../../common/logger';
  * @constructor
  */
 const DailyStatHandler = dailyStatsProvider => ({
-  process: (event) => {
-    logger.log('debug', `daily stat processor ${JSON.stringify(event)}`);
+  process: ({ timestamp, gateway, deviceId, dailyconsume }) => {
+    logger.log('debug', `daily stat processor ${JSON.stringify({ timestamp, gateway, deviceId, dailyconsume })}`);
 
     return new Promise((resolve, reject) => {
       dailyStatsProvider.updateDailyStat({
-        date: event.Payload.Time,
-        gateway: event.GatewayId,
-        deviceId: event.Payload.DeviceId,
-        today: event.Payload.Today,
+        date: timestamp,
+        gateway,
+        deviceId,
+        today: dailyconsume,
       }).then(() => resolve())
         .catch((err) => {
           logger.log(err);

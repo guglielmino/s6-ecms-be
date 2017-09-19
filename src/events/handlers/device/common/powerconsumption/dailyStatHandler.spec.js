@@ -34,20 +34,10 @@ describe('DailyStatHandler', () => {
     const date = new Date();
 
     const event = {
-      GatewayId: 'test',
-      Type: 'ENERGY',
-      Payload: {
-        DeviceId: '00:11:22:33:44:55',
-        Yesterday: 0.031,
-        Today: 0.013,
-        Period: 0,
-        Power: 123,
-        Factor: 0,
-        Voltage: 0,
-        Current: 0,
-        Time: date,
-        created: date,
-      },
+      timestamp: date,
+      gateway: 'test',
+      deviceId: '00:11:22:33:44:55',
+      dailyconsume: 0.013,
     };
 
     const statsStub = sinon.stub(dailyStatsProvider, 'updateDailyStat')
@@ -57,7 +47,7 @@ describe('DailyStatHandler', () => {
     subject.process(event)
       .then(() => {
         statsStub.calledOnce.should.be.true;
-        statsStub.calledWith({ date: date, gateway: 'test', deviceId: '00:11:22:33:44:55', today: 0.013 })
+        statsStub.calledWith({ date, gateway: 'test', deviceId: '00:11:22:33:44:55', today: 0.013 })
           .should.be.true;
         done();
       })
