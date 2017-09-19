@@ -49,6 +49,7 @@ describe('HourlyStats API endpoints', () => {
           _id: { hour: 12, deviceId: '11:22:33:44:55:66' },
           date: Date.parse('2017-03-16T12:00:00.000Z'),
           gateway: 'test_gateway1',
+          device: [{ deviceId: '11:22:33:44:55:66', name: 'test device' }],
           power: 20,
         }]),
     );
@@ -69,6 +70,7 @@ describe('HourlyStats API endpoints', () => {
           response[0].deviceId.should.be.eq('11:22:33:44:55:66');
           response[0].power.should.be.eq(20);
           response[0].hour.should.be.eq(12);
+          response[0].deviceName.should.be.eq('test device');
           done();
         }
       });

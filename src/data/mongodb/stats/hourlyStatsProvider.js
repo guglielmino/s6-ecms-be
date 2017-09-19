@@ -67,7 +67,6 @@ export default function (database) {
 
     getHourlyStat(dates, gateways, groupFields) {
       const dayDates = dates.map(d => getRefDateTime(d));
-
       return new Promise((resolve, reject) => {
         db.collection(collectionName, (err, col) => {
           if (err) {
@@ -96,6 +95,14 @@ export default function (database) {
               power: {
                 $sum: '$power',
               },
+            },
+          },
+          {
+            $lookup: {
+              from: 'devices',
+              localField: '_id.deviceId',
+              foreignField: 'deviceId',
+              as: 'device',
             },
           },
           ])
