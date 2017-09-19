@@ -4,7 +4,6 @@ import chai from 'chai';
 import EventsRuleEngine from '../../services/eventsRuleEngine';
 import EventHandler from '../../events/handlers/device/sonoff/energy/eventHandler';
 import DailyStatHandler from '../../events/handlers/device/sonoff/energy/dailyStatHandler';
-import HourlyStatHandler from '../../events/handlers/device/sonoff/energy/hourlyStatHandler';
 import EnergyAlertHandler from '../../events/handlers/device/sonoff/energy/energyAlertHandler';
 import UpdateOnlineStatusHandler from '../../events/handlers/device/sonoff/energy/updateOnlineStatusHandler';
 import EnergyRules from './sonoff-energy';
@@ -16,20 +15,17 @@ describe('Sonoff Energy Rules', () => {
   let ruleEngine;
   let dailyHandler;
   let eventHandler;
-  let hourlyStatHandler;
   let energyEventProcessor;
   let updateOnlineStatusHandler;
 
   beforeEach(() => {
     dailyHandler = DailyStatHandler();
     eventHandler = EventHandler();
-    hourlyStatHandler = HourlyStatHandler();
     energyEventProcessor = EnergyAlertHandler();
     updateOnlineStatusHandler = UpdateOnlineStatusHandler();
 
     sinon.stub(dailyHandler);
     sinon.stub(eventHandler);
-    sinon.stub(hourlyStatHandler);
     sinon.stub(energyEventProcessor);
     sinon.stub(updateOnlineStatusHandler);
 
@@ -37,7 +33,6 @@ describe('Sonoff Energy Rules', () => {
     EnergyRules(ruleEngine, {
       dailyHandler,
       eventHandler,
-      hourlyStatHandler,
       energyEventProcessor,
       updateOnlineStatusHandler,
     });
@@ -61,14 +56,13 @@ describe('Sonoff Energy Rules', () => {
         created: new Date(),
       },
     };
+
     ruleEngine.handle(event);
+
     dailyHandler.process
       .calledOnce.should.be.true;
 
     eventHandler.process
-      .calledOnce.should.be.true;
-
-    hourlyStatHandler.process
       .calledOnce.should.be.true;
 
     energyEventProcessor.process
@@ -98,9 +92,6 @@ describe('Sonoff Energy Rules', () => {
       .calledOnce.should.be.false;
 
     eventHandler.process
-      .calledOnce.should.be.false;
-
-    hourlyStatHandler.process
       .calledOnce.should.be.false;
 
     energyEventProcessor.process
