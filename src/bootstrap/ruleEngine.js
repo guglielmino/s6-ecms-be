@@ -1,6 +1,6 @@
 import EventsRuleEngine from '../services/eventsRuleEngine';
 
-import EventHandler from '../events/handlers/device/sonoff/energy/eventHandler';
+import EventHandler from '../events/handlers/device/common/eventHandler';
 import DeviceHandler from '../events/handlers/device/common/info/deviceHandler';
 import PowerFeedbackHandler from '../events/handlers/device/common/powerstatus/powerFeedbackHandler';
 import PowerStateHandler from '../events/handlers/internal/api/powerStateHandler';
@@ -50,9 +50,14 @@ const BootstapRuleEngine = (providers, pnub, socket) => {
 
   const ruleEngine = new EventsRuleEngine();
 
+  /* -- First all events are stored as they come from the Gateway -- */
+  ruleEngine.add({
+    predicate: () => true,
+    fn: msg => eventHandler.process(msg),
+  });
+
   /* -- Energy message rules processing -- */
   EnergyRules(ruleEngine, {
-    eventHandler,
     energyEventProcessor,
     updateOnlineStatusHandler,
   });
