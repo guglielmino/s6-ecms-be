@@ -10,11 +10,13 @@ describe('device transformer', () => {
       _id: '5893348f734d1d44bec9d20b',
       code: 'test',
       description: 'testing gateway',
+      authKey: 'hhbbh0a',
     });
 
     res.id.should.be.eq('5893348f734d1d44bec9d20b');
     res.code.should.be.eq('test');
     res.description.should.be.eq('testing gateway');
-    Object.keys(res).length.should.be.eq(3);
+    res.authKey.should.be.eq('hhbbh0a');
+    Object.keys(res).length.should.be.eq(4);
   });
 });

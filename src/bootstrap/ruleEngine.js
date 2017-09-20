@@ -1,8 +1,6 @@
 import EventsRuleEngine from '../services/eventsRuleEngine';
 
-import EventHandler from '../events/handlers/device/sonoff/energy/eventHandler';
-import DailyStatHandler from '../events/handlers/device/sonoff/energy/dailyStatHandler';
-import HourlyStatHandler from '../events/handlers/device/sonoff/energy/hourlyStatHandler';
+import EventHandler from '../events/handlers/device/common/eventHandler';
 import DeviceHandler from '../events/handlers/device/common/info/deviceHandler';
 import PowerFeedbackHandler from '../events/handlers/device/common/powerstatus/powerFeedbackHandler';
 import PowerStateHandler from '../events/handlers/internal/api/powerStateHandler';
@@ -12,8 +10,10 @@ import EnergyAlertHandler from '../events/handlers/device/sonoff/energy/energyAl
 import LwtHandler from '../events/handlers/device/sonoff/lwt/lwtHandler';
 import FirmwareUpdateHandler from '../events/handlers/internal/api/firmwareUpdateHandler';
 import UpdateOnlineStatusHandler from '../events/handlers/device/sonoff/energy/updateOnlineStatusHandler';
-// S6 Fresnel
-import S6HourlyStatHandler from '../events/handlers/device/s6fresnel/hourlyStatHandler';
+
+// Common
+import HourlyStatHandler from '../events/handlers/device/common/powerconsumption/hourlyStatHandler';
+import DailyStatHandler from '../events/handlers/device/common/powerconsumption/dailyStatHandler';
 
 // Sonoff
 import EnergyRules from './rules/sonoff-energy';
@@ -24,14 +24,18 @@ import LwtRules from './rules/sonoff-lwt';
 import ApiFirmwareUpdateRules from './rules/api-firmware-update';
 import PowerSwitchFailAlertRules from './rules/handler-powerswitch-fail-alert';
 
+
 // S6 Fresnell
 import S6FresnelInfoRules from './rules/s6fresnel-info';
-import S6PowerConsumeRules from './rules/s6fresnel-power-consume';
 import S6PowerFeedbackRules from './rules/s6fresnel-powerfeedback';
+
+// Common
+import PowerConsumptionRules from './rules/powerConsumption';
+
 
 const BootstapRuleEngine = (providers, pnub, socket) => {
   const eventHandler = EventHandler(providers.eventProvider);
-  const dailyHandler = DailyStatHandler(providers.dailyStatsProvider);
+  const dailyStatHandler = DailyStatHandler(providers.dailyStatsProvider);
   const hourlyStatHandler = HourlyStatHandler(providers.hourlyStatsProvider);
   const energyEventProcessor = EnergyAlertHandler(providers.deviceProvider,
     providers.alertProvider, socket);
@@ -43,20 +47,24 @@ const BootstapRuleEngine = (providers, pnub, socket) => {
   const powerSwitchFailAlertHandler = PowerSwitchFailAlertHandler(providers.alertProvider, socket);
   const lwtHandler = LwtHandler(providers.lwtHandler);
   const firmwareUpdateHandler = FirmwareUpdateHandler(providers.deviceProvider, pnub);
-  const s6hourlyStatHandler = S6HourlyStatHandler(providers.hourlyStatsProvider);
 
   const ruleEngine = new EventsRuleEngine();
 
+  /* -- First all events are stored as they come from the Gateway -- */
+  ruleEngine.add({
+    predicate: () => true,
+    fn: msg => eventHandler.process(msg),
+  });
+
   /* -- Energy message rules processing -- */
   EnergyRules(ruleEngine, {
-    dailyHandler,
-    eventHandler,
-    hourlyStatHandler,
     energyEventProcessor,
     updateOnlineStatusHandler,
   });
-  S6PowerConsumeRules(ruleEngine, {
-    hourlyStatHandler: s6hourlyStatHandler,
+
+  PowerConsumptionRules(ruleEngine, {
+    hourlyStatHandler,
+    dailyStatHandler,
   });
 
   /* -- Info event processing -- */

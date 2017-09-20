@@ -11,10 +11,7 @@ if [ -z "$VERSION_BUMP_MESSAGE" ]; then
     VERSION_BUMP_MESSAGE="release: %version%"
 fi
 
-VER=$(cat $ROOT_DIR/package.json | grep -m 1 "version" | awk '{ print $2 }' | sed s/\"//g | sed s/\,//g);
-
-sed -i.bck s/${VER}/${VERSION}/g $ROOT_DIR/package.json
-rm $ROOT_DIR/package.json.bck
+npm --prefix $ROOT_DIR version $VERSION
 
 $ROOT_DIR/node_modules/.bin/conventional-changelog -p angular -i $ROOT_DIR/CHANGELOG.md -s -r 0
 

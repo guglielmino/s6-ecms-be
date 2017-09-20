@@ -21,27 +21,9 @@ import * as consts from '../../../consts';
 import energyMapper from '../../events/mapper/sonoff/energyMapper';
 
 const EnergyRules = (ruleEngine, {
-  dailyHandler,
-  eventHandler,
-  hourlyStatHandler,
   energyEventProcessor,
   updateOnlineStatusHandler,
 }) => {
-  ruleEngine.add({
-    predicate: msg => msg.Type === consts.EVENT_TYPE_ENERGY,
-    fn: msg => eventHandler.process(energyMapper(msg)),
-  });
-
-  ruleEngine.add({
-    predicate: msg => msg.Type === consts.EVENT_TYPE_ENERGY,
-    fn: msg => dailyHandler.process(energyMapper(msg)),
-  });
-
-  ruleEngine.add({
-    predicate: msg => msg.Type === consts.EVENT_TYPE_ENERGY,
-    fn: msg => hourlyStatHandler.process(energyMapper(msg)),
-  });
-
   ruleEngine.add({
     predicate: msg => msg.Type === consts.EVENT_TYPE_ENERGY,
     fn: msg => energyEventProcessor.process(energyMapper(msg)),
