@@ -2,8 +2,6 @@ import sinon from 'sinon';
 import chai from 'chai';
 
 import EventsRuleEngine from '../../services/eventsRuleEngine';
-import EventHandler from '../../events/handlers/device/sonoff/energy/eventHandler';
-import DailyStatHandler from '../../events/handlers/device/sonoff/energy/dailyStatHandler';
 import EnergyAlertHandler from '../../events/handlers/device/sonoff/energy/energyAlertHandler';
 import UpdateOnlineStatusHandler from '../../events/handlers/device/sonoff/energy/updateOnlineStatusHandler';
 import EnergyRules from './sonoff-energy';
@@ -13,26 +11,19 @@ const expect = chai.expect();
 
 describe('Sonoff Energy Rules', () => {
   let ruleEngine;
-  let dailyHandler;
-  let eventHandler;
   let energyEventProcessor;
   let updateOnlineStatusHandler;
 
   beforeEach(() => {
-    dailyHandler = DailyStatHandler();
-    eventHandler = EventHandler();
+
     energyEventProcessor = EnergyAlertHandler();
     updateOnlineStatusHandler = UpdateOnlineStatusHandler();
 
-    sinon.stub(dailyHandler);
-    sinon.stub(eventHandler);
     sinon.stub(energyEventProcessor);
     sinon.stub(updateOnlineStatusHandler);
 
     ruleEngine = new EventsRuleEngine();
     EnergyRules(ruleEngine, {
-      dailyHandler,
-      eventHandler,
       energyEventProcessor,
       updateOnlineStatusHandler,
     });
@@ -59,12 +50,6 @@ describe('Sonoff Energy Rules', () => {
 
     ruleEngine.handle(event);
 
-    dailyHandler.process
-      .calledOnce.should.be.true;
-
-    eventHandler.process
-      .calledOnce.should.be.true;
-
     energyEventProcessor.process
       .calledOnce.should.be.true;
 
@@ -88,11 +73,7 @@ describe('Sonoff Energy Rules', () => {
       };
 
     ruleEngine.handle(event);
-    dailyHandler.process
-      .calledOnce.should.be.false;
 
-    eventHandler.process
-      .calledOnce.should.be.false;
 
     energyEventProcessor.process
       .calledOnce.should.be.false;
