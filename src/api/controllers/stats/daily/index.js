@@ -63,7 +63,7 @@ export default function (app, middlewares, { dailyStatsProvider }) {
           const result = stat.filter(s => !_.isEmpty(s));
           res.sendData(result, {
             'application/json': d => d.map(s => transformDailyStatForJson(s)),
-            'application/vnd.ms-excel': d => d.map(s => transformDailyStatForExcel(s)),
+            'application/vnd.ms-excel': d => _.orderBy(d.map(s => transformDailyStatForExcel(s)), 'date'),
           });
         }
       })
