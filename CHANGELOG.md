@@ -1,5 +1,5 @@
-<a name="2.2.0"></a>
-# 2.2.0 (2017-09-13)
+<a name="2.3.0"></a>
+# [2.3.0](https://gitlab.com/smart-office-iot/iot-project-server/compare/5b035de...v2.3.0) (2017-09-20)
 
 
 ### Bug Fixes
@@ -21,20 +21,25 @@
 * Fix processing command to update firmware ([26cb35e](https://gitlab.com/smart-office-iot/iot-project-server/commit/26cb35e))
 * Fix wrong command constant for power event in rule engine and add log in energy processor for d ([2b2cfe0](https://gitlab.com/smart-office-iot/iot-project-server/commit/2b2cfe0))
 * Fix wrong use of passed gateway code in /api/gateways/{code} ([6b1ee81](https://gitlab.com/smart-office-iot/iot-project-server/commit/6b1ee81))
+* package version ([ee8b1aa](https://gitlab.com/smart-office-iot/iot-project-server/commit/ee8b1aa))
+* using npm version to correctly set version of package.json ([50f8b40](https://gitlab.com/smart-office-iot/iot-project-server/commit/50f8b40))
 
 
 ### Features
 
 * Add alert builder to manage alert objects creation ([2f591d2](https://gitlab.com/smart-office-iot/iot-project-server/commit/2f591d2))
 * Add alert on power status change failure ([1f361a7](https://gitlab.com/smart-office-iot/iot-project-server/commit/1f361a7))
+* Add authKey field in gateways exposed from api ([2ad286c](https://gitlab.com/smart-office-iot/iot-project-server/commit/2ad286c))
 * Add content negotiation middleware to serialize API response based on Accept header value ([a73fea0](https://gitlab.com/smart-office-iot/iot-project-server/commit/a73fea0))
 * Add createIndex to DataProvider to encapsulate index creation ([b38cffe](https://gitlab.com/smart-office-iot/iot-project-server/commit/b38cffe))
 * Add delete alert endpoint ([9ff9228](https://gitlab.com/smart-office-iot/iot-project-server/commit/9ff9228))
 * Add device commands endpoint ([297aa8c](https://gitlab.com/smart-office-iot/iot-project-server/commit/297aa8c))
+* Add device name in get hourly stats ([e5bd2a3](https://gitlab.com/smart-office-iot/iot-project-server/commit/e5bd2a3))
 * Add endpoint to get single device data ([e416b35](https://gitlab.com/smart-office-iot/iot-project-server/commit/e416b35))
 * Add endpoint to mark alert read/unread ([8331828](https://gitlab.com/smart-office-iot/iot-project-server/commit/8331828))
 * Add endpoint to retrieve hour consume for single device ([7ae94e6](https://gitlab.com/smart-office-iot/iot-project-server/commit/7ae94e6))
 * Add energy alerts (power == 0 when device is on) aggregation for same device/gateway in given ([7c4e7f0](https://gitlab.com/smart-office-iot/iot-project-server/commit/7c4e7f0))
+* Add enpoint to modify gateway description ([5bb1ad2](https://gitlab.com/smart-office-iot/iot-project-server/commit/5bb1ad2))
 * Add gateway auth logic (based on authToken field in Gateways collection) ([0252395](https://gitlab.com/smart-office-iot/iot-project-server/commit/0252395))
 * Add gateway field to device DTO ([32a2397](https://gitlab.com/smart-office-iot/iot-project-server/commit/32a2397))
 * Add id to api response ([4665b38](https://gitlab.com/smart-office-iot/iot-project-server/commit/4665b38))
@@ -57,6 +62,7 @@
 * Export excel for hourly statistics ([4281b11](https://gitlab.com/smart-office-iot/iot-project-server/commit/4281b11))
 * Gateway provider refactoring to reduce code duplication ([b7128b1](https://gitlab.com/smart-office-iot/iot-project-server/commit/b7128b1))
 * Order data for export excel ([029b772](https://gitlab.com/smart-office-iot/iot-project-server/commit/029b772))
+* Oredr data for export excel ([73e81f3](https://gitlab.com/smart-office-iot/iot-project-server/commit/73e81f3))
 * Remove gateway field in excel export for daily stats ([d6bdbfd](https://gitlab.com/smart-office-iot/iot-project-server/commit/d6bdbfd))
 * Stats provider refactoring to decrease code duplication ([b0c6f5b](https://gitlab.com/smart-office-iot/iot-project-server/commit/b0c6f5b))
 
