@@ -17,20 +17,18 @@ import DailyStatHandler from '../events/handlers/device/common/powerconsumption/
 
 // Sonoff
 import EnergyRules from './rules/sonoff-energy';
-import InfoRules from './rules/sonoff-info';
 import PowerRules from './rules/sonoff-power';
 import ApiPowerRules from './rules/api-power';
 import LwtRules from './rules/sonoff-lwt';
 import ApiFirmwareUpdateRules from './rules/api-firmware-update';
 import PowerSwitchFailAlertRules from './rules/handler-powerswitch-fail-alert';
 
-
 // S6 Fresnell
-import S6FresnelInfoRules from './rules/s6fresnel-info';
 import S6PowerFeedbackRules from './rules/s6fresnel-powerfeedback';
 
 // Common
 import PowerConsumptionRules from './rules/powerConsumption';
+import DeviceInfoRules from './rules/deviceInfo';
 
 
 const BootstapRuleEngine = (providers, pnub, socket) => {
@@ -68,8 +66,7 @@ const BootstapRuleEngine = (providers, pnub, socket) => {
   });
 
   /* -- Info event processing -- */
-  InfoRules(ruleEngine, { deviceHandler });
-  S6FresnelInfoRules(ruleEngine, { deviceHandler });
+  DeviceInfoRules(ruleEngine, { deviceHandler });
 
   /* -- Power feedback event processing -- */
   PowerRules(ruleEngine, { powerFeedbackHandler });

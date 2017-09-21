@@ -1,19 +1,17 @@
-
-
 import chai from 'chai';
-import sinon from 'sinon';
+
 import {
-	EVENT_TYPE_INFO,
+  EVENT_TYPE_INFO,
 } from '../../../../consts';
 
-import infoMapper, { SONOFF_POW } from './infoMapper';
+import SONInfoToDevice, { SONOFF_POW } from './SONInfoToDevice';
 
 chai.should();
 const expect = chai.expect;
 
 describe('info message mapper', () => {
   it('should add default deviceId when there isn\'t', () => {
-    const rawPayload = {
+    const rawpayload = {
       GatewayId: 'testGateway',
       Type: EVENT_TYPE_INFO,
       Payload: {
@@ -25,13 +23,13 @@ describe('info message mapper', () => {
       },
     };
 
-    const result = infoMapper(rawPayload);
+    const result = SONInfoToDevice(rawpayload);
 
-    result.Payload.deviceId.should.be.eq('00:00:00:00:00:00');
-   });
+    result.payload.deviceId.should.be.eq('00:00:00:00:00:00');
+  });
 
   it('should add specific command when device type is SONOFF_POW', () => {
-    const rawPayload = {
+    const rawpayload = {
       GatewayId: 'testGateway',
       Type: EVENT_TYPE_INFO,
       Payload: {
@@ -44,15 +42,15 @@ describe('info message mapper', () => {
       },
     };
 
-    const result = infoMapper(rawPayload);
+    const result = SONInfoToDevice(rawpayload);
 
-    Object.keys(result.Payload.commands).length.should.be.eq(1);
-    result.Payload.commands.power.should.be.eq('mqtt:cmnd/sonoff/POWER');
+    Object.keys(result.payload.commands).length.should.be.eq(1);
+    result.payload.commands.power.should.be.eq('mqtt:cmnd/sonoff/POWER');
   });
 
 
-  it('should map all required fields in result object Payload', () => {
-    const rawPayload = {
+  it('should map all required fields in result object payload', () => {
+    const rawpayload = {
       GatewayId: 'testGateway',
       Type: EVENT_TYPE_INFO,
       Payload: {
@@ -65,20 +63,20 @@ describe('info message mapper', () => {
       },
     };
 
-    const result = infoMapper(rawPayload);
+    const result = SONInfoToDevice(rawpayload);
 
-    result.Payload.gateway.should.be.eq('testGateway');
-    result.Payload.deviceType.should.be.eq(SONOFF_POW);
-    result.Payload.deviceId.should.be.eq('2d:5f:22:99:73:d5');
-    result.Payload.name.should.be.eq('sonoff');
-    result.Payload.description.should.be.eq('sonoff');
-    result.Payload.swVersion.should.be.eq('1.2.3');
+    result.payload.gateway.should.be.eq('testGateway');
+    result.payload.deviceType.should.be.eq(SONOFF_POW);
+    result.payload.deviceId.should.be.eq('2d:5f:22:99:73:d5');
+    result.payload.name.should.be.eq('sonoff');
+    result.payload.description.should.be.eq('sonoff');
+    result.payload.swVersion.should.be.eq('1.2.3');
     Object.keys(result).length.should.be.eq(2)
-    Object.keys(result.Payload).length.should.be.eq(8);
+    Object.keys(result.payload).length.should.be.eq(8);
   });
 
   it('should map name of device', () => {
-    const rawPayload = {
+    const rawpayload = {
       GatewayId: 'testGateway',
       Type: EVENT_TYPE_INFO,
       Payload: {
@@ -91,8 +89,8 @@ describe('info message mapper', () => {
       },
     };
 
-    const result = infoMapper(rawPayload);
+    const result = SONInfoToDevice(rawpayload);
 
-    result.Payload.name.should.be.eq('myname');
+    result.payload.name.should.be.eq('myname');
   });
 });

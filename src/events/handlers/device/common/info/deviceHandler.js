@@ -6,12 +6,12 @@ import logger from '../../../../../common/logger';
  * @constructor
  */
 const DeviceHandler = deviceProvider => ({
-  process: (event) => {
-    logger.log('debug', `device processor ${JSON.stringify(event)}`);
+  process: ({ deviceId, payload }) => {
+    logger.log('debug', `device processor ${JSON.stringify({ deviceId, payload })}`);
 
     return new Promise((resolve, reject) => {
       deviceProvider
-        .updateByDeviceId(event.Payload.deviceId, event.Payload)
+        .updateByDeviceId(deviceId, payload)
         .then(() => resolve())
         .catch(err => reject(err));
     });

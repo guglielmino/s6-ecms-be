@@ -1,7 +1,7 @@
 import chai from 'chai';
 import sinon from 'sinon';
 
-import infoMapper from './infoMapper';
+import S6InfoToDevice from './s6InfoToDevice';
 
 chai.should();
 const expect = chai.expect;
@@ -20,9 +20,9 @@ describe('S6 Fresnel info message mapper', () => {
       },
     };
 
-    const result = infoMapper(rawPayload);
+    const result = S6InfoToDevice(rawPayload);
 
-    result.Payload.deviceId.should.be.eq('00:00:00:00:00:00');
+    result.deviceId.should.be.eq('00:00:00:00:00:00');
   });
 
   it('should add specific command when device type is S6 Fresnel Module', () => {
@@ -39,10 +39,10 @@ describe('S6 Fresnel info message mapper', () => {
       },
     };
 
-    const result = infoMapper(rawPayload);
+    const result = S6InfoToDevice(rawPayload);
 
-    Object.keys(result.Payload.commands).length.should.be.eq(1);
-    result.Payload.commands.power.should.be.eq('mqtt:building/room1/devices/00:11:22:33:44:55/power');
+    Object.keys(result.payload.commands).length.should.be.eq(1);
+    result.payload.commands.power.should.be.eq('mqtt:building/room1/devices/00:11:22:33:44:55/power');
   });
 
 
@@ -60,16 +60,16 @@ describe('S6 Fresnel info message mapper', () => {
       },
     };
 
-    const result = infoMapper(rawPayload);
+    const result = S6InfoToDevice(rawPayload);
 
-    result.Payload.gateway.should.be.eq('CASAFG');
-    result.Payload.deviceType.should.be.eq('S6 Fresnel Module');
-    result.Payload.deviceId.should.be.eq('00:11:22:33:44:55');
-    result.Payload.name.should.be.eq('lampada ingresso');
-    result.Payload.description.should.be.eq('lampada ingresso');
-    result.Payload.swVersion.should.be.eq('0.0.1');
+    result.payload.gateway.should.be.eq('CASAFG');
+    result.payload.deviceType.should.be.eq('S6 Fresnel Module');
+    result.payload.deviceId.should.be.eq('00:11:22:33:44:55');
+    result.payload.name.should.be.eq('lampada ingresso');
+    result.payload.description.should.be.eq('lampada ingresso');
+    result.payload.swVersion.should.be.eq('0.0.1');
     Object.keys(result).length.should.be.eq(2);
-    Object.keys(result.Payload).length.should.be.eq(8);
+    Object.keys(result.payload).length.should.be.eq(8);
   });
 
 });
