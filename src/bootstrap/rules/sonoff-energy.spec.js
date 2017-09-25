@@ -3,7 +3,6 @@ import chai from 'chai';
 
 import EventsRuleEngine from '../../services/eventsRuleEngine';
 import EnergyAlertHandler from '../../events/handlers/device/sonoff/energy/energyAlertHandler';
-import UpdateOnlineStatusHandler from '../../events/handlers/device/sonoff/energy/updateOnlineStatusHandler';
 import EnergyRules from './sonoff-energy';
 
 chai.should();
@@ -12,20 +11,17 @@ const expect = chai.expect();
 describe('Sonoff Energy Rules', () => {
   let ruleEngine;
   let energyEventProcessor;
-  let updateOnlineStatusHandler;
 
   beforeEach(() => {
 
     energyEventProcessor = EnergyAlertHandler();
-    updateOnlineStatusHandler = UpdateOnlineStatusHandler();
 
     sinon.stub(energyEventProcessor);
-    sinon.stub(updateOnlineStatusHandler);
+
 
     ruleEngine = new EventsRuleEngine();
     EnergyRules(ruleEngine, {
       energyEventProcessor,
-      updateOnlineStatusHandler,
     });
   });
 
@@ -52,9 +48,6 @@ describe('Sonoff Energy Rules', () => {
 
     energyEventProcessor.process
       .calledOnce.should.be.true;
-
-    updateOnlineStatusHandler.process
-      .calledOnce.should.be.true;
   });
 
   it('Should NOT call \'process\' of every handler for generic message', () => {
@@ -76,9 +69,6 @@ describe('Sonoff Energy Rules', () => {
 
 
     energyEventProcessor.process
-      .calledOnce.should.be.false;
-
-    updateOnlineStatusHandler.process
       .calledOnce.should.be.false;
   });
 

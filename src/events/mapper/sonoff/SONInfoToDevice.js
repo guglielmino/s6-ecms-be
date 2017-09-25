@@ -19,7 +19,7 @@ function commandPerDevice(appName, topic) {
       });
       break;
     default:
-      ret.empty();
+      ret = {};
       break;
   }
 

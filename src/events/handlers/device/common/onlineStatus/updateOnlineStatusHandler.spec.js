@@ -31,7 +31,7 @@ describe('UpdateOnlineStatusHandler', () => {
     subject = new UpdateOnlineStatusHandler(deviceProvider);
   });
 
-  context('when a Energy message is received', () => {
+  context('when a SONOFF Energy message is received', () => {
     it('should set device status Online = true', (done) => {
       const device = {
         gateway: 'gateway',
@@ -48,23 +48,7 @@ describe('UpdateOnlineStatusHandler', () => {
       sinon.stub(deviceProvider, 'updateByDeviceId').returns(Promise.resolve());
       sinon.stub(deviceProvider, 'findByDeviceId').returns(Promise.resolve(device));
 
-      const event = {
-        GatewayId: 'TESTGW',
-        Type: 'ENERGY',
-        Payload: {
-          DeviceId: '12:22:44:1a:d6:fa',
-          Yesterday: 0.031,
-          Today: 0.013,
-          Period: 0,
-          Power: 123,
-          Factor: 0,
-          Voltage: 0,
-          Current: 0,
-          Time: new Date(),
-          created: new Date(),
-        },
-      };
-      subject.process(event)
+      subject.process({ deviceId: '12:22:44:1a:d6:fa' })
         .then(() => {
           deviceProvider.findByDeviceId
             .calledWith('12:22:44:1a:d6:fa')
@@ -72,6 +56,38 @@ describe('UpdateOnlineStatusHandler', () => {
 
           deviceProvider.updateByDeviceId
             .calledWith('12:22:44:1a:d6:fa',
+              sinon.match({ status: { online: true } }))
+            .should.be.true;
+
+          done();
+        })
+        .catch(err => done(err));
+    });
+  });
+
+  context('when a S6 Fresnel power consumption message is received',  () => {
+    it('should set device status Online = true', (done) => {
+      const device = {
+        name: 'Lamp1',
+        description: 'Lamp1',
+        gateway: 'CASAFG',
+        swVersion: '0.0.1',
+        deviceType: 'S6 Fresnel Module',
+        deviceId: '00:11:22:33:44:55',
+      };
+
+      sinon.stub(deviceProvider, 'updateByDeviceId').returns(Promise.resolve());
+      sinon.stub(deviceProvider, 'findByDeviceId').returns(Promise.resolve(device));
+
+
+      subject.process({ deviceId: '00:11:22:33:44:55' })
+        .then(() => {
+          deviceProvider.findByDeviceId
+            .calledWith('00:11:22:33:44:55')
+            .should.be.true;
+
+          deviceProvider.updateByDeviceId
+            .calledWith('00:11:22:33:44:55',
               sinon.match({ status: { online: true } }))
             .should.be.true;
 

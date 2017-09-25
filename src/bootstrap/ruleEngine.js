@@ -9,11 +9,11 @@ import PowerSwitchFailAlertHandler from '../events/handlers/internal/handler/pow
 import EnergyAlertHandler from '../events/handlers/device/sonoff/energy/energyAlertHandler';
 import LwtHandler from '../events/handlers/device/sonoff/lwt/lwtHandler';
 import FirmwareUpdateHandler from '../events/handlers/internal/api/firmwareUpdateHandler';
-import UpdateOnlineStatusHandler from '../events/handlers/device/sonoff/energy/updateOnlineStatusHandler';
 
 // Common
 import HourlyStatHandler from '../events/handlers/device/common/powerconsumption/hourlyStatHandler';
 import DailyStatHandler from '../events/handlers/device/common/powerconsumption/dailyStatHandler';
+import UpdateOnlineStatusHandler from '../events/handlers/device/common/onlineStatus/updateOnlineStatusHandler';
 
 // Sonoff
 import EnergyRules from './rules/sonoff-energy';
@@ -57,12 +57,12 @@ const BootstapRuleEngine = (providers, pnub, socket) => {
   /* -- Energy message rules processing -- */
   EnergyRules(ruleEngine, {
     energyEventProcessor,
-    updateOnlineStatusHandler,
   });
 
   PowerConsumptionRules(ruleEngine, {
     hourlyStatHandler,
     dailyStatHandler,
+    updateOnlineStatusHandler,
   });
 
   /* -- Info event processing -- */
