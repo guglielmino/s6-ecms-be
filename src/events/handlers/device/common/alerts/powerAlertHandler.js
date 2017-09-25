@@ -24,7 +24,7 @@ const makeAlertKey = device => (`alert:energy:${device.gateway}:${device.deviceI
  * @param providers
  * @constructor
  */
-const EnergyAlertHandler = (deviceProvider, alertProvider, socket) => {
+const PowerAlertHandler = (deviceProvider, alertProvider, socket) => {
   const getDevice = deviceId => (
     deviceProvider
       .findByDeviceId(deviceId)
@@ -35,8 +35,8 @@ const EnergyAlertHandler = (deviceProvider, alertProvider, socket) => {
       .getLastAlertByKey(key)
   );
 
-  const createAlert = (event, device, alertKey) => {
-    const alarmBuilder = new AlertBuilder(event.GatewayId, event.Payload.DeviceId,
+  const createAlert = (device, alertKey) => {
+    const alarmBuilder = new AlertBuilder(device.gateway, device.deviceId,
       `${device.name} could be broken, power is 0 while state is on`);
     alarmBuilder.setLevel(ALERT_CRITICAL);
     alarmBuilder.setKey(alertKey);
@@ -46,12 +46,12 @@ const EnergyAlertHandler = (deviceProvider, alertProvider, socket) => {
 
 
   return {
-    process: (event) => {
-      logger.log('debug', `energy alert processor ${JSON.stringify(event)}`);
+    process: ({ deviceId, power }) => {
+      logger.log('debug', `energy alert processor ${JSON.stringify({ deviceId, power })}`);
 
       return new Promise((resolve, reject) => {
-        if (event.Payload.Power === 0) {
-          getDevice(event.Payload.DeviceId)
+        if (power === 0) {
+          getDevice(deviceId)
             .then((device) => {
               if (device) {
                 if (device.status && device.status.power === 'on') {
@@ -60,17 +60,17 @@ const EnergyAlertHandler = (deviceProvider, alertProvider, socket) => {
                     .then((alert) => {
                       let alarmObj = {};
                       if (needsNewAlert(alert, new Date(), ALERT_DELAY_SEC)) {
-                        alarmObj = createAlert(event, device, alertKey);
+                        alarmObj = createAlert(device, alertKey);
                       } else {
                         alarmObj = Object.assign(alert, { lastUpdate: new Date() });
                       }
                       alertProvider.update(alarmObj, alarmObj);
-                      socket.emit(event.GatewayId, WS_DEVICE_ALARM, alarmObj);
+                      socket.emit(device.gateway, WS_DEVICE_ALARM, alarmObj);
                       resolve();
                     });
                 }
               } else {
-                logger.log('error', `Energy event for unknown device : ${JSON.stringify(event)}`);
+                logger.log('error', `Energy event for unknown device : ${JSON.stringify({ deviceId, power })}`);
               }
             })
             .catch((err) => {
@@ -85,6 +85,6 @@ const EnergyAlertHandler = (deviceProvider, alertProvider, socket) => {
   };
 };
 
-export default EnergyAlertHandler;
+export default PowerAlertHandler;
 // Note: exported for testing, using a build tool could be exported only when running tests
 export { needsNewAlert, makeAlertKey };

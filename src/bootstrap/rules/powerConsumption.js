@@ -1,15 +1,14 @@
 import * as consts from '../../../consts';
-import S6InfoToDevice from '../../events/mapper/s6fresnel/S6InfoToDevice';
 
 import S6FInstaPowerToHourly from '../../events/mapper/s6fresnel/S6FInstaPowerToHourly';
 import SONInstaPowerToHourly from '../../events/mapper/sonoff/SONInstaPowerToHourly';
 import SONDailyConsumeToDaily from '../../events/mapper/sonoff/SONDailyConsumeToDaily';
-import SONInfoToDevice from '../../events/mapper/sonoff/SONInfoToDevice';
 
 const PowerConsumptionRules = (ruleEngine, {
   hourlyStatHandler,
   dailyStatHandler,
   updateOnlineStatusHandler,
+  powerAlertHandler,
 }) => {
   // S6 Instant power message
   ruleEngine.add({
@@ -20,7 +19,13 @@ const PowerConsumptionRules = (ruleEngine, {
   // Online status refreshed by power consumption event
   ruleEngine.add({
     predicate: msg => msg.Type === consts.EVENT_TPE_FRESNEL_POWER_CONSUME,
-    fn: msg => updateOnlineStatusHandler.process(S6InfoToDevice(msg)),
+    fn: msg => updateOnlineStatusHandler.process(S6FInstaPowerToHourly(msg)),
+  });
+
+  // Power 0 and status on alert
+  ruleEngine.add({
+    predicate: msg => msg.Type === consts.EVENT_TPE_FRESNEL_POWER_CONSUME,
+    fn: msg => powerAlertHandler.process(S6FInstaPowerToHourly(msg)),
   });
 
   // Sonoff Instan power message
@@ -38,7 +43,13 @@ const PowerConsumptionRules = (ruleEngine, {
   // Online status refreshed by energy event
   ruleEngine.add({
     predicate: msg => msg.Type === consts.EVENT_TYPE_ENERGY,
-    fn: msg => updateOnlineStatusHandler.process(SONInfoToDevice(msg)),
+    fn: msg => updateOnlineStatusHandler.process(SONInstaPowerToHourly(msg)),
+  });
+
+  // Power 0 and status on alert
+  ruleEngine.add({
+    predicate: msg => msg.Type === consts.EVENT_TYPE_ENERGY,
+    fn: msg => powerAlertHandler.process(SONInstaPowerToHourly(msg)),
   });
 };
 
