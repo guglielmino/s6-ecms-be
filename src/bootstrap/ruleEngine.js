@@ -17,9 +17,8 @@ import UpdateOnlineStatusHandler from '../events/handlers/device/common/onlineSt
 
 // Sonoff
 import PowerRules from './rules/sonoff-power';
-import ApiPowerRules from './rules/api-power';
 import LwtRules from './rules/sonoff-lwt';
-import ApiFirmwareUpdateRules from './rules/api-firmware-update';
+import ApiRules from './rules/apiRules';
 import PowerSwitchFailAlertRules from './rules/handler-powerswitch-fail-alert';
 
 // S6 Fresnell
@@ -69,13 +68,6 @@ const BootstapRuleEngine = (providers, pnub, socket) => {
   PowerRules(ruleEngine, { powerFeedbackHandler });
   S6PowerFeedbackRules(ruleEngine, { powerFeedbackHandler });
 
-  /* -- Power command  processing -- */
-
-  ApiPowerRules(ruleEngine, {
-    powerStateHandler,
-    powerStateAlertHandler,
-  });
-
   /* -- Power Alert event processing -- */
   PowerSwitchFailAlertRules(ruleEngine, {
     powerSwitchFailAlertHandler,
@@ -84,8 +76,12 @@ const BootstapRuleEngine = (providers, pnub, socket) => {
   /* -- LWT event processing -- */
   LwtRules(ruleEngine, { lwtHandler });
 
-  /* -- Firmware update event processing -- */
-  ApiFirmwareUpdateRules(ruleEngine, { firmwareUpdateHandler });
+  /* -- API events processing -- */
+  ApiRules(ruleEngine, {
+    firmwareUpdateHandler,
+    powerStateHandler,
+    powerStateAlertHandler,
+  });
 
   return ruleEngine;
 };
