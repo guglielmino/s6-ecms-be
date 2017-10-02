@@ -61,12 +61,13 @@ export default function (app, middlewares, { deviceProvider }) {
    */
   router.get('/', middlewares, (req, res) => {
     const ownedGws = req.user.app_metadata.gateways;
+    const limit = req.query.limit;
     const reqGateways = req.query.gw;
 
     const gws = getOverlapped(ownedGws, reqGateways);
 
     deviceProvider
-      .getDevices(gws)
+      .getDevices(gws, parseInt(limit, 10))
       .then((stat) => {
         if (stat.length === 0) {
           res.sendStatus(204);

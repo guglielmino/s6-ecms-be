@@ -16,12 +16,12 @@ export default function (database) {
     /**
      * Returns all devices belonging to the gateways passed as parameter
      */
-    getDevices(gateways) {
+    getDevices(gateways, limit) {
       return queryDataProvider.getMany({
         gateway: {
           $in: gateways,
         },
-      });
+      }, limit);
     },
     getById(entityId) {
       return queryDataProvider.getOne({
