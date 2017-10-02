@@ -9,24 +9,24 @@ import logger from '../../../../common/logger';
  * @constructor
  */
 const PowerStateHandler = (deviceProvider, pnub) => ({
-  process: (event) => {
-    logger.log('info', `power action processor ${JSON.stringify(event)}`);
+  process: ({ deviceId, gateway, param }) => {
+    logger.log('info', `power action processor ${JSON.stringify({ deviceId, gateway, param })}`);
 
     return new Promise((resolve, reject) => {
       deviceProvider
-        .findByDeviceId(event.deviceId)
+        .findByDeviceId(deviceId)
         .then((dev) => {
           if (dev.commands && dev.commands.power) {
-            pnub.publish(event.gateway, {
+            pnub.publish(gateway, {
               type: 'MQTT',
               payload: {
                 topic: dev.commands.power.replace('mqtt:', ''),
-                value: event.param,
+                value: param,
               },
             });
             resolve();
           } else {
-            const errMessage = `Device ${event.deviceId} doesn't have power command configured.`;
+            const errMessage = `Device ${deviceId} doesn't have power command configured.`;
             reject(new Error(errMessage));
           }
         })

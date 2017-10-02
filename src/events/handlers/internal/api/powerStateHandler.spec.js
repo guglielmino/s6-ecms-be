@@ -26,7 +26,7 @@ describe('LwtHandler', () => {
     subject = new PowerStateHandler(deviceProvider, pnub);
   });
 
-  it('should publish elcosed mqtt message on PubNub', (done) => {
+  it('should publish enclosed mqtt message on PubNub', (done) => {
     pnub.publish = sinon.stub();
     sinon.stub(deviceProvider, 'findByDeviceId')
       .returns(Promise.resolve({
@@ -43,16 +43,9 @@ describe('LwtHandler', () => {
 
     const event =
       {
-        GatewayId: 'agateway',
-        Type: 'INFO',
-        Payload: {
-          AppName: 'Sonoff Pow Module',
-          Version: '1.2.3',
-          FallbackTopic: 'sonoffback',
-          GroupTopic: 'sogroup',
-          DeviceId: '2d:5f:22:99:73:d5',
-          Topic: 'cmnd/test6',
-        },
+        gateway: 'agateway',
+        deviceId: '11:44:41:9f:66:ea',
+        param: 'on',
       };
 
     subject.process(event)
