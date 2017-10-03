@@ -1,6 +1,6 @@
 import chai from 'chai';
 import sinon from 'sinon';
-import EnergyAlertHandler, { needsNewAlert, makeAlertKey }  from './energyAlertHandler';
+import PowerAlertHandler, { needsNewAlert, makeAlertKey }  from './powerAlertHandler';
 
 import helper from '../../../processor_tests_helper.spec';
 helper('./energyAlertProcessor');
@@ -11,7 +11,7 @@ chai.should();
 const expect = chai.expect;
 
 
-describe('EnergyAlertHandler', () => {
+describe('PowerAlertHandler', () => {
 
  context('Main module', () => {
     let subject;
@@ -21,30 +21,18 @@ describe('EnergyAlertHandler', () => {
     beforeEach(() => {
       const db = {
         collection: () => {
-        }
+        },
       };
       deviceProvider = DevicesProvider(db);
       alertProvider = AlertsProvider(db);
       socket = {};
-      subject = new EnergyAlertHandler(deviceProvider, alertProvider, socket);
+      subject = new PowerAlertHandler(deviceProvider, alertProvider, socket);
     });
 
     it('should do nothing if power is greater than 0', (done) => {
       const event = {
-        GatewayId: 'TESTGW',
-        Type: 'ENERGY',
-        Payload: {
-          DeviceId: 'tele/lamp_test/TELEMETRY',
-          Yesterday: 0.031,
-          Today: 0.013,
-          Period: 0,
-          Power: 123,
-          Factor: 0,
-          Voltage: 0,
-          Current: 0,
-          Time: new Date(),
-          created: new Date(),
-        },
+        deviceId: '00:11:22:33:44:55',
+        power: 43,
       };
 
       sinon.stub(deviceProvider, 'findByDeviceId');
@@ -60,20 +48,8 @@ describe('EnergyAlertHandler', () => {
 
     it('should create alert when power > 0, device status is on and there aren\'t previous alerts for the device/gateway', (done) => {
       const event = {
-        GatewayId: 'TESTGW',
-        Type: 'ENERGY',
-        Payload: {
-          DeviceId: '11:22:33:44:55',
-          Yesterday: 0.031,
-          Today: 0.013,
-          Period: 0,
-          Power: 0,
-          Factor: 0,
-          Voltage: 0,
-          Current: 0,
-          Time: new Date(),
-          created: new Date(),
-        },
+        deviceId: '00:11:22:33:44:55',
+        power: 0,
       };
 
       const eventDate = new Date();
@@ -84,7 +60,7 @@ describe('EnergyAlertHandler', () => {
           name: 'lamp_test',
           swVersion: '1.2.3',
           deviceType: 'Sonoff Pow Module',
-          deviceId: '11:22:33:44:55',
+          deviceId: '00:11:22:33:44:55',
           commands: {
             power: 'mqtt:cmnd/lamp_test/POWER',
           },
@@ -112,11 +88,11 @@ describe('EnergyAlertHandler', () => {
             alertProvider.update
             .calledWith(sinon.match({
               gateway: 'TESTGW',
-              deviceId: '11:22:33:44:55',
+              deviceId: '00:11:22:33:44:55',
               message: 'lamp_test could be broken, power is 0 while state is on',
               read: false,
               level: 'critical',
-              key: 'alert:energy:TESTGW:11:22:33:44:55',
+              key: 'alert:energy:TESTGW:00:11:22:33:44:55',
             })).should.be.true;
 
           socket.emit.calledOnce.should.be.true;
@@ -144,7 +120,7 @@ describe('EnergyAlertHandler', () => {
 
     it('should return false if alert isn\'t older than delay', () => {
       const now = new Date('2017-05-11 10:00:00.000Z');
-      const last = new Date('2017-05-11 09:56:00.000Z')
+      const last = new Date('2017-05-11 09:56:00.000Z');
 
       needsNewAlert({
         date: now,

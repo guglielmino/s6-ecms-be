@@ -7,15 +7,15 @@ import logger from '../../../../../common/logger';
  * @constructor
  */
 const UpdateOnlineStatusHandler = deviceProvider => ({
-  process: (event) => {
-    logger.log('debug', `online status handler (energy message) ${JSON.stringify(event)}`);
+  process: ({ deviceId }) => {
+    logger.log('debug', `online status handler (energy message) ${JSON.stringify({ deviceId })}`);
 
     return new Promise((resolve, reject) => {
       deviceProvider
-        .findByDeviceId(event.Payload.DeviceId)
+        .findByDeviceId(deviceId)
         .then((dev) => {
           deviceProvider
-            .updateByDeviceId(dev.deviceId,
+            .updateByDeviceId(deviceId,
               { ...dev, status: { ...dev.status, online: true } })
             .then(() => resolve());
         })

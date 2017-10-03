@@ -108,14 +108,13 @@ const InternalDataProvider = ({ db, collectionName }) => ({
     });
   },
 
-  getMany(query) {
+  getMany(query, limit = 0) {
     return new Promise((resolve, reject) => {
       db.collection(collectionName, (err, col) => {
         if (err) {
           reject(err);
         }
-
-        col.find(query)
+        col.find(query).limit(limit)
           .toArray((error, docs) => {
             if (error) {
               reject(error);

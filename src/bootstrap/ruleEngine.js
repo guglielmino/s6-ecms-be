@@ -6,38 +6,35 @@ import PowerFeedbackHandler from '../events/handlers/device/common/powerstatus/p
 import PowerStateHandler from '../events/handlers/internal/api/powerStateHandler';
 import PowerStateAlertHandler from '../events/handlers/internal/api/powerStateAlertHandler';
 import PowerSwitchFailAlertHandler from '../events/handlers/internal/handler/powerSwitchFailAlertHandler';
-import EnergyAlertHandler from '../events/handlers/device/sonoff/energy/energyAlertHandler';
+
 import LwtHandler from '../events/handlers/device/sonoff/lwt/lwtHandler';
 import FirmwareUpdateHandler from '../events/handlers/internal/api/firmwareUpdateHandler';
-import UpdateOnlineStatusHandler from '../events/handlers/device/sonoff/energy/updateOnlineStatusHandler';
 
 // Common
 import HourlyStatHandler from '../events/handlers/device/common/powerconsumption/hourlyStatHandler';
 import DailyStatHandler from '../events/handlers/device/common/powerconsumption/dailyStatHandler';
+import UpdateOnlineStatusHandler from '../events/handlers/device/common/onlineStatus/updateOnlineStatusHandler';
 
 // Sonoff
-import EnergyRules from './rules/sonoff-energy';
-import InfoRules from './rules/sonoff-info';
 import PowerRules from './rules/sonoff-power';
-import ApiPowerRules from './rules/api-power';
 import LwtRules from './rules/sonoff-lwt';
-import ApiFirmwareUpdateRules from './rules/api-firmware-update';
+import ApiRules from './rules/apiRules';
 import PowerSwitchFailAlertRules from './rules/handler-powerswitch-fail-alert';
 
-
 // S6 Fresnell
-import S6FresnelInfoRules from './rules/s6fresnel-info';
 import S6PowerFeedbackRules from './rules/s6fresnel-powerfeedback';
 
 // Common
 import PowerConsumptionRules from './rules/powerConsumption';
+import DeviceInfoRules from './rules/deviceInfo';
+import PowerAlertHandler from '../events/handlers/device/common/alerts/powerAlertHandler';
 
 
 const BootstapRuleEngine = (providers, pnub, socket) => {
   const eventHandler = EventHandler(providers.eventProvider);
   const dailyStatHandler = DailyStatHandler(providers.dailyStatsProvider);
   const hourlyStatHandler = HourlyStatHandler(providers.hourlyStatsProvider);
-  const energyEventProcessor = EnergyAlertHandler(providers.deviceProvider,
+  const powerAlertHandler = PowerAlertHandler(providers.deviceProvider,
     providers.alertProvider, socket);
   const updateOnlineStatusHandler = UpdateOnlineStatusHandler(providers.deviceProvider);
   const deviceHandler = DeviceHandler(providers.deviceProvider);
@@ -45,7 +42,7 @@ const BootstapRuleEngine = (providers, pnub, socket) => {
   const powerStateHandler = PowerStateHandler(providers.deviceProvider, pnub);
   const powerStateAlertHandler = PowerStateAlertHandler();
   const powerSwitchFailAlertHandler = PowerSwitchFailAlertHandler(providers.alertProvider, socket);
-  const lwtHandler = LwtHandler(providers.lwtHandler);
+  const lwtHandler = LwtHandler(providers.deviceProvider);
   const firmwareUpdateHandler = FirmwareUpdateHandler(providers.deviceProvider, pnub);
 
   const ruleEngine = new EventsRuleEngine();
@@ -56,31 +53,20 @@ const BootstapRuleEngine = (providers, pnub, socket) => {
     fn: msg => eventHandler.process(msg),
   });
 
-  /* -- Energy message rules processing -- */
-  EnergyRules(ruleEngine, {
-    energyEventProcessor,
-    updateOnlineStatusHandler,
-  });
-
+  /* -- Power related rules -- */
   PowerConsumptionRules(ruleEngine, {
     hourlyStatHandler,
     dailyStatHandler,
+    updateOnlineStatusHandler,
+    powerAlertHandler,
   });
 
   /* -- Info event processing -- */
-  InfoRules(ruleEngine, { deviceHandler });
-  S6FresnelInfoRules(ruleEngine, { deviceHandler });
+  DeviceInfoRules(ruleEngine, { deviceHandler });
 
   /* -- Power feedback event processing -- */
   PowerRules(ruleEngine, { powerFeedbackHandler });
   S6PowerFeedbackRules(ruleEngine, { powerFeedbackHandler });
-
-  /* -- Power command  processing -- */
-
-  ApiPowerRules(ruleEngine, {
-    powerStateHandler,
-    powerStateAlertHandler,
-  });
 
   /* -- Power Alert event processing -- */
   PowerSwitchFailAlertRules(ruleEngine, {
@@ -90,8 +76,12 @@ const BootstapRuleEngine = (providers, pnub, socket) => {
   /* -- LWT event processing -- */
   LwtRules(ruleEngine, { lwtHandler });
 
-  /* -- Firmware update event processing -- */
-  ApiFirmwareUpdateRules(ruleEngine, { firmwareUpdateHandler });
+  /* -- API events processing -- */
+  ApiRules(ruleEngine, {
+    firmwareUpdateHandler,
+    powerStateHandler,
+    powerStateAlertHandler,
+  });
 
   return ruleEngine;
 };

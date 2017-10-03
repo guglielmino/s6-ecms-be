@@ -7,7 +7,6 @@ const SONOFF_2 = 'Sonoff 8285 Module'; // Sonoff Touch, Sonoff 4CH
 const MOTOR_CAC = 'Motor C/AC Module'; // iTead Motor Clockwise/Anticlockwise
 const ELECTRO_DRAGON = 'ElectroDragon Module'; // Electro Dragon Wifi IoT Relay Board Based on ESP8266
 
-
 const sonoffPowTopicHanlders = SonoffPowTopicHanlders();
 
 function commandPerDevice(appName, topic) {
@@ -20,7 +19,7 @@ function commandPerDevice(appName, topic) {
       });
       break;
     default:
-      ret.empty();
+      ret = {};
       break;
   }
 
@@ -43,20 +42,19 @@ function namePerDevice(appName, topic) {
 }
 
 
-export default function infoMapper(e) {
-  return {
-    Type: e.Type,
-    Payload: {
-      name: namePerDevice(e.Payload.AppName, e.Payload.Topic),
-      description: namePerDevice(e.Payload.AppName, e.Payload.Topic),
-      gateway: e.GatewayId,
-      swVersion: e.Payload.Version,
-      deviceType: e.Payload.AppName,
-      deviceId: e.Payload.DeviceId || '00:00:00:00:00:00',
-      commands: commandPerDevice(e.Payload.AppName, e.Payload.Topic),
-      created: new Date(),
-    },
-  };
-}
+const SONInfoToDevice = e => ({
+  deviceId: e.Payload.DeviceId || '00:00:00:00:00:00',
+  payload: {
+    name: namePerDevice(e.Payload.AppName, e.Payload.Topic),
+    description: namePerDevice(e.Payload.AppName, e.Payload.Topic),
+    gateway: e.GatewayId,
+    swVersion: e.Payload.Version,
+    deviceType: e.Payload.AppName,
+    deviceId: e.Payload.DeviceId || '00:00:00:00:00:00',
+    commands: commandPerDevice(e.Payload.AppName, e.Payload.Topic),
+    created: new Date(),
+  },
+});
 
+export default SONInfoToDevice;
 export { SONOFF, SONOFF_POW, SONOFF_2, MOTOR_CAC, ELECTRO_DRAGON };

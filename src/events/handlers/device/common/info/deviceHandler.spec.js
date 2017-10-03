@@ -26,36 +26,33 @@ describe('DeviceHandler', () => {
   context('Sonoff', () => {
     it('should call add in device provider', (done) => {
       sinon.stub(deviceProvider, 'updateByDeviceId')
-        .returns(Promise.resolve({
-          gateway: 'agateway',
-          swVersion: '1.2.3',
-          deviceType: 'Sonoff Pow Module',
-          deviceId: '11:44:41:9f:66:ea',
-          name: 'UpsertDevice',
-          commands: {
-            power: 'mqtt:cmnd/test6/POWER',
-          },
-          created: new Date(),
-        }));
+        .returns(Promise.resolve());
 
-      const event =
-        {
-          GatewayId: 'testGateway',
-          Type: 'INFO',
-          Payload: {
-            AppName: 'Sonoff Pow',
-            Version: '1.2.3',
-            FallbackTopic: 'sonoffback',
-            GroupTopic: 'sogroup',
-            DeviceId: '2d:5f:22:99:73:d5',
-            Topic: 'cmnd/sonoff',
-          },
-        };
+      const event = {
+        deviceId: '2d:5f:22:99:73:d5',
+        payload: {
+          AppName: 'Sonoff Pow',
+          Version: '1.2.3',
+          FallbackTopic: 'sonoffback',
+          GroupTopic: 'sogroup',
+          DeviceId: '2d:5f:22:99:73:d5',
+          Topic: 'cmnd/sonoff',
+        },
+      };
 
       subject.process(event)
         .then(() => {
           deviceProvider.updateByDeviceId
             .calledOnce.should.be.true;
+          deviceProvider.updateByDeviceId
+            .calledWith('2d:5f:22:99:73:d5', {
+              AppName: 'Sonoff Pow',
+              Version: '1.2.3',
+              FallbackTopic: 'sonoffback',
+              GroupTopic: 'sogroup',
+              DeviceId: '2d:5f:22:99:73:d5',
+              Topic: 'cmnd/sonoff',
+            });
           done();
         })
         .catch(err => done(err));
@@ -65,40 +62,33 @@ describe('DeviceHandler', () => {
   context('S6 fresnell', () => {
     it('should call add in device provider', (done) => {
       sinon.stub(deviceProvider, 'updateByDeviceId')
-        .returns(Promise.resolve({
-          gateway: 'agateway',
-          swVersion: '1.2.3',
-          deviceType: 'Sonoff Pow Module',
-          deviceId: '11:44:41:9f:66:ea',
-          name: 'UpsertDevice',
-          commands: {
-            power: 'mqtt:cmnd/test6/POWER',
-          },
-          created: new Date(),
-        }));
+        .returns(Promise.resolve());
 
       const event =
         {
-          GatewayId: 'CASAFG',
-          Type: 'FRESNEL_INFO',
-          Payload: {
+          deviceId: '00:11:22:33:44:55',
+          payload: {
             topic: 'building/room1/sensors/00:11:22:33:44:55/info',
-            deviceId: '00:11:22:33:44:55',
             appName: 'S6 Fresnel Module',
             version: '0.0.1',
             location: 'room1',
-          }
-          ,
+          },
         };
 
       subject.process(event)
         .then(() => {
           deviceProvider.updateByDeviceId
             .calledOnce.should.be.true;
+          deviceProvider.updateByDeviceId
+            .calledWith('2d:5f:22:99:73:d5', {
+              topic: 'building/room1/sensors/00:11:22:33:44:55/info',
+              appName: 'S6 Fresnel Module',
+              version: '0.0.1',
+              location: 'room1',
+            });
           done();
         })
         .catch(err => done(err));
     });
   });
-
 });

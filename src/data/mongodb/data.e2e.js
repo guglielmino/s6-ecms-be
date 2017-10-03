@@ -108,6 +108,63 @@ describe('data', () => {
         .catch(err => done(err));
     });
 
+    it('Should get top N elements', (done) => {
+      genericProvider
+      .add({
+        name: 'test',
+        age: 23,
+      })
+      .then(() => genericProvider.add({
+        name: 'test 1',
+        age: 23,
+      }))
+      .then(() => genericProvider.add({
+        name: 'test 2',
+        age: 23,
+      }))
+      .then(() => genericProvider.add({
+        name: 'test 5',
+        age: 40,
+      }))
+      .then(() => subject.getMany({ age: 23 }, 2))
+      .then((obj) => {
+        obj.length.should.be.eq(2);
+        obj[0].age.should.eq(23);
+        obj[1].age.should.eq(23);
+        done();
+      })
+      .catch(err => done(err));
+    });
+
+    it('Should get all elements matching query if limit is not provided', (done) => {
+      genericProvider
+      .add({
+        name: 'test',
+        age: 23,
+      })
+      .then(() => genericProvider.add({
+        name: 'test 1',
+        age: 23,
+      }))
+      .then(() => genericProvider.add({
+        name: 'test 2',
+        age: 23,
+      }))
+      .then(() => genericProvider.add({
+        name: 'test 5',
+        age: 40,
+      }))
+      .then(() => subject.getMany({ age: 23 }))
+      .then((obj) => {
+        obj.length.should.be.eq(3);
+        obj[0].age.should.eq(23);
+        obj[1].age.should.eq(23);
+        obj[2].age.should.eq(23);
+        done();
+      })
+      .catch(err => done(err));
+    });
+
     it('Should delete a document matching passed query', (done) => {
       genericProvider
         .add({

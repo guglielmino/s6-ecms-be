@@ -44,16 +44,14 @@ describe('FirmwareUpdateHandler', () => {
 
     const event = {
       gateway: 'TESTGW',
-      type: consts.APPEVENT_TYPE_FIRMWARE,
-      payload: {
-        topic: 'cmnd/sonoff/FIRMWARE',
-        param: {},
-      },
+      deviceId: '12:22:44:1a:d6:fa',
+      command: 'AE_FIRMWARE_UPDATE',
     };
     subject.process(event)
       .then(() => {
         publishStub.called.should.be.true;
-        publishStub.calledWith('TESTGW', sinon.match({ payload: { topic: 'cmnd/lamp3/Upgrade' } })).should.be.true;
+        publishStub.calledWith('TESTGW', sinon.match({ payload: { topic: 'cmnd/lamp3/Upgrade' } }))
+          .should.be.true;
         done();
       })
       .catch(err => done(err));
