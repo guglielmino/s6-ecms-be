@@ -1,3 +1,18 @@
+<a name="2.4.0"></a>
+# [2.4.0](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.3.0...v2.4.0) (2017-10-03)
+
+
+### Bug Fixes
+
+* Fix provider passed to lwt handler in ruleEngineBootstrap ([c31eef8](https://gitlab.com/smart-office-iot/iot-project-server/commit/c31eef8))
+
+
+### Features
+
+* Add limit to device query ([9d50d46](https://gitlab.com/smart-office-iot/iot-project-server/commit/9d50d46))
+
+
+
 <a name="2.3.0"></a>
 # [2.3.0](https://gitlab.com/smart-office-iot/iot-project-server/compare/5b035de...v2.3.0) (2017-09-20)
 
