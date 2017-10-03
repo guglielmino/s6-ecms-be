@@ -1,30 +1,28 @@
 import EventsRuleEngine from '../services/eventsRuleEngine';
 
+
+// Handlers
 import EventHandler from '../events/handlers/device/common/eventHandler';
 import DeviceHandler from '../events/handlers/device/common/info/deviceHandler';
 import PowerFeedbackHandler from '../events/handlers/device/common/powerstatus/powerFeedbackHandler';
 import PowerStateHandler from '../events/handlers/internal/api/powerStateHandler';
 import PowerStateAlertHandler from '../events/handlers/internal/api/powerStateAlertHandler';
 import PowerSwitchFailAlertHandler from '../events/handlers/internal/handler/powerSwitchFailAlertHandler';
-
 import LwtHandler from '../events/handlers/device/sonoff/lwt/lwtHandler';
 import FirmwareUpdateHandler from '../events/handlers/internal/api/firmwareUpdateHandler';
-
-// Common
 import HourlyStatHandler from '../events/handlers/device/common/powerconsumption/hourlyStatHandler';
 import DailyStatHandler from '../events/handlers/device/common/powerconsumption/dailyStatHandler';
 import UpdateOnlineStatusHandler from '../events/handlers/device/common/onlineStatus/updateOnlineStatusHandler';
 
-// Sonoff
-import LwtRules from './rules/sonoff-lwt';
 
-// Common
+// Rules
 import PowerConsumptionRules from './rules/powerConsumption';
 import DeviceInfoRules from './rules/deviceInfo';
 import PowerAlertHandler from '../events/handlers/device/common/alerts/powerAlertHandler';
 import ApiRules from './rules/apiRules';
 import AppEventsRules from './rules/appEventsRules';
 import PowerFeedbackRules from './rules/powerFeedbackRules';
+import LwtRules from './rules/lwtRules';
 
 const BootstapRuleEngine = (providers, pnub, socket) => {
   const eventHandler = EventHandler(providers.eventProvider);
