@@ -16,19 +16,15 @@ import DailyStatHandler from '../events/handlers/device/common/powerconsumption/
 import UpdateOnlineStatusHandler from '../events/handlers/device/common/onlineStatus/updateOnlineStatusHandler';
 
 // Sonoff
-import PowerRules from './rules/sonoff-power';
 import LwtRules from './rules/sonoff-lwt';
-import ApiRules from './rules/apiRules';
-import PowerSwitchFailAlertRules from './rules/handler-powerswitch-fail-alert';
-
-// S6 Fresnell
-import S6PowerFeedbackRules from './rules/s6fresnel-powerfeedback';
 
 // Common
 import PowerConsumptionRules from './rules/powerConsumption';
 import DeviceInfoRules from './rules/deviceInfo';
 import PowerAlertHandler from '../events/handlers/device/common/alerts/powerAlertHandler';
-
+import ApiRules from './rules/apiRules';
+import AppEventsRules from './rules/appEventsRules';
+import PowerFeedbackRules from './rules/powerFeedbackRules';
 
 const BootstapRuleEngine = (providers, pnub, socket) => {
   const eventHandler = EventHandler(providers.eventProvider);
@@ -65,11 +61,10 @@ const BootstapRuleEngine = (providers, pnub, socket) => {
   DeviceInfoRules(ruleEngine, { deviceHandler });
 
   /* -- Power feedback event processing -- */
-  PowerRules(ruleEngine, { powerFeedbackHandler });
-  S6PowerFeedbackRules(ruleEngine, { powerFeedbackHandler });
+  PowerFeedbackRules(ruleEngine, { powerFeedbackHandler });
 
   /* -- Power Alert event processing -- */
-  PowerSwitchFailAlertRules(ruleEngine, {
+  AppEventsRules(ruleEngine, {
     powerSwitchFailAlertHandler,
   });
 

@@ -10,11 +10,11 @@ import AlertBuilder from '../../builders/alertBuilder';
  */
 const PowerSwitchFailAlertHandler = (alertProvider, socket) => ({
 
-  process: (event) => {
-    logger.log('info', `power switch fail alert creator ${JSON.stringify(event)}`);
+  process: ({ deviceId, gateway, requestStatus }) => {
+    logger.log('info', `power switch fail alert creator ${JSON.stringify({ deviceId, gateway, requestStatus })}`);
 
-    const alarmBuilder = new AlertBuilder(event.gateway, event.deviceId,
-      `${event.deviceId} doesn't respond to turn ${event.requestStatus}`);
+    const alarmBuilder = new AlertBuilder(gateway, deviceId,
+      `${deviceId} doesn't respond to turn ${requestStatus}`);
     alarmBuilder.setLevel(ALERT_CRITICAL);
 
     const alarmObj = alarmBuilder.build();
@@ -22,7 +22,7 @@ const PowerSwitchFailAlertHandler = (alertProvider, socket) => ({
     return new Promise((resolve, reject) => {
       alertProvider.add(alarmObj)
         .then(() => {
-          socket.emit(event.GatewayId, WS_DEVICE_ALARM, alarmObj);
+          socket.emit(gateway, WS_DEVICE_ALARM, alarmObj);
           resolve();
         })
         .catch(err => reject(err));

@@ -5,7 +5,7 @@ import * as consts from '../../../consts';
 
 import EventsRuleEngine from '../../services/eventsRuleEngine';
 import PowerSwitchFailAlertHandler from '../../events/handlers/internal/handler/powerSwitchFailAlertHandler';
-import PowerSwitchFailAlertRules from './handler-powerswitch-fail-alert';
+import PowerSwitchFailAlertRules from './appEventsRules';
 
 chai.should();
 const expect = chai.expect();
