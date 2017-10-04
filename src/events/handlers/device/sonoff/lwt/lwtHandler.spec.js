@@ -1,7 +1,7 @@
 import chai from 'chai';
 import sinon from 'sinon';
 import LwtHandler from './lwtHandler';
-import { DevicesProvider } from '../../../../../data/mongodb/index';
+import {DevicesProvider} from '../../../../../data/mongodb/index';
 
 
 chai.should();
@@ -35,17 +35,11 @@ describe('LwtHandler', () => {
       };
 
       sinon.stub(deviceProvider, 'updateByDeviceId').returns(Promise.resolve());
-
       sinon.stub(deviceProvider, 'findByDeviceId').returns(Promise.resolve(device));
 
       const event = {
-        GatewayId: 'TESTGW',
-        Type: 'LWT',
-        Payload: {
-          Topic: 'tele/lamp3/LWT',
-          Status: 'Online',
-          DeviceId: '12:22:44:1a:d6:fa',
-        },
+        status: 'Online',
+        deviceId: '12:22:44:1a:d6:fa',
       };
 
       subject.process(event)
@@ -54,7 +48,7 @@ describe('LwtHandler', () => {
             .should.be.true;
           deviceProvider.updateByDeviceId
             .calledWith('12:22:44:1a:d6:fa',
-              sinon.match({ status: { online: true } }))
+              sinon.match({status: {online: true}}))
             .should.be.true;
           done();
         })
@@ -81,16 +75,11 @@ describe('LwtHandler', () => {
       };
 
       sinon.stub(deviceProvider, 'updateByDeviceId').returns(Promise.resolve());
-
       sinon.stub(deviceProvider, 'findByDeviceId').returns(Promise.resolve(device));
 
       const event = {
-        GatewayId: 'TESTGW',
-        Type: 'LWT',
-        Payload: {
-          Status: 'Offline',
-          DeviceId: '12:22:44:1a:d6:fa',
-        },
+        status: 'Offline',
+        deviceId: '12:22:44:1a:d6:fa',
       };
 
       subject.process(event)
@@ -99,7 +88,7 @@ describe('LwtHandler', () => {
             .calledWith('12:22:44:1a:d6:fa').should.be.true;
           deviceProvider.updateByDeviceId
             .calledWith('12:22:44:1a:d6:fa',
-            sinon.match({status: { online: false, power: 'off' } }))
+              sinon.match({status: {online: false, power: 'off'}}))
             .should.be.true;
           done();
         })

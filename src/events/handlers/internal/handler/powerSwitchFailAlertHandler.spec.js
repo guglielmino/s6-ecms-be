@@ -4,9 +4,10 @@ import * as consts from '../../../../../consts';
 import PowerSwitchFailAlertHandler from './powerSwitchFailAlertHandler';
 
 import helper from '../../processor_tests_helper.spec';
+
 helper('./powerStateAlertCreator');
 
-import { AlertsProvider } from '../../../../data/mongodb/index';
+import {AlertsProvider} from '../../../../data/mongodb/index';
 
 chai.should();
 const expect = chai.expect;
@@ -37,11 +38,14 @@ describe('PowerSwitchFailAlertHandler', () => {
           .calledOnce.should.be.true;
 
         alertProvider.add
-          .calledWith(sinon.match({ deviceId: '13:32:22:34:55:12', level: 'critical' }))
+          .calledWith(sinon.match({deviceId: '13:32:22:34:55:12', level: 'critical'}))
           .should.be.true;
 
         socket.emit
           .calledOnce.should.be.true;
+        socket.emit
+          .calledWith('TEST_GW', 'WS_ALERT_DEVICE', sinon.match.any)
+          .should.be.true;
         done();
       })
       .catch(err => done(err));
