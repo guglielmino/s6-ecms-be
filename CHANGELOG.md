@@ -1,3 +1,13 @@
+<a name="2.4.2"></a>
+## [2.4.2](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.4.0...v2.4.2) (2017-10-04)
+
+
+### Bug Fixes
+
+* Fix date in daily provider ([5f3482c](https://gitlab.com/smart-office-iot/iot-project-server/commit/5f3482c))
+
+
+
 <a name="2.4.0"></a>
 # [2.4.0](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.3.0...v2.4.0) (2017-10-03)
 
