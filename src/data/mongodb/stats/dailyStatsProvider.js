@@ -7,7 +7,7 @@ import { DataProvider } from '../data';
  * @param date
  */
 const getRefDate = (date) => {
-  const dayDate = new Date(date.getTime());
+  const dayDate = new Date(date);
   dayDate.setUTCHours(0);
   dayDate.setUTCMinutes(0);
   dayDate.setUTCSeconds(0);
