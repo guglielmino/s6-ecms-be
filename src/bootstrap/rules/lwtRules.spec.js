@@ -3,7 +3,7 @@ import chai from 'chai';
 
 import EventsRuleEngine from '../../services/eventsRuleEngine';
 import LwtHandler from '../../events/handlers/device/sonoff/lwt/lwtHandler';
-import LwtRules from './sonoff-lwt';
+import LwtRules from './lwtRules';
 
 chai.should();
 

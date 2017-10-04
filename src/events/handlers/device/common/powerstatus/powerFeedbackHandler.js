@@ -8,18 +8,14 @@ import sharedDelayedQueue from '../../../../../bootstrap/sharedDelayedQueue';
  * @constructor
  */
 const PowerFeedbackHandler = (deviceProvider, socket) => ({
-  process: (event) => {
-    logger.log('info', `power feedback processor ${JSON.stringify(event)}`);
+  process: ({ deviceId, powerStatus }) => {
+    logger.log('info', `power feedback processor ${JSON.stringify({ deviceId, powerStatus })}`);
 
     return new Promise((resolve, reject) => {
-      // NOTE: Handles different property names case for different devices (Sonoff and S6Fresnel)
-      const deviceId = event.Payload.DeviceId || event.Payload.deviceId;
-      const power = event.Payload.Power || event.Payload.status;
-
       deviceProvider
         .findByDeviceId(deviceId)
         .then((res) => {
-          const updatedObj = { ...res, status: { ...res.status, power } };
+          const updatedObj = { ...res, status: { ...res.status, power: powerStatus } };
           // Remove device from delayed queue
           // (used for alerting if response doesn't come in a defined delay)
           sharedDelayedQueue.remove(item => item.deviceId === res.deviceId);
@@ -28,7 +24,7 @@ const PowerFeedbackHandler = (deviceProvider, socket) => ({
             .update(res, updatedObj);
           // WebSocket notify
           socket.emit(res.gateway, WS_DEVICE_POWER_FEEDBACK,
-            { deviceId: res.deviceId, status: power });
+            { deviceId: res.deviceId, status: powerStatus });
 
           resolve();
         })
