@@ -91,7 +91,7 @@ export default function (database) {
             },
           }, {
             $group: {
-              _id: Object.assign({}, { hour: { $hour: '$date' } }, ...grouping),
+              _id: Object.assign({}, { date: '$date' }, ...grouping),
               power: {
                 $sum: '$power',
               },
