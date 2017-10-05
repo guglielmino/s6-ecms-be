@@ -16,13 +16,14 @@
  */
 
 import * as consts from '../../../consts';
+import APPEventToHandler from '../../events/mapper/appEvents/appEventToHandler';
 
 const PowerSwitchFailAlertRules = (ruleEngine, {
   powerSwitchFailAlertHandler,
 }) => {
   ruleEngine.add({
     predicate: msg => msg.type === consts.APPEVENT_TYPE_POWER_ALERT,
-    fn: msg => powerSwitchFailAlertHandler.process(msg),
+    fn: msg => powerSwitchFailAlertHandler.process(APPEventToHandler(msg)),
   });
 };
 

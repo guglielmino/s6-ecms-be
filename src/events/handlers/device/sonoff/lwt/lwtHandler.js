@@ -4,17 +4,17 @@ const STATUS_OFFLINE = 'Offline';
 const STATUS_ONLINE = 'Online';
 
 const LwtHandler = deviceProvider => ({
-  process: (event) => {
-    logger.log('info', `lwt processor ${JSON.stringify(event)}`);
+  process: ({ deviceId, status }) => {
+    logger.log('info', `lwt processor ${JSON.stringify({ deviceId, status })}`);
 
     return new Promise((resolve, reject) => {
-      deviceProvider.findByDeviceId(event.Payload.DeviceId).then((dev) => {
-        if (event.Payload.Status === STATUS_OFFLINE) {
+      deviceProvider.findByDeviceId(deviceId).then((dev) => {
+        if (status === STATUS_OFFLINE) {
           deviceProvider
             .updateByDeviceId(dev.deviceId,
               { ...dev, status: { ...dev.status, online: false } })
             .then(() => resolve());
-        } else if (event.Payload.Status === STATUS_ONLINE) {
+        } else if (status === STATUS_ONLINE) {
           deviceProvider
             .updateByDeviceId(dev.deviceId,
               { ...dev, status: { ...dev.status, online: true } })
