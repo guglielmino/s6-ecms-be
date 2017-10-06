@@ -8,6 +8,7 @@ const transformDevice = device => ({
   type: device.deviceType,
   version: device.swVersion,
   status: device.status ? device.status : {},
+  tags: device.tags ? device.tags : [],
   id: device._id, // eslint-disable-line no-underscore-dangle
 });
 

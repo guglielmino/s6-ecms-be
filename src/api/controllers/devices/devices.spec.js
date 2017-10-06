@@ -248,6 +248,38 @@ describe('Devices API endpoints', () => {
       });
   });
 
+  it('should accept device tags change', (done) => {
+    const getDeviceStub = sinon.stub(deviceProvider, 'findByDeviceId')
+      .returns(Promise.resolve({
+          name: 'Sample',
+          description: 'Sample description',
+          gateway: 'samplegw',
+          deviceId: '11:22:33:44:55:66',
+          deviceType: 'Sonoff Pow Module',
+          swVersion: '1.0',
+        }),
+      );
+
+    sinon.stub(deviceProvider, 'updateByDeviceId')
+      .returns(Promise.resolve({ status: true, id: 'aaasaaa' }));
+
+    Devices(app, [FakeAuthMiddleware(['samplegw'])()], { deviceProvider });
+
+    request
+      .patch('/api/devices/11:22:33:44:55:66')
+      .send({ op: 'replace', path: '/tags', value: ['new tag'] })
+      .expect(200, (err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          deviceProvider.updateByDeviceId
+            .calledWith('11:22:33:44:55:66', sinon.match({ tags: ['new tag'] }))
+            .should.be.true;
+          done();
+        }
+      });
+  });
+
 
   it('should not accept device name change', (done) => {
     const getDeviceStub = sinon.stub(deviceProvider, 'findByDeviceId')
