@@ -36,7 +36,8 @@ const BootstapRuleEngine = (providers, pnub, socket, emitter) => {
   const powerFeedbackHandler = PowerFeedbackHandler(providers.deviceProvider, socket);
   const powerStateHandler = PowerStateHandler(providers.deviceProvider, pnub);
   const powerStateAlertHandler = PowerStateAlertHandler();
-  const powerSwitchFailAlertHandler = PowerSwitchFailAlertHandler(providers.alertProvider, socket);
+  const powerSwitchFailAlertHandler = PowerSwitchFailAlertHandler(providers.alertProvider,
+    providers.deviceProvider, socket);
   const lwtHandler = LwtHandler(providers.deviceProvider, emitter);
   const lwtStatusAlertHandler = LwtStatusAlertHandler(providers.alertProvider, socket);
   const firmwareUpdateHandler = FirmwareUpdateHandler(providers.deviceProvider, pnub);
