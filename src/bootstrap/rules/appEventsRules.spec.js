@@ -40,7 +40,6 @@ describe('HANDLER generated power switch change alert event', () => {
       .calledOnce.should.be.true;
   });
 
-
   it('Should NOT call \'process\' of every handler for a generic message', () => {
     const message = {
       command: consts.APPEVENT_TYPE_POWER,
