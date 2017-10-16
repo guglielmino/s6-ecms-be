@@ -1,8 +1,9 @@
 import chai from 'chai';
 import sinon from 'sinon';
 import LwtHandler from './lwtHandler';
-import {DevicesProvider} from '../../../../../data/mongodb/index';
-
+import { DevicesProvider } from '../../../../../data/mongodb/index';
+import logger from '../../../../../common/logger';
+import * as consts from '../../../../../../consts';
 
 chai.should();
 const expect = chai.expect;
@@ -10,14 +11,23 @@ const expect = chai.expect;
 describe('LwtHandler', () => {
   let subject;
   let deviceProvider;
+  let emitter;
+  let stubbedLog;
 
   beforeEach(() => {
     const db = {
       collection: () => {
-      }
+      },
     };
+    emitter = {};
+    emitter.emit = sinon.spy();
+    stubbedLog = sinon.stub(logger, 'log');
     deviceProvider = DevicesProvider(db);
-    subject = new LwtHandler(deviceProvider);
+    subject = new LwtHandler(deviceProvider, emitter);
+  });
+
+  afterEach(() => {
+    stubbedLog.restore();
   });
 
   context('when event is LWT online', () => {
@@ -48,8 +58,10 @@ describe('LwtHandler', () => {
             .should.be.true;
           deviceProvider.updateByDeviceId
             .calledWith('12:22:44:1a:d6:fa',
-              sinon.match({status: {online: true}}))
+              sinon.match({ status: { online: true } }))
             .should.be.true;
+          //emit event to generate alert
+          emitter.emit.calledWith('event', {type: consts.APPEVENT_TYPE_LWT_ALERT, status: 'Online', device }).should.be.true;
           done();
         })
         .catch(err => done(err));
@@ -88,8 +100,10 @@ describe('LwtHandler', () => {
             .calledWith('12:22:44:1a:d6:fa').should.be.true;
           deviceProvider.updateByDeviceId
             .calledWith('12:22:44:1a:d6:fa',
-              sinon.match({status: {online: false, power: 'off'}}))
+              sinon.match({ status: { online: false, power: 'off' } }))
             .should.be.true;
+          //emit event to generate alert
+          emitter.emit.calledWith('event', {type: consts.APPEVENT_TYPE_LWT_ALERT, status: 'Offline', device }).should.be.true;
           done();
         })
         .catch(err => done(err));

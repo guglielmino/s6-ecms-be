@@ -36,7 +36,7 @@ database.connect()
 
     const pub$ = pnub.fromChannel(consts.PUBNUB_EVENTS_CHANNEL);
 
-    const ruleEngine = BootstapRuleEngine(providers, pnub, socket);
+    const ruleEngine = BootstapRuleEngine(providers, pnub, socket, emitter);
 
     Rx.Observable
       .merge(getPNEventObservable(pub$), getEmitterEventObservable(emitter))

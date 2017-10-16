@@ -1,9 +1,8 @@
 import logger from '../../../../../common/logger';
+import * as consts from '../../../../../../consts';
+import { STATUS_OFFLINE, STATUS_ONLINE } from '../../../../../common/lwtConsts';
 
-const STATUS_OFFLINE = 'Offline';
-const STATUS_ONLINE = 'Online';
-
-const LwtHandler = deviceProvider => ({
+const LwtHandler = (deviceProvider, emitter) => ({
   process: ({ deviceId, status }) => {
     logger.log('info', `lwt processor ${JSON.stringify({ deviceId, status })}`);
 
@@ -20,6 +19,8 @@ const LwtHandler = deviceProvider => ({
               { ...dev, status: { ...dev.status, online: true } })
             .then(() => resolve());
         }
+        // Event to create alert for lwt
+        emitter.emit('event', { type: consts.APPEVENT_TYPE_LWT_ALERT, status, device: dev });
       }).catch(err => reject(err));
     });
   },
