@@ -3,7 +3,7 @@ import nodeExcel from 'excel-export';
 import { createExcelConf } from '../api-utils';
 
 export default contentNegotiation => (req, res, next) => {   // eslint-disable-line no-unused-vars
-  res.sendData = (data, mapper = {}) => {
+  res.sendData = (data, mapper = {}) => { // eslint-disable-line no-param-reassign
     const jsonMapper = mapper['application/json'];
     res.format({
       'application/json': () => {
