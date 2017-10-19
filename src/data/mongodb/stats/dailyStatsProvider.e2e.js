@@ -20,7 +20,6 @@ describe('daily statistics provider', () => {
   let db;
 
   beforeEach((done) => {
-
     ConnectDb('dailyStats', (err, _db) => {
       if (err) {
         done(err);
@@ -60,10 +59,9 @@ describe('daily statistics provider', () => {
       .then((res) => {
         done(new Error('Should not complete'));
       })
-      .catch(err => {
+      .catch((err) => {
         err.should.be.not.null;
         done();
-
       });
   });
 
@@ -88,10 +86,8 @@ describe('daily statistics provider', () => {
             today: 25.4,
           });
       })
-      .then(() => {
-        return subject
-          .getDailyStat(todayDate, ['test_gateway1', 'test_gateway2']);
-      })
+      .then(() => subject
+          .getDailyStat(todayDate, ['test_gateway1', 'test_gateway2']))
       .then((res) => {
         res.length.should.be.gte(1);
         res[0].today.should.be.eq(125.4);
@@ -123,10 +119,8 @@ describe('daily statistics provider', () => {
             today: 25.4,
           });
       })
-      .then(() => {
-        return subject
-          .getDailyStat(todayDate, ['test_gateway1']);
-      })
+      .then(() => subject
+          .getDailyStat(todayDate, ['test_gateway1']))
       .then((res) => {
         res.length.should.be.gte(1);
         res[0].today.should.be.eq(25.4);
@@ -146,24 +140,20 @@ describe('daily statistics provider', () => {
         deviceId: '00:11:22:33:44:55',
         today: 23.45,
       })
-      .then(() => {
-        return subject
+      .then(() => subject
           .updateDailyStat({
             date: addDaysToDate(todayDate, 2),
             gateway: 'test_gateway1',
             deviceId: '00:11:22:33:44:55',
             today: 10.3,
-          });
-      })
-      .then(() => {
-        return subject
+          }))
+      .then(() => subject
           .updateDailyStat({
             date: addDaysToDate(todayDate, 5),
             gateway: 'test_gateway1',
             deviceId: '00:11:22:33:44:55',
             today: 35.2,
-          });
-      })
+          }))
       .then(() => {
         const date = new Date();
         const toDate = addDaysToDate(date, 3);
@@ -174,6 +164,40 @@ describe('daily statistics provider', () => {
         res.length.should.be.equal(2);
         res[0].today.should.be.eq(10.3);
         res[1].today.should.be.eq(23.45);
+        done();
+      })
+      .catch(err => done(err));
+  });
+
+  it('should get daily stats for given date and deviceId', (done) => {
+    const todayDate = new Date();
+    subject = DailyStatsProvider(db);
+    subject
+      .updateDailyStat({
+        date: todayDate,
+        gateway: 'test_gateway1',
+        deviceId: '00:11:22:33:44:55',
+        today: 23.45,
+      })
+      .then(() => subject
+          .updateDailyStat({
+            date: addDaysToDate(todayDate, 2),
+            gateway: 'test_gateway1',
+            deviceId: '00:11:22:33:44:55',
+            today: 10.3,
+          }))
+      .then(() => subject
+          .updateDailyStat({
+            date: addDaysToDate(todayDate, 5),
+            gateway: 'test_gateway1',
+            deviceId: '00:11:22:33:44:55',
+            today: 35.2,
+          }))
+      .then(() => subject
+          .getDailyStatsForDeviceId(todayDate, '00:11:22:33:44:55'))
+      .then((res) => {
+        res.today.should.be.eq(23.45);
+        res.deviceId.should.be.eq('00:11:22:33:44:55');
         done();
       })
       .catch(err => done(err));
