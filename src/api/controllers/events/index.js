@@ -12,11 +12,11 @@ export default function (app, middlewares, { eventProvider }) {
 
   /**
    * @swagger
-   * /api/events/:
+   * /api/email/:
    *   post:
    *     tags:
-   *      - Events
-   *     description: Store events received from gateway
+   *      - Email
+   *     description: Provide method to send emails
    *     produces:
    *      - application/json
    *     responses:
