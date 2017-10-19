@@ -73,12 +73,12 @@ export default function (database) {
     },
 
     getDailyStatsForDeviceId(date, deviceId) {
-      return queryDataProvider.getOne([{
+      return queryDataProvider.getOne({
         $and: [
           { deviceId,
-            date,
+            date: getRefDate(date),
           }],
-      }]);
+      });
     },
 
     getDailyStat(date, gateways) {

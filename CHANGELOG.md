@@ -1,10 +1,11 @@
-<a name="2.5.0"></a>
-# [2.5.0](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.4.3...v2.5.0) (2017-10-19)
+<a name="2.5.1"></a>
+## [2.5.1](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.4.3...v2.5.1) (2017-10-19)
 
 
 ### Bug Fixes
 
 * Fix daily and power mapper ([10e0d22](https://gitlab.com/smart-office-iot/iot-project-server/commit/10e0d22))
+* Fix eslint error ([8e1f3c2](https://gitlab.com/smart-office-iot/iot-project-server/commit/8e1f3c2))
 
 
 ### Features
