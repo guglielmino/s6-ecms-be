@@ -1,3 +1,20 @@
+<a name="2.5.0"></a>
+# [2.5.0](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.4.3...v2.5.0) (2017-10-19)
+
+
+### Bug Fixes
+
+* Fix daily and power mapper ([10e0d22](https://gitlab.com/smart-office-iot/iot-project-server/commit/10e0d22))
+
+
+### Features
+
+* Add alert creation for device online / offline based on LWT message ([26fee6a](https://gitlab.com/smart-office-iot/iot-project-server/commit/26fee6a))
+* Change calculation of daily consume ([872de64](https://gitlab.com/smart-office-iot/iot-project-server/commit/872de64))
+* Handle tags field in device table ([e19583a](https://gitlab.com/smart-office-iot/iot-project-server/commit/e19583a))
+
+
+
 <a name="2.4.3"></a>
 ## [2.4.3](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.4.1...v2.4.3) (2017-10-05)
 

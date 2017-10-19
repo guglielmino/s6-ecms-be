@@ -9,6 +9,7 @@ import PowerStateHandler from '../events/handlers/internal/api/powerStateHandler
 import PowerStateAlertHandler from '../events/handlers/internal/api/powerStateAlertHandler';
 import PowerSwitchFailAlertHandler from '../events/handlers/internal/handler/powerSwitchFailAlertHandler';
 import LwtHandler from '../events/handlers/device/sonoff/lwt/lwtHandler';
+import LwtStatusAlertHandler from '../events/handlers/device/common/alerts/lwtStatusAlertHandler';
 import FirmwareUpdateHandler from '../events/handlers/internal/api/firmwareUpdateHandler';
 import HourlyStatHandler from '../events/handlers/device/common/powerconsumption/hourlyStatHandler';
 import DailyStatHandler from '../events/handlers/device/common/powerconsumption/dailyStatHandler';
@@ -24,7 +25,7 @@ import AppEventsRules from './rules/appEventsRules';
 import PowerFeedbackRules from './rules/powerFeedbackRules';
 import LwtRules from './rules/lwtRules';
 
-const BootstapRuleEngine = (providers, pnub, socket) => {
+const BootstapRuleEngine = (providers, pnub, socket, emitter) => {
   const eventHandler = EventHandler(providers.eventProvider);
   const dailyStatHandler = DailyStatHandler(providers.dailyStatsProvider);
   const hourlyStatHandler = HourlyStatHandler(providers.hourlyStatsProvider);
@@ -35,8 +36,10 @@ const BootstapRuleEngine = (providers, pnub, socket) => {
   const powerFeedbackHandler = PowerFeedbackHandler(providers.deviceProvider, socket);
   const powerStateHandler = PowerStateHandler(providers.deviceProvider, pnub);
   const powerStateAlertHandler = PowerStateAlertHandler();
-  const powerSwitchFailAlertHandler = PowerSwitchFailAlertHandler(providers.alertProvider, socket);
-  const lwtHandler = LwtHandler(providers.deviceProvider);
+  const powerSwitchFailAlertHandler = PowerSwitchFailAlertHandler(providers.alertProvider,
+    providers.deviceProvider, socket);
+  const lwtHandler = LwtHandler(providers.deviceProvider, emitter);
+  const lwtStatusAlertHandler = LwtStatusAlertHandler(providers.alertProvider, socket);
   const firmwareUpdateHandler = FirmwareUpdateHandler(providers.deviceProvider, pnub);
 
   const ruleEngine = new EventsRuleEngine();
@@ -67,7 +70,10 @@ const BootstapRuleEngine = (providers, pnub, socket) => {
   });
 
   /* -- LWT event processing -- */
-  LwtRules(ruleEngine, { lwtHandler });
+  LwtRules(ruleEngine, {
+    lwtHandler,
+    lwtStatusAlertHandler,
+  });
 
   /* -- API events processing -- */
   ApiRules(ruleEngine, {

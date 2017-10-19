@@ -3,6 +3,7 @@ import chai from 'chai';
 
 import EventsRuleEngine from '../../services/eventsRuleEngine';
 import LwtHandler from '../../events/handlers/device/sonoff/lwt/lwtHandler';
+import LwtStatusAlertHandler from '../../events/handlers/device/common/alerts/lwtStatusAlertHandler';
 import LwtRules from './lwtRules';
 
 chai.should();
@@ -10,15 +11,21 @@ chai.should();
 describe('Sonoff LWT Rules', () => {
   let ruleEngine;
   let lwtHandler;
+  let lwtStatusAlertHandler;
+  let socket;
 
   beforeEach(() => {
     lwtHandler = LwtHandler();
+    lwtStatusAlertHandler = LwtStatusAlertHandler();
 
     sinon.stub(lwtHandler);
+    socket = {};
+    socket.emit = sinon.spy();
 
     ruleEngine = new EventsRuleEngine();
     LwtRules(ruleEngine, {
       lwtHandler,
+      lwtStatusAlertHandler,
     });
   });
 
@@ -37,6 +44,25 @@ describe('Sonoff LWT Rules', () => {
 
     lwtHandler.process
       .calledOnce.should.be.true;
+  });
+
+  it('Should call process of lwt alert handler for LWT event', () => {
+    it('Should call \'process\' of every handler for an api generated LWT message', () => {
+      const message = {
+        type: 'LWT',
+        status: 'Online',
+        device: {
+          deviceId: '13:32:22:34:55:12',
+          name: 'test',
+          description: 'device desc',
+        },
+      };
+
+      ruleEngine.handle(message);
+
+      powerSwitchFailAlertHandler.process
+        .calledOnce.should.be.true;
+    });
   });
 
   it('Should NOT call \'process\' of every handler for generic message', () => {

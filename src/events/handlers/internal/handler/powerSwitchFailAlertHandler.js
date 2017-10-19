@@ -8,24 +8,32 @@ import AlertBuilder from '../../builders/alertBuilder';
  * @param providers
  * @constructor
  */
-const PowerSwitchFailAlertHandler = (alertProvider, socket) => ({
+const PowerSwitchFailAlertHandler = (alertProvider, devicesProvider, socket) => ({
 
   process: ({ deviceId, gateway, requestStatus }) => {
     logger.log('info', `power switch fail alert creator ${JSON.stringify({ deviceId, gateway, requestStatus })}`);
 
-    const alarmBuilder = new AlertBuilder(gateway, deviceId,
-      `${deviceId} doesn't respond to turn ${requestStatus}`);
-    alarmBuilder.setLevel(ALERT_CRITICAL);
-
-    const alarmObj = alarmBuilder.build();
-
     return new Promise((resolve, reject) => {
-      alertProvider.add(alarmObj)
-        .then(() => {
-          socket.emit(gateway, WS_DEVICE_ALARM, alarmObj);
-          resolve();
-        })
-        .catch(err => reject(err));
+      devicesProvider.findByDeviceId(deviceId).then((dev) => {
+        if (dev) {
+          const alarmBuilder = new AlertBuilder(gateway, deviceId,
+            `${dev.description || dev.name} doesn't respond to turn ${requestStatus}`);
+          alarmBuilder.setLevel(ALERT_CRITICAL);
+
+          const alarmObj = alarmBuilder.build();
+
+          alertProvider.add(alarmObj)
+            .then(() => {
+              socket.emit(gateway, WS_DEVICE_ALARM, alarmObj);
+              resolve();
+            });
+        } else {
+          const error = new Error(`Error in PowerSwitchFailAlertHandler: ${deviceId} not found`);
+          logger.log('debug', error);
+          reject(error);
+        }
+      })
+      .catch(err => reject(err));
     });
   },
 });

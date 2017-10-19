@@ -1,4 +1,4 @@
-import { DataProvider } from '../data';
+import { DataProvider, InternalDataProvider } from '../data';
 
 /**
  * Daily stats are stored by convention with the event's date
@@ -38,6 +38,7 @@ export default function (database) {
   };
 
   const dataProvider = DataProvider(params);
+  const queryDataProvider = InternalDataProvider(params);
   dataProvider.createIndex({ date: 1, gateway: 1, deviceId: 1 });
 
   const DailyStatsProvider = ({ db, collectionName }) => ({
@@ -69,6 +70,15 @@ export default function (database) {
           );
         });
       });
+    },
+
+    getDailyStatsForDeviceId(date, deviceId) {
+      return queryDataProvider.getOne([{
+        $and: [
+          { deviceId,
+            date,
+          }],
+      }]);
     },
 
     getDailyStat(date, gateways) {
