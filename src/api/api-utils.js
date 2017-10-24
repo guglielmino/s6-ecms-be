@@ -19,14 +19,15 @@ const getOverlapped = (owned, requested) => (
   owned.filter(item => requested.indexOf(item) !== -1)
 );
 
-const createExcelConf = (data) => {
-  const conf = {};
-  conf.cols = Object.keys(data[0]).map(c => ({ caption: c, type: 'string' }));
-  conf.rows = data.map(r => Object.values(r).map(v => v.toString()));
-  return conf;
+const createCsvElements = (data) => {
+  const csv = {};
+  csv.data = data;
+  csv.fields = Object.keys(data[0]);
+  csv.del = '\t';
+  return csv;
 };
 
 export { getDate,
   getOverlapped,
-  createExcelConf,
+  createCsvElements,
   getGroupField }; // eslint-disable-line import/prefer-default-export
