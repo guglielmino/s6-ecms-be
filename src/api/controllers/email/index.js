@@ -1,13 +1,10 @@
-import emailService from 'pnp-email-service';
-// import logger from '../../../common/logger';
-import * as config from '../../../config';
+const emailService = require('pnp-email-service');
 
 /* eslint-disable no-unused-vars */
 export default function (app, middlewares) {
-  const router = emailService.createRouter(config.email);
+  const router = emailService.createRouter();
 
-  /* eslint-enable no-unused-vars */
-  app.use('/api/email', router);
+  app.use('/api/email/', [...middlewares, router]);
 
   return router;
 }
