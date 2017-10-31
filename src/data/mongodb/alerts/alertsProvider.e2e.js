@@ -106,4 +106,50 @@ describe('alertsProvider', () => {
       })
       .catch(err => done(err));
   });
+
+  it('should get paged alerts', (done) => {
+    subject = AlertsProvider(db);
+    subject.add({
+      gateway: 'DevelopmentGateway',
+      date: new Date(),
+      deviceId: 'f1-33-d2-25-3b-6c',
+      message: 'alert 1',
+      read: 0,
+    }).then(() => subject.add({
+        gateway: 'DevelopmentGateway',
+        date: new Date(),
+        deviceId: 'f1-33-d2-25-3b-6c',
+        message: 'alert 2',
+        read: 0,
+      })).then(() => subject.add({
+      gateway: 'DevelopmentGateway',
+      date: new Date(),
+      deviceId: 'f1-33-d2-25-3b-6c',
+      message: 'alert 3',
+      read: 0,
+    })).then(() => subject.add({
+      gateway: 'DevelopmentGateway',
+      date: new Date(),
+      deviceId: 'f1-33-d2-25-3b-6c',
+      message: 'alert 4',
+      read: 0,
+    }))
+      .then(() => subject.getPagedAlerts(['DevelopmentGateway'], 2, undefined))
+      .then((result) => {
+        result.list.length.should.equal(2);
+        result.list[0].message.should.equal('alert 4');
+        result.list[1].message.should.equal('alert 3');
+        result.hasNext.should.equal(true);
+        result.totalElements.should.equal(4);
+        return subject.getPagedAlerts(['DevelopmentGateway'], 2, result.lastId);
+      })
+      .then((result) => {
+        result.list.length.should.equal(2);
+        result.list[0].message.should.equal('alert 2');
+        result.list[1].message.should.equal('alert 1');
+        result.totalElements.should.equal(4);
+        result.hasNext.should.equal(false);
+        done();
+      });
+  })
 });

@@ -22,6 +22,46 @@ export default function (database) {
         },
       });
     },
+    getPagedAlerts(gateways, limit, lastObjectId) {
+      const alertList = {};
+      return queryDataProvider
+          .getMany({
+            gateway: {
+              $in: gateways,
+            },
+            ...(lastObjectId ? {
+              _id: {
+                $lt: ObjectId(lastObjectId),
+              },
+            } : null),
+          }, limit)
+          .then((result) => {
+            const lastId = result[result.length - 1]._id;// eslint-disable-line no-underscore-dangle
+            alertList.list = result;
+            alertList.lastId = lastId;
+            return queryDataProvider.count({
+              gateway: {
+                $in: gateways,
+              },
+              _id: {
+                $lt: lastId,
+              },
+            });
+          })
+          .then((result) => {
+            alertList.hasNext = result > 0;
+            return queryDataProvider.count({
+              gateway: {
+                $in: gateways,
+              },
+            });
+          })
+          .then((result) => {
+            alertList.totalElements = result;
+            return Promise.resolve(alertList);
+          })
+          .catch(err => Promise.reject(err));
+    },
     getAlertById(alertId) {
       let _id = alertId; // eslint-disable-line no-underscore-dangle
       if (typeof alertId === 'string' || alertId instanceof String) {
