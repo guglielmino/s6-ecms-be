@@ -22,8 +22,9 @@ export default function (database) {
         },
       });
     },
-    getPagedAlerts(gateways, limit, lastObjectId) {
+    getPagedAlerts(gateways, pagination) {
       const alertList = {};
+      const { pageSize, lastObjectId } = pagination;
       return queryDataProvider
           .getMany({
             gateway: {
@@ -34,9 +35,10 @@ export default function (database) {
                 $lt: ObjectId(lastObjectId),
               },
             } : null),
-          }, limit)
+          }, pageSize)
           .then((result) => {
-            const lastId = result[result.length - 1]._id;// eslint-disable-line no-underscore-dangle
+            const lastId = result.length > 0 ?
+              result[result.length - 1]._id : 0;// eslint-disable-line no-underscore-dangle
             alertList.list = result;
             alertList.lastId = lastId;
             return queryDataProvider.count({

@@ -2,12 +2,11 @@ import chai from 'chai';
 import sinon from 'sinon';
 import supertest from 'supertest';
 import bodyParser from 'body-parser';
-
-import { FakeAuthMiddleware } from '../../test-helper';
-
 import express from 'express';
 import mockery from 'mockery';
+import queryStringPaging from '../../middleware/query-string-paging-middleware';
 
+import { FakeAuthMiddleware } from '../../test-helper';
 import { AlertsProvider } from '../../../data/mongodb/index';
 import * as consts from '../../../../consts';
 
@@ -34,6 +33,7 @@ describe('Alerts API endpoints', () => {
     Alerts = require('./index').default;
     app = express();
     app.use(bodyParser.json());
+    app.use(queryStringPaging());
     request = supertest(app);
 
     const db = {
@@ -66,7 +66,7 @@ describe('Alerts API endpoints', () => {
         if (err) {
           done(err);
         } else {
-          stub.calledWith(['samplegw'], 1, undefined).should.be.true;
+          stub.calledWith(['samplegw'], { pageSize: 1, lastObjectId: undefined }).should.be.true;
           done();
         }
       });
@@ -144,7 +144,7 @@ describe('Alerts API endpoints', () => {
         if (err) {
           done(err);
         } else {
-          stub.calledWith(['samplegw', 'testgw'], consts.PAGING_MAX_PAGE_SIZE, undefined).should.e.true;
+          stub.calledWith(['samplegw', 'testgw'], consts.PAGING_MAX_PAGE_SIZE, undefined).should.be.true;
           done();
         }
       });

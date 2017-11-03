@@ -2,7 +2,6 @@ import express from 'express';
 import { transformAlert } from './alertTransformer';
 import logger from '../../../common/logger';
 import { getOverlapped } from '../../api-utils';
-import * as consts from '../../../../consts';
 
 export default function (app, middlewares, { alertProvider }) {
   const router = express.Router();
@@ -72,21 +71,15 @@ export default function (app, middlewares, { alertProvider }) {
   router.get('/', middlewares, (req, res) => {
     const ownedGws = req.user.app_metadata.gateways;
     const reqGateways = req.query.gw;
-    const next = req.query.next;
-    const pageSize = parseInt(req.query.pageSize, 10);
-    const limit = pageSize > consts.PAGING_MAX_PAGE_SIZE ? consts.PAGING_MAX_PAGE_SIZE : pageSize;
     const gws = getOverlapped(ownedGws, reqGateways);
 
     alertProvider
-      .getPagedAlerts(gws, limit, next)
+      .getPagedAlerts(gws, req.pagination)
       .then((ev) => {
         if (ev.list.length === 0) {
           res.sendStatus(204);
         } else {
-          let result = {};
-          const { list, ...other } = ev;
-          result.alerts = list.map(e => transformAlert(e));
-          result = { ...result, ...other };
+          const result = res.pagedData(ev, transformAlert);
           res.json(result);
         }
       })
