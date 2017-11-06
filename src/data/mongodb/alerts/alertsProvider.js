@@ -1,6 +1,18 @@
 import { ObjectId } from 'mongodb';
 import { DataProvider, InternalDataProvider } from '../data';
 
+const getQueryFromSearch = (search) => {
+  const { gateways, text, read } = search;
+  const query = {
+    gateway: {
+      $in: gateways,
+    },
+    ...(text ? { $text: { $search: text } } : null),
+    ...(read ? { read } : null),
+  };
+  return query;
+};
+
 export default function (database) {
   const params = {
     db: database,
@@ -10,26 +22,23 @@ export default function (database) {
   const dataProvider = DataProvider(params);
   const queryDataProvider = InternalDataProvider(params);
 
+  dataProvider.createTextIndex('message');
+
   const AlertsProvider = () => ({
 
     /**
      * Returns all alerts related to the gateways passed as parameter
      */
     getAlerts(gateways) {
-      return queryDataProvider.getMany({
-        gateway: {
-          $in: gateways,
-        },
-      });
+      return this.getPagedAlerts({ gateways }, { pageSize: 0 });
     },
-    getPagedAlerts(gateways, pagination) {
+    getPagedAlerts(search, pagination) {
       const alertList = {};
       const { pageSize, lastObjectId } = pagination;
+      const query = getQueryFromSearch(search);
       return queryDataProvider
           .getMany({
-            gateway: {
-              $in: gateways,
-            },
+            ...query,
             ...(lastObjectId ? {
               _id: {
                 $lt: ObjectId(lastObjectId),
@@ -42,9 +51,7 @@ export default function (database) {
             alertList.list = result;
             alertList.lastId = lastId;
             return queryDataProvider.count({
-              gateway: {
-                $in: gateways,
-              },
+              ...query,
               _id: {
                 $lt: lastId,
               },
@@ -53,9 +60,7 @@ export default function (database) {
           .then((result) => {
             alertList.hasNext = result > 0;
             return queryDataProvider.count({
-              gateway: {
-                $in: gateways,
-              },
+              ...query,
             });
           })
           .then((result) => {

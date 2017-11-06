@@ -32,6 +32,16 @@ const DataProvider = ({ db, collectionName }) => ({
         });
     });
   },
+  createTextIndex(field) {
+    db.collection(collectionName, (err, col) => {
+      col.createIndex({ [field]: 'text' },
+        (error) => {
+          if (error) {
+            throw error;
+          }
+        });
+    });
+  },
   add(obj) {
     return new Promise((resolve, reject) => {
       db.collection(collectionName, (err, col) => {
