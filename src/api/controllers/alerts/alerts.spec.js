@@ -66,7 +66,10 @@ describe('Alerts API endpoints', () => {
         if (err) {
           done(err);
         } else {
-          stub.calledWith(['samplegw'], { pageSize: 1, lastObjectId: undefined }).should.be.true;
+          stub.calledWith(sinon.match({ gateways: ['samplegw'] }), {
+            pageSize: 1,
+            lastObjectId: undefined
+          }).should.be.true;
           done();
         }
       });
@@ -95,9 +98,43 @@ describe('Alerts API endpoints', () => {
       .expect(200, (err, res) => {
         if (err) {
           done(err);
+          stub.restore();
         } else {
-          stub.calledWith(sinon.match(['samplegw', 'testgw']))
+          stub.calledWith(sinon.match({ gateways: ['samplegw', 'testgw'] }))
             .should.be.true;
+          done();
+          stub.restore();
+        }
+      });
+  });
+
+  it('should get alerts filtered for read and message fields', () => {
+    Alerts(app, [FakeAuthMiddleware(['samplegw', 'testgw'])()], { alertProvider });
+    const stub = sinon.stub(alertProvider, 'getPagedAlerts')
+      .returns(Promise.resolve({
+          list: [{
+            gateway: 'samplegw',
+            date: new Date(),
+            deviceId: '00:11:22:33:44:55:66',
+            message: 'an alert',
+            read: false,
+            id: '58c7b3e46b835bf90cfdffeb',
+          }],
+          hasNext: true,
+          lastId: '58c7b3e46b835bf90cfdffeb',
+        }),
+      );
+
+    request
+      .get('/api/alerts/?gw=samplegw&pageSize=1&text=testSearch&read=true')
+      .expect(200, (err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          stub.calledWith(sinon.match({ text: 'testSearch', read: true }), {
+            pageSize: 1,
+            lastObjectId: undefined
+          }).should.be.true;
           done();
         }
       });

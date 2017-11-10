@@ -8,7 +8,7 @@ const getQueryFromSearch = (search) => {
       $in: gateways,
     },
     ...(text ? { $text: { $search: text } } : null),
-    ...(read ? { read } : null),
+    ...(read ? { read: read === 'true' } : null),
   };
   return query;
 };

@@ -184,7 +184,7 @@ describe('alertsProvider', () => {
       message: 'alert 4',
       read: 1,
     }))
-      .then(() => subject.getPagedAlerts({ gateways: ['DevelopmentGateway'], text: 'search' }, { pageSize: 2, lastObjectId: undefined }))
+      .then(() => subject.getPagedAlerts({ gateways: ['DevelopmentGateway'], text: "search" }, { pageSize: 20, lastObjectId: undefined }))
       .then((result) => {
         result.list.length.should.equal(2);
         result.list[0].id.should.equal('567');
