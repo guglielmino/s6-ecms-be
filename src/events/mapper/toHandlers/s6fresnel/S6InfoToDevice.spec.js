@@ -1,7 +1,7 @@
 import chai from 'chai';
 import sinon from 'sinon';
 
-import S6InfoToDevice from './s6InfoToDevice';
+import S6InfoToDevice from './S6InfoToDevice';
 
 chai.should();
 const expect = chai.expect;

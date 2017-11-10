@@ -1,8 +1,8 @@
 import * as consts from '../../../consts';
 
-import S6FInstaPowerToHourly from '../../events/mapper/s6fresnel/S6FInstaPowerToHourly';
-import SONInstaPowerToHourly from '../../events/mapper/sonoff/SONInstaPowerToHourly';
-import SONDailyConsumeToDaily from '../../events/mapper/sonoff/SONDailyConsumeToDaily';
+import S6FInstaPowerToHourly from '../../events/mapper/toHandlers/s6fresnel/S6FInstaPowerToHourly';
+import SONInstaPowerToHourly from '../../events/mapper/toHandlers/sonoff/SONInstaPowerToHourly';
+import SONDailyConsumeToDaily from '../../events/mapper/toHandlers/sonoff/SONDailyConsumeToDaily';
 
 const PowerConsumptionRules = (ruleEngine, {
   hourlyStatHandler,

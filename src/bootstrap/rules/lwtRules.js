@@ -1,6 +1,6 @@
 import * as consts from '../../../consts';
-import SONLwtToHandler from '../../events/mapper/sonoff/SONLwtToHandler';
-import lwtAPPEventToHandler from '../../events/mapper/appEvents/lwtAPPEventToHandler';
+import SONLwtToHandler from '../../events/mapper/toHandlers/sonoff/SONLwtToHandler';
+import lwtAPPEventToHandler from '../../events/mapper/toHandlers/appEvents/lwtAPPEventToHandler';
 
 const LwtRules = (ruleEngine, {
   lwtHandler,

@@ -1,6 +1,6 @@
 import * as consts from '../../../consts';
-import S6InfoToDevice from '../../events/mapper/s6fresnel/S6InfoToDevice';
-import SONInfoToDevice from '../../events/mapper/sonoff/SONInfoToDevice';
+import S6InfoToDevice from '../../events/mapper/toHandlers/s6fresnel/S6InfoToDevice';
+import SONInfoToDevice from '../../events/mapper/toHandlers/sonoff/SONInfoToDevice';
 
 
 const DeviceInfoRules = (ruleEngine, {

@@ -1,6 +1,6 @@
 import * as consts from '../../../consts';
-import S6StatusToHandler from '../../events/mapper/s6fresnel/S6StatusToHandler';
-import SONStatusToHandler from '../../events/mapper/sonoff/SONStatusToHandler';
+import S6StatusToHandler from '../../events/mapper/toHandlers/s6fresnel/S6StatusToHandler';
+import SONStatusToHandler from '../../events/mapper/toHandlers/sonoff/SONStatusToHandler';
 
 const PowerFeedbackRules = (ruleEngine, {
   powerFeedbackHandler,

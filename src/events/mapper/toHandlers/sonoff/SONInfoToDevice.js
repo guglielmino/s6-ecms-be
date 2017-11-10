@@ -1,4 +1,4 @@
-import SonoffPowTopicHanlders from '../../../services/sonoffPowTopicHandler';
+import SonoffPowTopicHanlders from '../../../../services/sonoffPowTopicHandler';
 
 // AppName values set in firmware
 const SONOFF = 'Sonoff 8266 Module'; // Sonoff Basic, Sonoff RF, Sonoff SV, Sonoff Dual, Sonoff TH, S20 Smart Socket
