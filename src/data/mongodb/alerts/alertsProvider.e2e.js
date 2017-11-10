@@ -33,7 +33,7 @@ describe('alertsProvider', () => {
     })
       .then(() => subject.getAlerts(['DevelopmentGateway']))
       .then((res) => {
-        res.length.should.be.eq(1);
+        res.list.length.should.be.eq(1);
         done();
       })
       .catch(err => done(err));
@@ -50,7 +50,7 @@ describe('alertsProvider', () => {
     })
       .then(() => subject.getAlerts([]))
       .then((res) => {
-        res.length.should.be.eq(0);
+        res.list.length.should.be.eq(0);
         done();
       })
       .catch(err => done(err));
@@ -106,4 +106,92 @@ describe('alertsProvider', () => {
       })
       .catch(err => done(err));
   });
+
+  it('should get paged alerts', (done) => {
+    subject = AlertsProvider(db);
+    subject.add({
+      gateway: 'DevelopmentGateway',
+      date: new Date(),
+      deviceId: 'f1-33-d2-25-3b-6c',
+      message: 'alert 1',
+      read: 0,
+    }).then(() => subject.add({
+        gateway: 'DevelopmentGateway',
+        date: new Date(),
+        deviceId: 'f1-33-d2-25-3b-6c',
+        message: 'alert 2',
+        read: 0,
+      })).then(() => subject.add({
+      gateway: 'DevelopmentGateway',
+      date: new Date(),
+      deviceId: 'f1-33-d2-25-3b-6c',
+      message: 'alert 3',
+      read: 0,
+    })).then(() => subject.add({
+      gateway: 'DevelopmentGateway',
+      date: new Date(),
+      deviceId: 'f1-33-d2-25-3b-6c',
+      message: 'alert 4',
+      read: 0,
+    }))
+      .then(() => subject.getPagedAlerts({ gateways: ['DevelopmentGateway'] }, { pageSize: 2, lastObjectId: undefined }))
+      .then((result) => {
+        result.list.length.should.equal(2);
+        result.list[0].message.should.equal('alert 4');
+        result.list[1].message.should.equal('alert 3');
+        result.hasNext.should.equal(true);
+        result.totalElements.should.equal(4);
+        return subject.getPagedAlerts({ gateways: ['DevelopmentGateway'] }, { pageSize: 2, lastObjectId: result.lastId });
+      })
+      .then((result) => {
+        result.list.length.should.equal(2);
+        result.list[0].message.should.equal('alert 2');
+        result.list[1].message.should.equal('alert 1');
+        result.totalElements.should.equal(4);
+        result.hasNext.should.equal(false);
+        done();
+      });
+  });
+
+  it('should get paged alerts performing search in message field', (done) => {
+    subject = AlertsProvider(db);
+    subject.add({
+      id: '123',
+      gateway: 'DevelopmentGateway',
+      date: new Date(),
+      deviceId: 'f1-33-d2-25-3b-6c',
+      message: 'alert 1 search',
+      read: 1,
+    }).then(() => subject.add({
+      id: '456',
+      gateway: 'DevelopmentGateway',
+      date: new Date(),
+      deviceId: 'f1-33-d2-25-3b-6c',
+      message: 'alert 2',
+      read: 0,
+    })).then(() => subject.add({
+      id: '567',
+      gateway: 'DevelopmentGateway',
+      date: new Date(),
+      deviceId: 'f1-33-d2-25-3b-6c',
+      message: 'alert 3 search',
+      read: 0,
+    })).then(() => subject.add({
+      id: '345',
+      gateway: 'DevelopmentGateway',
+      date: new Date(),
+      deviceId: 'f1-33-d2-25-3b-6c',
+      message: 'alert 4',
+      read: 1,
+    }))
+      .then(() => subject.getPagedAlerts({ gateways: ['DevelopmentGateway'], text: "search" }, { pageSize: 20, lastObjectId: undefined }))
+      .then((result) => {
+        result.list.length.should.equal(2);
+        result.list[0].id.should.equal('567');
+        result.list[1].id.should.equal('123');
+        result.hasNext.should.equal(false);
+        result.totalElements.should.equal(2);
+        done();
+      });
+  })
 });

@@ -32,6 +32,16 @@ const DataProvider = ({ db, collectionName }) => ({
         });
     });
   },
+  createTextIndex(field) {
+    db.collection(collectionName, (err, col) => {
+      col.createIndex({ [field]: 'text' },
+        (error) => {
+          if (error) {
+            throw error;
+          }
+        });
+    });
+  },
   add(obj) {
     return new Promise((resolve, reject) => {
       db.collection(collectionName, (err, col) => {
@@ -114,7 +124,7 @@ const InternalDataProvider = ({ db, collectionName }) => ({
         if (err) {
           reject(err);
         }
-        col.find(query).limit(limit)
+        col.find(query).limit(limit).sort({ _id: -1 })
           .toArray((error, docs) => {
             if (error) {
               reject(error);
@@ -177,6 +187,23 @@ const InternalDataProvider = ({ db, collectionName }) => ({
               reject(error);
             } else {
               resolve(resp.deletedCount === 1);
+            }
+          });
+      });
+    });
+  },
+  count(query) {
+    return new Promise((resolve, reject) => {
+      db.collection(collectionName, (err, col) => {
+        if (err) {
+          reject(err);
+        }
+        col.count(query,
+          (error, resp) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(resp);
             }
           });
       });
