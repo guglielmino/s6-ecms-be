@@ -53,6 +53,9 @@ const config = {
     awsSecret: process.env.AWS_SECRET,
     awsKey: process.env.AWS_KEY,
   },
+  devices: {
+    s6fresnelotaurl: process.env.S6FRESNEL_OTA_URL || 'http://0.0.0.0:8000',
+  },
 };
 
 module.exports = config;
