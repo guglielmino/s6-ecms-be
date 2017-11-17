@@ -1,19 +1,24 @@
 import chai from 'chai';
 import sinon from 'sinon';
-import * as consts from '../../../../../consts';
 import FirmwareUpdateHandler from './firmwareUpdateHandler';
 import { DevicesProvider } from '../../../../data/mongodb/index';
+import PayloadFactory from '../../factory/payloadFactory';
 
 chai.should();
 const expect = chai.expect;
 
-describe('FirmwareUpdateHandler', () => {
+describe('FirmwareUpdate Handler', () => {
   let deviceProvider;
   let subject;
   const pnub = {
     publish: () => {
     },
   };
+  const fakePayload = {
+    topic: 'cmd/testdev/Upgrade',
+    value: 1,
+  };
+  let createFirmwarePayload;
 
   beforeEach(() => {
     const db = {
@@ -22,6 +27,7 @@ describe('FirmwareUpdateHandler', () => {
     };
     deviceProvider = DevicesProvider(db);
     subject = new FirmwareUpdateHandler(deviceProvider, pnub);
+    createFirmwarePayload = sinon.stub(PayloadFactory.prototype, 'createFirmwareUpdatePayload').returns(fakePayload);
   });
 
   it('should send MQTT command with right payload', (done) => {
@@ -50,10 +56,14 @@ describe('FirmwareUpdateHandler', () => {
     subject.process(event)
       .then(() => {
         publishStub.called.should.be.true;
-        publishStub.calledWith('TESTGW', sinon.match({ payload: { topic: 'cmnd/lamp3/Upgrade' } }))
+        publishStub.calledWith('TESTGW', sinon.match({ payload: fakePayload }))
           .should.be.true;
         done();
       })
       .catch(err => done(err));
+  });
+
+  afterEach(() => {
+    createFirmwarePayload.restore();
   });
 });

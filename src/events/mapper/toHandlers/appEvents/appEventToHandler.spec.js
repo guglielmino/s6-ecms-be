@@ -1,6 +1,6 @@
 import chai from 'chai';
 
-import APPEventToHandler from './APPEventToHandler';
+import APPEventToHandler from './appEventToHandler';
 
 chai.should();
 const expect = chai.expect;

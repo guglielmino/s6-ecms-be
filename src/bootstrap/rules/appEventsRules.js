@@ -16,7 +16,7 @@
  */
 
 import * as consts from '../../../consts';
-import APPEventToHandler from '../../events/mapper/appEvents/appEventToHandler';
+import APPEventToHandler from '../../events/mapper/toHandlers/appEvents/appEventToHandler';
 
 const PowerSwitchFailAlertRules = (ruleEngine, {
   powerSwitchFailAlertHandler,

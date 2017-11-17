@@ -1,6 +1,5 @@
 import chai from 'chai';
 import sinon from 'sinon';
-import * as consts from '../../../../../consts';
 import PowerStateAlertHandler from './powerStateAlertHandler';
 import sharedDelayedQueue from '../../../../bootstrap/sharedDelayedQueue';
 
