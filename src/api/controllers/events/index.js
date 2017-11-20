@@ -4,10 +4,10 @@ import emitter from '../../../streams/emitter';
 import logger from '../../../common/logger';
 
 /* eslint-disable no-unused-vars */
-export default function (app, middlewares, { eventProvider }) {
+export default function (app, middlewares, { eventsProvider }) {
   const router = express.Router();
 
-/* eslint-enable no-unused-vars */
+  /* eslint-enable no-unused-vars */
   app.use('/api/events', router);
 
   /**
@@ -31,6 +31,19 @@ export default function (app, middlewares, { eventProvider }) {
       logger.log('error', e);
       res.sendStatus(500);
     }
+  });
+
+  router.get('/', middlewares, (req, res) => {
+    const gateway = req.query.gw;
+    const eventType = req.query.type;
+    const devId = req.query.devId;
+
+    eventsProvider.getLastEvent(gateway, eventType, devId)
+      .then(events => res.json(events))
+      .catch((err) => {
+        logger.log('error', err);
+        res.sendStatus(500);
+      });
   });
 
   return router;

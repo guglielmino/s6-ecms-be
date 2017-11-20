@@ -20,6 +20,14 @@ export default function (database) {
         },
       });
     },
+
+    getLastEvent(gateway, type, deviceId) {
+      return queryDataProvider.getOne({
+        GatewayId: gateway,
+        Type: type,
+        'Payload.deviceId': deviceId,
+      });
+    },
   });
 
 
