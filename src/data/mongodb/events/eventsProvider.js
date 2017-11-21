@@ -20,6 +20,16 @@ export default function (database) {
         },
       });
     },
+
+    getLastEvent(gateway, types, deviceId) {
+      return queryDataProvider.getMany({
+        GatewayId: gateway,
+        Type: {
+          $in: types,
+        },
+        'Payload.deviceId': deviceId,
+      });
+    },
   });
 
 
