@@ -21,10 +21,12 @@ export default function (database) {
       });
     },
 
-    getLastEvent(gateway, type, deviceId) {
-      return queryDataProvider.getOne({
+    getLastEvent(gateway, types, deviceId) {
+      return queryDataProvider.getMany({
         GatewayId: gateway,
-        Type: type,
+        Type: {
+          $in: types,
+        },
         'Payload.deviceId': deviceId,
       });
     },

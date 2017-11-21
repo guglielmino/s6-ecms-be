@@ -7,7 +7,7 @@ import EventsProvider from './eventsProvider';
 chai.should();
 const expect = chai.expect;
 
-describe('eventsProvider', () => {
+describe('eventProvider', () => {
   let subject;
   let db;
 
@@ -67,6 +67,7 @@ describe('eventsProvider', () => {
 
   it('should get last event by gateway, type and deviceId', (done) => {
     subject = EventsProvider(db);
+
     subject
       .add({
         GatewayId: 'VG59',
@@ -94,7 +95,7 @@ describe('eventsProvider', () => {
         subject
           .add({
             GatewayId: 'VG59',
-            Type: 'TEST',
+            Type: 'TEST1',
             Payload: {
               deviceId: 'deviceid1',
               Time: new Date(),
@@ -104,11 +105,11 @@ describe('eventsProvider', () => {
           });
       })
       .then(() => {
-        return subject.getLastEvent('VG59', 'TEST', 'deviceid1');
+        return subject.getLastEvent('VG59', ['TEST', 'TEST1'], 'deviceid1');
       })
       .then((res) => {
         expect(res.GatewayId).to.equal('VG59');
-        expect(res.Type).to.equal('TEST');
+        expect(res.Type).to.equal('TEST1');
         expect(res.Payload.deviceId).to.equal('deviceid1');
         expect(res.Payload.value).to.equal('1');
         done();

@@ -4,7 +4,7 @@ import emitter from '../../../streams/emitter';
 import logger from '../../../common/logger';
 
 /* eslint-disable no-unused-vars */
-export default function (app, middlewares, { eventsProvider }) {
+export default function (app, middlewares, { eventProvider }) {
   const router = express.Router();
 
   /* eslint-enable no-unused-vars */
@@ -33,12 +33,12 @@ export default function (app, middlewares, { eventsProvider }) {
     }
   });
 
-  router.get('/', middlewares, (req, res) => {
+  router.get('/', (req, res) => {
     const gateway = req.query.gw;
-    const eventType = req.query.type;
+    const eventTypes = req.query.types.split(',');
     const devId = req.query.devId;
 
-    eventsProvider.getLastEvent(gateway, eventType, devId)
+    eventProvider.getLastEvent(gateway, eventTypes, devId)
       .then(events => res.json(events))
       .catch((err) => {
         logger.log('error', err);
