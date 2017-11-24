@@ -6,7 +6,7 @@
  */
 
 import * as consts from '../../../consts';
-import APIMessageToHandler from '../../events/mapper/apiMessages/APIMessageToHandler';
+import APIMessageToHandler from '../../events/mapper/toHandlers/apiMessages/APIMessageToHandler';
 
 const ApiRules = (ruleEngine, {
   firmwareUpdateHandler,
@@ -20,12 +20,10 @@ const ApiRules = (ruleEngine, {
 
   ruleEngine.add({
     predicate: msg => msg.command === consts.APPEVENT_TYPE_POWER,
-    fn: msg => powerStateHandler.process(APIMessageToHandler(msg)),
-  });
-
-  ruleEngine.add({
-    predicate: msg => msg.command === consts.APPEVENT_TYPE_POWER,
-    fn: msg => powerStateAlertHandler.process(APIMessageToHandler(msg)),
+    fn: (msg) => {
+      powerStateHandler.process(APIMessageToHandler(msg));
+      powerStateAlertHandler.process(APIMessageToHandler(msg));
+    },
   });
 };
 

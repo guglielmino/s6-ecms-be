@@ -7,16 +7,16 @@ import logger from '../../../common/logger';
 export default function (app, middlewares, { eventProvider }) {
   const router = express.Router();
 
-/* eslint-enable no-unused-vars */
+  /* eslint-enable no-unused-vars */
   app.use('/api/events', router);
 
   /**
    * @swagger
-   * /api/events/:
+   * /api/email/:
    *   post:
    *     tags:
-   *      - Events
-   *     description: Store events received from gateway
+   *      - Email
+   *     description: Provide method to send emails
    *     produces:
    *      - application/json
    *     responses:
@@ -31,6 +31,19 @@ export default function (app, middlewares, { eventProvider }) {
       logger.log('error', e);
       res.sendStatus(500);
     }
+  });
+
+  router.get('/', (req, res) => {
+    const gateway = req.query.gw;
+    const eventTypes = req.query.types.split(',');
+    const devId = req.query.devId;
+
+    eventProvider.getLastEvent(gateway, eventTypes, devId)
+      .then(events => res.json(events))
+      .catch((err) => {
+        logger.log('error', err);
+        res.sendStatus(500);
+      });
   });
 
   return router;

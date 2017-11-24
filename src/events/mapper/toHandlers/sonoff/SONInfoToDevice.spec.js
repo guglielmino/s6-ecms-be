@@ -2,7 +2,7 @@ import chai from 'chai';
 
 import {
   EVENT_TYPE_INFO,
-} from '../../../../consts';
+} from '../../../../../consts';
 
 import SONInfoToDevice, { SONOFF_POW } from './SONInfoToDevice';
 

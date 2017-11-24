@@ -22,7 +22,7 @@ describe('PowerSwitchFailAlertHandler', () => {
     };
 
     stubLogger = sinon.stub(logger, 'log');
-    alertProvider = AlertsProvider({});
+    alertProvider = AlertsProvider(db);
     devicesProvider = DevicesProvider(db);
     subject = PowerSwitchFailAlertHandler(alertProvider, devicesProvider, socket);
   });

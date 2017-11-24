@@ -182,6 +182,31 @@ describe('data', () => {
         })
         .catch(err => done(err));
     });
+    it('Should return number of elements matching the query', (done) => {
+      genericProvider
+        .add({
+          name: 'test',
+          age: 23,
+        })
+        .then(() => genericProvider.add({
+          name: 'test 1',
+          age: 23,
+        }))
+        .then(() => genericProvider.add({
+          name: 'test 2',
+          age: 23,
+        }))
+        .then(() => genericProvider.add({
+          name: 'test 5',
+          age: 40,
+        }))
+        .then(() => subject.count({ age: 23 }))
+        .then((obj) => {
+          obj.should.equal(3);
+          done();
+        })
+        .catch(err => done(err));
+    })
 
   });
 });

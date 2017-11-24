@@ -1,4 +1,7 @@
 import logger from '../../../../common/logger';
+import PayloadFactory from '../../factory/payloadFactory';
+
+const factory = new PayloadFactory();
 
 const FirmwareUpdateHandler = (deviceProvider, pnub) => ({
   process: ({ deviceId, gateway }) => {
@@ -9,10 +12,7 @@ const FirmwareUpdateHandler = (deviceProvider, pnub) => ({
         .then((dev) => {
           pnub.publish(gateway, {
             type: 'MQTT',
-            payload: {
-              topic: `cmnd/${dev.name}/Upgrade`,
-              value: '1',
-            },
+            payload: factory.createFirmwareUpdatePayload(dev),
           });
           resolve();
         })

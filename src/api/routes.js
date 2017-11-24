@@ -9,7 +9,7 @@ import DailyStats from './controllers/stats/daily';
 import Gateways from './controllers/gateways';
 import Devices from './controllers/devices';
 import Alerts from './controllers/alerts';
-
+import Email from './controllers/email';
 
 module.exports = (app, providers) => {
   const AuthCheck = JwtCheck(config.auth0);
@@ -32,4 +32,5 @@ module.exports = (app, providers) => {
   Gateways(app, [AuthCheck()], providers);
   Devices(app, [AuthCheck()], providers);
   Alerts(app, [AuthCheck()], providers);
+  Email(app, [AuthCheck()]);
 };

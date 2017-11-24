@@ -44,6 +44,18 @@ const config = {
     domain: process.env.AUTH0_DOMAIN,
     timeout: process.env.AUTH0_TIMEOUT || 15000,
   },
+  email: {
+    from: process.env.DEFAULT_FROM || 'info@smartsix.it',
+    language: process.env.DEFAULT_LANGUAGE || 'en',
+    transport: process.env.TRANSPORT || 'ses',
+    templatesDir: process.env.TEMPLATES_DIR,
+    awsRegion: process.env.AWS_REGION,
+    awsSecret: process.env.AWS_SECRET,
+    awsKey: process.env.AWS_KEY,
+  },
+  devices: {
+    s6fresnelotaurl: process.env.S6FRESNEL_OTA_URL || 'http://0.0.0.0:8000',
+  },
 };
 
 module.exports = config;

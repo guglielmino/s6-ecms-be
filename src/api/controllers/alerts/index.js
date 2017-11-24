@@ -71,16 +71,24 @@ export default function (app, middlewares, { alertProvider }) {
   router.get('/', middlewares, (req, res) => {
     const ownedGws = req.user.app_metadata.gateways;
     const reqGateways = req.query.gw;
-
+    const text = req.query.text;
+    const read = req.query.read;
     const gws = getOverlapped(ownedGws, reqGateways);
 
+    const search = {
+      text,
+      read,
+      gateways: gws,
+    };
+
     alertProvider
-      .getAlerts(gws)
+      .getPagedAlerts(search, req.pagination)
       .then((ev) => {
-        if (ev.length === 0) {
+        if (ev.list.length === 0) {
           res.sendStatus(204);
         } else {
-          res.json(ev.map(e => transformAlert(e)));
+          const result = res.pagedData(ev, transformAlert);
+          res.json(result);
         }
       })
       .catch((err) => {

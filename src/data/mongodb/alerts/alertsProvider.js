@@ -1,6 +1,18 @@
 import { ObjectId } from 'mongodb';
 import { DataProvider, InternalDataProvider } from '../data';
 
+const getQueryFromSearch = (search) => {
+  const { gateways, text, read } = search;
+  const query = {
+    gateway: {
+      $in: gateways,
+    },
+    ...(text ? { $text: { $search: text } } : null),
+    ...(read ? { read: read === 'true' } : null),
+  };
+  return query;
+};
+
 export default function (database) {
   const params = {
     db: database,
@@ -10,17 +22,52 @@ export default function (database) {
   const dataProvider = DataProvider(params);
   const queryDataProvider = InternalDataProvider(params);
 
+  dataProvider.createTextIndex('message');
+
   const AlertsProvider = () => ({
 
     /**
      * Returns all alerts related to the gateways passed as parameter
      */
     getAlerts(gateways) {
-      return queryDataProvider.getMany({
-        gateway: {
-          $in: gateways,
-        },
-      });
+      return this.getPagedAlerts({ gateways }, { pageSize: 0 });
+    },
+    getPagedAlerts(search, pagination) {
+      const alertList = {};
+      const { pageSize, lastObjectId } = pagination;
+      const query = getQueryFromSearch(search);
+      return queryDataProvider
+          .getMany({
+            ...query,
+            ...(lastObjectId ? {
+              _id: {
+                $lt: ObjectId(lastObjectId),
+              },
+            } : null),
+          }, pageSize)
+          .then((result) => {
+            const lastId = result.length > 0 ?
+              result[result.length - 1]._id : 0;// eslint-disable-line no-underscore-dangle
+            alertList.list = result;
+            alertList.lastId = lastId;
+            return queryDataProvider.count({
+              ...query,
+              _id: {
+                $lt: lastId,
+              },
+            });
+          })
+          .then((result) => {
+            alertList.hasNext = result > 0;
+            return queryDataProvider.count({
+              ...query,
+            });
+          })
+          .then((result) => {
+            alertList.totalElements = result;
+            return Promise.resolve(alertList);
+          })
+          .catch(err => Promise.reject(err));
     },
     getAlertById(alertId) {
       let _id = alertId; // eslint-disable-line no-underscore-dangle

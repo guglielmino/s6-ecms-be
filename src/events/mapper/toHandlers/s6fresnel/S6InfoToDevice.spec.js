@@ -1,7 +1,7 @@
 import chai from 'chai';
 import sinon from 'sinon';
 
-import S6InfoToDevice from './s6InfoToDevice';
+import S6InfoToDevice from './S6InfoToDevice';
 
 chai.should();
 const expect = chai.expect;
@@ -69,7 +69,7 @@ describe('S6 Fresnel info message mapper', () => {
     result.payload.description.should.be.eq('lampada ingresso');
     result.payload.swVersion.should.be.eq('0.0.1');
     Object.keys(result).length.should.be.eq(2);
-    Object.keys(result.payload).length.should.be.eq(8);
+    Object.keys(result.payload).length.should.be.eq(9);
   });
 
 });

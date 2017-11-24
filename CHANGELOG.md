@@ -1,3 +1,27 @@
+<a name="2.6.0"></a>
+# [2.6.0](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.5.1...v2.6.0) (2017-11-24)
+
+
+### Bug Fixes
+
+* Change package to export data to csv ([952ad4e](https://gitlab.com/smart-office-iot/iot-project-server/commit/952ad4e))
+* Fix get daily stats for a given deviceId and date ([ab62e58](https://gitlab.com/smart-office-iot/iot-project-server/commit/ab62e58))
+* Removing gatewayAuthorization middleware in API to get device events ([8352879](https://gitlab.com/smart-office-iot/iot-project-server/commit/8352879))
+
+
+### Features
+
+* Add api to get last event of specified device ([4c5c068](https://gitlab.com/smart-office-iot/iot-project-server/commit/4c5c068))
+* Add authentication to email API ([3662347](https://gitlab.com/smart-office-iot/iot-project-server/commit/3662347))
+* Add folder with email templates ([19dfbb5](https://gitlab.com/smart-office-iot/iot-project-server/commit/19dfbb5))
+* Add location field to device mapping ([fb43d37](https://gitlab.com/smart-office-iot/iot-project-server/commit/fb43d37))
+* Add middleware to handle pagination parameters and result ([918584f](https://gitlab.com/smart-office-iot/iot-project-server/commit/918584f))
+* Add search in message field of alert document ([97f4632](https://gitlab.com/smart-office-iot/iot-project-server/commit/97f4632))
+* Add support for query string search parameters in alerts api ([76c8bdb](https://gitlab.com/smart-office-iot/iot-project-server/commit/76c8bdb))
+* Change alerts api to get paged result ([170ab08](https://gitlab.com/smart-office-iot/iot-project-server/commit/170ab08))
+
+
+
 <a name="2.5.1"></a>
 ## [2.5.1](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.4.3...v2.5.1) (2017-10-19)
 
@@ -11,6 +35,7 @@
 ### Features
 
 * Add alert creation for device online / offline based on LWT message ([26fee6a](https://gitlab.com/smart-office-iot/iot-project-server/commit/26fee6a))
+* Add package to send email from api endpoint ([accc705](https://gitlab.com/smart-office-iot/iot-project-server/commit/accc705))
 * Change calculation of daily consume ([872de64](https://gitlab.com/smart-office-iot/iot-project-server/commit/872de64))
 * Handle tags field in device table ([e19583a](https://gitlab.com/smart-office-iot/iot-project-server/commit/e19583a))
 
