@@ -1,3 +1,8 @@
+<a name="2.6.1"></a>
+## [2.6.1](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.6.0...v2.6.1) (2017-11-27)
+
+
+
 <a name="2.6.0"></a>
 # [2.6.0](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.5.1...v2.6.0) (2017-11-24)
 
