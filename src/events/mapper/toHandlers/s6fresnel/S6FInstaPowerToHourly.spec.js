@@ -14,7 +14,7 @@ describe('S6 Fresnel Istant Power Payload to Hourly Stat', () => {
         topic: 'building/room1/sensors/00:11:22:33:44:55/power',
         deviceId: '00:11:22:33:44:55',
         timestamp: '2017-08-27T07:56:23.642Z',
-        power: 23.2,
+        value: 23.2,
       },
     };
 
