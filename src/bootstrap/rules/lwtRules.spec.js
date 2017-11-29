@@ -46,6 +46,23 @@ describe('Sonoff LWT Rules', () => {
       .calledOnce.should.be.true;
   });
 
+  it('Should call \'process\' of every handler for a LWT message by S6 fresnel devices', () => {
+    const event = {
+      GatewayId: 'TESTGW',
+      Type: 'FRESNEL_LWT',
+      Payload: {
+        Topic: 'tele/lamp3/LWT',
+        status: 'Online',
+        deviceId: '12:22:44:1a:d6:fa',
+      },
+    };
+
+    ruleEngine.handle(event);
+
+    lwtHandler.process
+      .calledOnce.should.be.true;
+  });
+
   it('Should call process of lwt alert handler for LWT event', () => {
     it('Should call \'process\' of every handler for an api generated LWT message', () => {
       const message = {
