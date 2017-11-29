@@ -2,13 +2,14 @@ import { ObjectId } from 'mongodb';
 import { DataProvider, InternalDataProvider } from '../data';
 
 const getQueryFromSearch = (search) => {
-  const { gateways, text, read } = search;
+  const { gateways, text, read, level } = search;
   const query = {
     gateway: {
       $in: gateways,
     },
     ...(text ? { $text: { $search: text } } : null),
     ...(read ? { read: read === 'true' } : null),
+    ...(level ? { level } : null),
   };
   return query;
 };
@@ -74,7 +75,6 @@ export default function (database) {
       if (typeof alertId === 'string' || alertId instanceof String) {
         _id = ObjectId(alertId);
       }
-
       return queryDataProvider.getOne({ _id });
     },
     deleteById(alertId) {

@@ -73,12 +73,15 @@ export default function (app, middlewares, { alertProvider }) {
     const reqGateways = req.query.gw;
     const text = req.query.text;
     const read = req.query.read;
+    const level = req.query.level;
+
     const gws = getOverlapped(ownedGws, reqGateways);
 
     const search = {
       text,
       read,
       gateways: gws,
+      level,
     };
 
     alertProvider
@@ -115,7 +118,7 @@ export default function (app, middlewares, { alertProvider }) {
    */
   router.delete('/:alertId', middlewares, (req, res) => {
     const ownedGws = req.user.app_metadata.gateways;
-    const alertId = req.query.alertId;
+    const alertId = req.params.alertId;
 
     alertProvider
       .getAlertById(alertId)
@@ -155,7 +158,41 @@ export default function (app, middlewares, { alertProvider }) {
     alertProvider.getAlertById(reqAlertId)
       .then((alert) => {
         const newAlert = alert;
-        newAlert.read = !newAlert.read;
+        newAlert.read = true;
+
+        return alertProvider.updateById(reqAlertId, alert);
+      })
+      .then((result) => {
+        res.sendStatus(result.status ? 200 : 204);
+      })
+      .catch((err) => {
+        logger.log('error', err);
+        res.sendStatus(500);
+      });
+  });
+
+  /**
+   * @swagger
+   * /api/alerts/{alertId}/read:
+   *   parameters:
+   *     - $ref: '#/parameters/alertId'
+   *   put:
+   *     tags:
+   *      - Alerts
+   *     description: Mark the alert as unread
+   *     produces:
+   *      - application/json
+   *     responses:
+   *       200:
+   *         description: Ok
+   */
+  router.put('/:alertId/unread', middlewares, (req, res) => {
+    const reqAlertId = req.params.alertId;
+
+    alertProvider.getAlertById(reqAlertId)
+      .then((alert) => {
+        const newAlert = alert;
+        newAlert.read = false;
 
         return alertProvider.updateById(reqAlertId, alert);
       })
