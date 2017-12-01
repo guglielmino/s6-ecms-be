@@ -3,6 +3,7 @@ import {
   GatewaysProvider,
   DevicesProvider,
   AlertsProvider,
+  DeviceValuesProvider,
   DailyStatsProvider,
   HourlyStatsProvider,
 } from '../data/mongodb';
@@ -13,6 +14,7 @@ export default function (db) {
     eventProvider: EventsProvider(db),
     gatewayProvider: GatewaysProvider(db),
     deviceProvider: DevicesProvider(db),
+    deviceValuesProvider: DeviceValuesProvider(db),
     alertProvider: AlertsProvider(db),
     dailyStatsProvider: DailyStatsProvider(db),
     hourlyStatsProvider: HourlyStatsProvider(db),

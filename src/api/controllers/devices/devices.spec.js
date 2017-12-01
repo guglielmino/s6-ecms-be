@@ -7,7 +7,7 @@ import mockery from 'mockery';
 
 import { FakeAuthMiddleware } from '../../test-helper';
 
-import { DevicesProvider } from '../../../data/mongodb';
+import { DevicesProvider, DeviceValuesProvider } from '../../../data/mongodb';
 
 chai.should();
 const expect = chai.expect;
@@ -17,6 +17,7 @@ describe('Devices API endpoints', () => {
   let app;
   let Devices;
   let deviceProvider;
+  let deviceValuesProvider;
   let emitter;
 
   before(() => {
@@ -42,6 +43,7 @@ describe('Devices API endpoints', () => {
       collection: () => { }
     };
     deviceProvider = DevicesProvider(db);
+    deviceValuesProvider = DeviceValuesProvider(db);
   });
 
   after(() => {
@@ -168,6 +170,39 @@ describe('Devices API endpoints', () => {
           response.name.should.be.eq('Sample');
           response.type.should.be.eq('Sonoff Pow Module');
           response.version.should.be.eq('1.0');
+          done();
+        }
+      });
+  });
+
+  it('should get device values by deviceId and ref date', (done) => {
+    const date = new Date();
+    sinon.stub(deviceValuesProvider, 'getDeviceValues')
+      .returns(Promise.resolve([{
+          _id: {
+            type: 'POWER',
+            date,
+          },
+          value: 3,
+          unit: 'W',
+        deviceId: '11:22:33:44'
+        }]),
+      );
+
+    Devices(app, [FakeAuthMiddleware(['samplegw'])()], { deviceProvider, deviceValuesProvider });
+
+    request
+      .get(`/api/devices/11:22:33:44/values?date=${date}`)
+      .expect(200, (err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          const response = res.body;
+          response.length.should.equal(1);
+          response[0].type.should.equal('POWER');
+          response[0].date.should.equal(date.toISOString());
+          response[0].value.should.equal(3);
+          response[0].unit.should.equal('W');
           done();
         }
       });
