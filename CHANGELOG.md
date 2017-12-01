@@ -1,3 +1,20 @@
+<a name="2.7.0"></a>
+# [2.7.0](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.6.1...v2.7.0) (2017-12-01)
+
+
+### Bug Fixes
+
+* Fix s6f consume mapper ([8e0e2de](https://gitlab.com/smart-office-iot/iot-project-server/commit/8e0e2de))
+
+
+### Features
+
+* Add api to unread alert and add level field in search query ([0fe57aa](https://gitlab.com/smart-office-iot/iot-project-server/commit/0fe57aa))
+* Add lwt handler for LWT messages from s6 fresnel devices ([3d419bf](https://gitlab.com/smart-office-iot/iot-project-server/commit/3d419bf))
+* Store measurement from S6 fresnel devices in devicevalues table ([90205a0](https://gitlab.com/smart-office-iot/iot-project-server/commit/90205a0))
+
+
+
 <a name="2.6.1"></a>
 ## [2.6.1](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.6.0...v2.6.1) (2017-11-27)
 

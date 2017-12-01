@@ -6,12 +6,13 @@ import emitter from '../../../streams/emitter';
 import logger from '../../../common/logger';
 
 import { transformDevice } from './deviceTransformer';
+import transformDeviceValues from './deviceValuesTransformer';
 import { getOverlapped } from '../../api-utils';
 
 import deviceCommandValidator from './device.command.validation';
 import devicePatchValidator from './device.patch.validation';
 
-export default function (app, middlewares, { deviceProvider }) {
+export default function (app, middlewares, { deviceProvider, deviceValuesProvider }) {
   const router = express.Router();
 
   app.use('/api/devices', router);
@@ -73,6 +74,24 @@ export default function (app, middlewares, { deviceProvider }) {
           res.sendStatus(204);
         } else {
           res.json(stat.map(e => transformDevice(e)));
+        }
+      })
+      .catch((err) => {
+        logger.log('error', err);
+        res.sendStatus(500);
+      });
+  });
+
+  router.get('/:deviceId/values', middlewares, (req, res) => {
+    const deviceId = req.params.deviceId;
+    const date = req.query.date;
+
+    deviceValuesProvider.getDeviceValues(date, deviceId)
+      .then((val) => {
+        if (val.length === 0) {
+          res.sendStatus(204);
+        } else {
+          res.json(val.map(e => transformDeviceValues(e)));
         }
       })
       .catch((err) => {

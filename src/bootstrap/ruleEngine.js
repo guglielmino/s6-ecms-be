@@ -4,6 +4,7 @@ import EventsRuleEngine from '../services/eventsRuleEngine';
 // Handlers
 import EventHandler from '../events/handlers/device/common/eventHandler';
 import DeviceHandler from '../events/handlers/device/common/info/deviceHandler';
+import DeviceValuesHandler from '../events/handlers/device/common/values/deviceValuesHandler';
 import PowerFeedbackHandler from '../events/handlers/device/common/powerstatus/powerFeedbackHandler';
 import PowerStateHandler from '../events/handlers/internal/api/powerStateHandler';
 import PowerStateAlertHandler from '../events/handlers/internal/api/powerStateAlertHandler';
@@ -18,7 +19,9 @@ import UpdateOnlineStatusHandler from '../events/handlers/device/common/onlineSt
 
 // Rules
 import PowerConsumptionRules from './rules/powerConsumption';
+import DailyConsumptionRules from './rules/dailyConsumptionRules';
 import DeviceInfoRules from './rules/deviceInfo';
+import DeviceValuesRules from './rules/deviceValuesRules';
 import PowerAlertHandler from '../events/handlers/device/common/alerts/powerAlertHandler';
 import ApiRules from './rules/apiRules';
 import AppEventsRules from './rules/appEventsRules';
@@ -41,6 +44,7 @@ const BootstapRuleEngine = (providers, pnub, socket, emitter) => {
   const lwtHandler = LwtHandler(providers.deviceProvider, emitter);
   const lwtStatusAlertHandler = LwtStatusAlertHandler(providers.alertProvider, socket);
   const firmwareUpdateHandler = FirmwareUpdateHandler(providers.deviceProvider, pnub);
+  const deviceValuesHandler = DeviceValuesHandler(providers.deviceValuesProvider);
 
   const ruleEngine = new EventsRuleEngine();
 
@@ -58,8 +62,13 @@ const BootstapRuleEngine = (providers, pnub, socket, emitter) => {
     powerAlertHandler,
   });
 
+  DailyConsumptionRules(ruleEngine, { dailyStatHandler });
+
   /* -- Info event processing -- */
   DeviceInfoRules(ruleEngine, { deviceHandler });
+
+  /* -- Values from device event processing -- */
+  DeviceValuesRules(ruleEngine, { deviceValuesHandler });
 
   /* -- Power feedback event processing -- */
   PowerFeedbackRules(ruleEngine, { powerFeedbackHandler });

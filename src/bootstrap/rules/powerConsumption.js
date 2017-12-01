@@ -12,7 +12,7 @@ const PowerConsumptionRules = (ruleEngine, {
 }) => {
   // S6 Instant power message
   ruleEngine.add({
-    predicate: msg => msg.Type === consts.EVENT_TPE_FRESNEL_POWER_CONSUME,
+    predicate: msg => msg.Type === consts.EVENT_TYPE_FRESNEL_POWER_CONSUME,
     fn: (msg) => {
       hourlyStatHandler.process(S6FInstaPowerToHourly(msg));
       updateOnlineStatusHandler.process(S6FInstaPowerToHourly(msg));
