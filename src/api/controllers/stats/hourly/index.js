@@ -1,19 +1,9 @@
 import express from 'express';
 import * as _ from 'lodash';
 import logger from '../../../../common/logger';
-import { getDate, getOverlapped, getGroupField } from '../../../api-utils';
+import { getDate, getOverlapped, getGroupField, getHourlyDates } from '../../../api-utils';
 import { transformHourlyStat } from './hourlyStatTransformer';
 
-function getHourlyDates(date) {
-  const todayHours = [];
-  date.setUTCHours(0);
-  while (date.getUTCHours() < 23) {
-    date.setUTCHours(date.getUTCHours() + 1);
-    todayHours.push(new Date(date));
-  }
-
-  return todayHours;
-}
 
 export default function (app, middlewares, { hourlyStatsProvider }) {
   const router = express.Router();

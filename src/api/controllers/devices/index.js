@@ -7,7 +7,7 @@ import logger from '../../../common/logger';
 
 import { transformDevice } from './deviceTransformer';
 import transformDeviceValues from './deviceValuesTransformer';
-import { getOverlapped } from '../../api-utils';
+import { getOverlapped, getHourlyDates } from '../../api-utils';
 
 import deviceCommandValidator from './device.command.validation';
 import devicePatchValidator from './device.patch.validation';
@@ -84,9 +84,9 @@ export default function (app, middlewares, { deviceProvider, deviceValuesProvide
 
   router.get('/:deviceId/values', middlewares, (req, res) => {
     const deviceId = req.params.deviceId;
-    const date = req.query.date;
+    const date = new Date(req.query.date);
 
-    deviceValuesProvider.getDeviceValues(date, deviceId)
+    deviceValuesProvider.getDeviceValues(getHourlyDates(date), deviceId)
       .then((val) => {
         if (val.length === 0) {
           res.sendStatus(204);

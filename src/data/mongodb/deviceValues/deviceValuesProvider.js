@@ -46,8 +46,8 @@ export default function (database) {
       });
     },
 
-    getDeviceValues(date, deviceId) {
-      const dayDate = getRefDateTime(date);
+    getDeviceValues(dates, deviceId) {
+      const dayDates = dates.map(date => getRefDateTime(date));
       return new Promise((resolve, reject) => {
         db.collection(collectionName, (err, col) => {
           if (err) {
@@ -56,7 +56,7 @@ export default function (database) {
           col.aggregate([{
             $match: {
               $and: [
-                { date: { $eq: dayDate } },
+                { date: { $in: dayDates } },
                 { deviceId: { $eq: deviceId } },
               ],
             },
