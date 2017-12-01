@@ -1,9 +1,10 @@
-<a name="2.7.0"></a>
-# [2.7.0](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.6.1...v2.7.0) (2017-12-01)
+<a name="2.7.1"></a>
+## [2.7.1](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.6.1...v2.7.1) (2017-12-01)
 
 
 ### Bug Fixes
 
+* Fix device value endpoint to return hourly data ([31e6e4b](https://gitlab.com/smart-office-iot/iot-project-server/commit/31e6e4b))
 * Fix s6f consume mapper ([8e0e2de](https://gitlab.com/smart-office-iot/iot-project-server/commit/8e0e2de))
 
 
