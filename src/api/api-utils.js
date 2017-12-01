@@ -27,7 +27,21 @@ const createCsvElements = (data) => {
   return csv;
 };
 
-export { getDate,
+const getHourlyDates = (date) => {
+  const todayHours = [];
+  date.setUTCHours(0);
+  while (date.getUTCHours() < 23) {
+    date.setUTCHours(date.getUTCHours() + 1);
+    todayHours.push(new Date(date));
+  }
+
+  return todayHours;
+};
+
+export {
+  getDate,
   getOverlapped,
   createCsvElements,
-  getGroupField }; // eslint-disable-line import/prefer-default-export
+  getGroupField,
+  getHourlyDates,
+}; // eslint-disable-line import/prefer-default-export
