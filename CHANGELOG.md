@@ -1,3 +1,8 @@
+<a name="2.8.0"></a>
+# [2.8.0](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.7.1...v2.8.0) (2017-12-07)
+
+
+
 <a name="2.7.1"></a>
 ## [2.7.1](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.6.1...v2.7.1) (2017-12-01)
 
@@ -73,9 +78,19 @@
 * Fix date in daily provider ([5f3482c](https://gitlab.com/smart-office-iot/iot-project-server/commit/5f3482c))
 
 
+### Features
+
+* Modify hourly provider behaviour to return full date instead of hour ([700243d](https://gitlab.com/smart-office-iot/iot-project-server/commit/700243d))
+
+
 
 <a name="2.4.1"></a>
 ## [2.4.1](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.4.0...v2.4.1) (2017-10-04)
+
+
+### Bug Fixes
+
+* Fix get date in daily stats ([577ceb8](https://gitlab.com/smart-office-iot/iot-project-server/commit/577ceb8))
 
 
 

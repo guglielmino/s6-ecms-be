@@ -32,7 +32,7 @@ describe('HourlyStats API endpoints', () => {
 
     app = express();
     app.use(contentNegotiation());
-    
+
     request = supertest(app);
     const db = {
       collection: () => {
@@ -42,12 +42,12 @@ describe('HourlyStats API endpoints', () => {
   });
 
   it('should get hourly stats for a given gateway', (done) => {
-    const date = new Date();
+    let date = new Date();
+    date = date.toISOString();
     const stub = sinon.stub(hourlyStatsProvider, 'getHourlyStat')
       .returns(Promise.resolve(
         [{
-          _id: { hour: 12, deviceId: '11:22:33:44:55:66' },
-          date: Date.parse('2017-03-16T12:00:00.000Z'),
+          _id: { date, deviceId: '11:22:33:44:55:66' },
           gateway: 'test_gateway1',
           device: [{ deviceId: '11:22:33:44:55:66', name: 'test device' }],
           power: 20,
@@ -69,7 +69,7 @@ describe('HourlyStats API endpoints', () => {
           response.length.should.be.eq(1);
           response[0].deviceId.should.be.eq('11:22:33:44:55:66');
           response[0].power.should.be.eq(20);
-          response[0].hour.should.be.eq(12);
+          response[0].date.should.be.eq(date);
           response[0].deviceName.should.be.eq('test device');
           done();
         }
