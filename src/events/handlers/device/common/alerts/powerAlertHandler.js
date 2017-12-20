@@ -50,7 +50,7 @@ const PowerAlertHandler = (deviceProvider, alertProvider, socket) => {
       logger.log('debug', `energy alert processor ${JSON.stringify({ deviceId, power })}`);
 
       return new Promise((resolve, reject) => {
-        if (power === 0) {
+        if (power < 0.1) {
           getDevice(deviceId)
             .then((device) => {
               if (device) {
