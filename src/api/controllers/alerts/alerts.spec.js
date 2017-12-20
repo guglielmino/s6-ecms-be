@@ -266,4 +266,5 @@ describe('Alerts API endpoints', () => {
         }
       });
   });
+
 });
