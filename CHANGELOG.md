@@ -1,3 +1,19 @@
+<a name="2.9.0"></a>
+# [2.9.0](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.8.0...v2.9.0) (2017-12-21)
+
+
+### Bug Fixes
+
+* Genrate alert for broken device with power < 0.1 instead of power = 0 ([2c80c7c](https://gitlab.com/smart-office-iot/iot-project-server/commit/2c80c7c))
+* Update device doesn't overwrite description field ([7b5b0bb](https://gitlab.com/smart-office-iot/iot-project-server/commit/7b5b0bb))
+
+
+### Features
+
+* Add export excel to device values endpoint ([bf64f8a](https://gitlab.com/smart-office-iot/iot-project-server/commit/bf64f8a))
+
+
+
 <a name="2.8.0"></a>
 # [2.8.0](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.7.1...v2.8.0) (2017-12-07)
 
