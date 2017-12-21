@@ -97,6 +97,7 @@ describe('devicesProvider', () => {
     subject.updateByDeviceId('11:44:41:9f:66:ea', {
       gateway: 'agateway',
       swVersion: '1.2.3',
+      description: 'UpsertDevice',
       deviceType: 'Sonoff Pow Module',
       deviceId: '11:44:41:9f:66:ea',
       name: 'UpsertDevice',
@@ -111,6 +112,7 @@ describe('devicesProvider', () => {
         swVersion: '1.2.3',
         deviceType: 'Sonoff Pow Module',
         deviceId: '11:44:41:9f:66:ea',
+        description: 'UpsertDeviceUpdated',
         name: 'UpsertDeviceUpdated',
         commands: {
           power: 'mqtt:cmnd/test6/POWER',
@@ -120,6 +122,44 @@ describe('devicesProvider', () => {
       .then(res => subject.getById(res.id))
       .then((res) => {
         res.name.should.be.eq('UpsertDeviceUpdated');
+        done();
+      })
+      .catch(err => done(err));
+  });
+
+  it('should NOT overwrite device description if device exists', (done) => {
+
+    subject = DevicesProvider(db);
+
+    subject.updateByDeviceId('11:44:41:9f:66:ea', {
+      gateway: 'agateway',
+      swVersion: '1.2.3',
+      description: 'Original description',
+      deviceType: 'Sonoff Pow Module',
+      deviceId: '11:44:41:9f:66:ea',
+      name: 'UpsertDevice',
+      commands: {
+        power: 'mqtt:cmnd/test6/POWER',
+      },
+      created: new Date(),
+    })
+      .then(res => subject.getById(res.id))
+      .then(res => subject.updateByDeviceId(res.deviceId, {
+        gateway: 'agateway',
+        swVersion: '1.2.3',
+        deviceType: 'Sonoff Pow Module',
+        deviceId: '11:44:41:9f:66:ea',
+        description: 'New description',
+        name: 'UpsertDeviceUpdated',
+        commands: {
+          power: 'mqtt:cmnd/test6/POWER',
+        },
+        created: new Date(),
+      }))
+      .then(res => subject.getById(res.id))
+      .then((res) => {
+        res.name.should.be.eq('UpsertDeviceUpdated');
+        res.description.should.be.eq('Original description');
         done();
       })
       .catch(err => done(err));

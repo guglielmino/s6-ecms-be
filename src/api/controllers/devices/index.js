@@ -91,7 +91,10 @@ export default function (app, middlewares, { deviceProvider, deviceValuesProvide
         if (val.length === 0) {
           res.sendStatus(204);
         } else {
-          res.json(val.map(e => transformDeviceValues(e)));
+          res.sendData(val, {
+            'application/json': d => d.map(s => transformDeviceValues(s)),
+            'application/vnd.ms-excel': d => _.orderBy(d.map(s => transformDeviceValues(s)), 'date'),
+          });
         }
       })
       .catch((err) => {

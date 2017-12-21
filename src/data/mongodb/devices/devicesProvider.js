@@ -57,11 +57,15 @@ export default function (database) {
             reject(err);
           }
 
+          const { description, ...fields } = newObj;
+
           col.findOneAndUpdate({ deviceId },  // eslint-disable-line no-underscore-dangle
-            newObj,
+            {
+              $set: fields,
+              $setOnInsert: { description },
+            },
             {
               upsert: true,
-              returnOriginal: true,
             },
             (error, r) => {
               if (error) {

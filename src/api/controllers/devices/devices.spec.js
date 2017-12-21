@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import mockery from 'mockery';
 
+import contentNegotiation from '../../middleware/content-negotiation-middleware';
 import { FakeAuthMiddleware } from '../../test-helper';
 
 import { DevicesProvider, DeviceValuesProvider } from '../../../data/mongodb';
@@ -37,6 +38,7 @@ describe('Devices API endpoints', () => {
   beforeEach(() => {
     app = express();
     app.use(bodyParser.json());
+    app.use(contentNegotiation());
     request = supertest(app);
 
     const db = {
