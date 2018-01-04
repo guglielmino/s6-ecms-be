@@ -48,10 +48,10 @@ describe('Power Consumption rules', () => {
           GatewayId: 'CASAFG',
           Type: 'FRESNEL_POWER_CONSUME',
           Payload: {
-            topic: 'building/room1/sensors/00:11:22:33:44:55/power',
+            GatewayId: 'VG59',
             deviceId: '00:11:22:33:44:55',
             timestamp: '2017-08-27T07:56:23.642Z',
-            power: 23.2,
+            value: 23.2,
           },
         };
 
@@ -61,10 +61,10 @@ describe('Power Consumption rules', () => {
         .calledOnce.should.be.true;
       hourlyStatHandler.process
         .calledWith({
-          timestamp: '2017-08-27T07:56:23.642Z',
-          gateway: 'CASAFG',
+          GatewayId: 'VG59',
           deviceId: '00:11:22:33:44:55',
-          power: 23.2
+          timestamp: '2017-08-27T07:56:23.642Z',
+          value: 23.2,
         });
     });
 
@@ -74,10 +74,10 @@ describe('Power Consumption rules', () => {
           GatewayId: 'CASAFG',
           Type: 'FRESNEL_POWER_CONSUME',
           Payload: {
-            topic: 'building/room1/sensors/00:11:22:33:44:55/power',
+            GatewayId: 'VG59',
             deviceId: '00:11:22:33:44:55',
             timestamp: '2017-08-27T07:56:23.642Z',
-            power: 23.2,
+            value: 23.2
           },
         };
 
@@ -95,10 +95,10 @@ describe('Power Consumption rules', () => {
           GatewayId: 'CASAFG',
           Type: 'FRESNEL_POWER_CONSUME',
           Payload: {
-            topic: 'building/room1/sensors/00:11:22:33:44:55/power',
+            GatewayId: 'VG59',
             deviceId: '00:11:22:33:44:55',
             timestamp: '2017-08-27T07:56:23.642Z',
-            power: 23.2,
+            value: 0.0,
           },
         };
 

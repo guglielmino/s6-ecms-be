@@ -29,24 +29,9 @@ describe('PowerAlertHandler', () => {
       subject = new PowerAlertHandler(deviceProvider, alertProvider, socket);
     });
 
-    it('should do nothing if power is greater than 0', (done) => {
-      const event = {
-        deviceId: '00:11:22:33:44:55',
-        power: 43,
-      };
 
-      sinon.stub(deviceProvider, 'findByDeviceId');
 
-      subject.process(event)
-        .then(() => {
-          deviceProvider.findByDeviceId
-            .called.should.be.false;
-          done();
-        })
-        .catch(err => done(err));
-    });
-
-    it('should create alert when power > 0, device status is on and there aren\'t previous alerts for the device/gateway', (done) => {
+    it('should create alert when device status is on and there aren\'t previous alerts for the device/gateway', (done) => {
       const event = {
         deviceId: '00:11:22:33:44:55',
         power: 0,
