@@ -12,18 +12,18 @@ describe('S6 Fresnel power command to gateway', () => {
       },
       deviceId: '1234',
     };
-    const expectedResultValue = {
+    const expectedResultValue = JSON.stringify({
       method: 'OTA.Update',
       args: {
         url: `${config.devices.s6fresnelotaurl}/fw.zip`,
         commit_timeout: '300',
       },
       src: 'topic/for/feedback',
-    };
+    });
 
     const result = S6FresnelUpdateFirmwareCommandToGateway(fakeDevice);
     result.should.have.all.keys('topic', 'value');
-    result.topic.should.equal(`devices/${fakeDevice.deviceId}/rpc`);
+    result.topic.should.equal(`${fakeDevice.deviceId}/rpc`);
     result.value.should.deep.equal(expectedResultValue);
   });
 });
