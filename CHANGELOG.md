@@ -1,3 +1,13 @@
+<a name="2.10.0"></a>
+# [2.10.0](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.9.0...v2.10.0) (2018-01-09)
+
+
+### Bug Fixes
+
+* Fix payload as string in firmware update command for S6Fresnel ([2904d2e](https://gitlab.com/smart-office-iot/iot-project-server/commit/2904d2e))
+
+
+
 <a name="2.9.0"></a>
 # [2.9.0](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.8.0...v2.9.0) (2017-12-21)
 
