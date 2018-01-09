@@ -1,4 +1,5 @@
 import Rx from 'rxjs';
+import connectDatabase from 's6-service-data';
 import config from './src/config';
 import * as consts from './consts';
 import logger from './src/common/logger';
@@ -7,8 +8,7 @@ import {
   getEmitterEventObservable,
 } from './src/data/observable/events';
 
-import { Database } from './src/data/mongodb/data';
-import bootstrapDataProvider from './src/bootstrap/dataProviders';
+
 import BootstapRuleEngine from './src/bootstrap/ruleEngine';
 
 import emitter from './src/streams/emitter';
@@ -20,12 +20,10 @@ import swaggerSetup from './src/api/swagger-setup';
 import routes from './src/api/routes';
 import api from './src/api';
 
-const database = Database(config);
-database.connect()
-  .then((db) => {
-    const pnub = pubnubHub(config.pubnub);
 
-    const providers = bootstrapDataProvider(db);
+connectDatabase(config.mongo)
+  .then((providers) => {
+    const pnub = pubnubHub(config.pubnub);
 
     const app = expSetup();
     swaggerSetup(app);

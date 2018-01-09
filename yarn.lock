@@ -4164,7 +4164,7 @@ mongodb-core@2.1.5:
     bson "~1.0.4"
     require_optional "~1.0.0"
 
-mongodb@^2.2.20:
+mongodb@2.2.20, mongodb@^2.2.20:
   version "2.2.20"
   resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-2.2.20.tgz#a6a00d33222874e0efe9eb598ebe8dbfeccf01d4"
   dependencies:
@@ -4706,6 +4706,10 @@ pnp-email-service@^0.1.7:
     nodemailer-stub-transport "^1.1.0"
     pug "^2.0.0-beta11"
     winston "*"
+
+postinstall-build@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/postinstall-build/-/postinstall-build-5.0.1.tgz#b917a9079b26178d9a24af5a5cd8cb4a991d11b9"
 
 postmark@^1.4.1:
   version "1.4.1"
@@ -5274,6 +5278,13 @@ rxjs@^5.0.2:
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.0.2.tgz#cc6513756daa93cab4085c1b5a19a3e28fb6c6bf"
   dependencies:
     symbol-observable "^1.0.1"
+
+"s6-service-data@https://gitlab.com/smart-office-iot/s6-service-data":
+  version "0.4.1"
+  resolved "https://gitlab.com/smart-office-iot/s6-service-data#5eccd1de0b0202378a605bc9dd185353b0e56776"
+  dependencies:
+    mongodb "2.2.20"
+    postinstall-build "^5.0.1"
 
 safe-buffer@^5.0.1:
   version "5.0.1"

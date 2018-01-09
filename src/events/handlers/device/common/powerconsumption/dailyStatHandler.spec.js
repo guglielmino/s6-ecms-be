@@ -1,7 +1,6 @@
 import chai from 'chai';
 import sinon from 'sinon';
 import DailyStatHandler from './dailyStatHandler';
-import DailyStatsProvider from '../../../../../data/mongodb/stats/dailyStatsProvider';
 
 import logger from '../../../../../common/logger';
 
@@ -22,12 +21,11 @@ describe('DailyStatHandler', () => {
   });
 
   beforeEach(() => {
-    const db = {
-      collection: () => {
 
-      },
+    dailyStatsProvider = {
+      updateDailyStat: () => {},
+      getDailyStatsForDeviceId: () => {},
     };
-    dailyStatsProvider = DailyStatsProvider(db);
   });
 
   it('should sum current and daily consumption if current is less than daily', (done) => {

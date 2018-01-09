@@ -7,7 +7,6 @@ import mockery from 'mockery';
 import queryStringPaging from '../../middleware/query-string-paging-middleware';
 
 import { FakeAuthMiddleware } from '../../test-helper';
-import { AlertsProvider } from '../../../data/mongodb/index';
 import * as consts from '../../../../consts';
 
 chai.should();
@@ -22,7 +21,7 @@ describe('Alerts API endpoints', () => {
   let request;
   let app;
   let Alerts;
-  let alertProvider = {};
+  let mockupAlertProvider = {};
 
 
   beforeEach(() => {
@@ -36,16 +35,17 @@ describe('Alerts API endpoints', () => {
     app.use(queryStringPaging());
     request = supertest(app);
 
-    const db = {
-      collection: () => { },
+    mockupAlertProvider = {
+      getPagedAlerts: () => {},
+      getAlertById: () => {},
+      updateById: () => {},
+      deleteById: () => {},
     };
-
-    alertProvider = AlertsProvider(db);
   });
 
   it('should get alerts for a passed gateway', (done) => {
-    Alerts(app, [FakeAuthMiddleware(['samplegw', 'testgw'])()], { alertProvider });
-    const stub = sinon.stub(alertProvider, 'getPagedAlerts')
+    Alerts(app, [FakeAuthMiddleware(['samplegw', 'testgw'])()], { alertProvider: mockupAlertProvider });
+    const stub = sinon.stub(mockupAlertProvider, 'getPagedAlerts')
       .returns(Promise.resolve({
           list: [{
             gateway: 'samplegw',
@@ -76,8 +76,8 @@ describe('Alerts API endpoints', () => {
   });
 
   it('should get alerts for some gateways', (done) => {
-    Alerts(app, [FakeAuthMiddleware(['samplegw', 'testgw'])()], { alertProvider });
-    const stub = sinon.stub(alertProvider, 'getPagedAlerts')
+    Alerts(app, [FakeAuthMiddleware(['samplegw', 'testgw'])()], { alertProvider: mockupAlertProvider });
+    const stub = sinon.stub(mockupAlertProvider, 'getPagedAlerts')
       .returns(Promise.resolve({
           list: [{
             gateway: 'samplegw',
@@ -109,8 +109,8 @@ describe('Alerts API endpoints', () => {
   });
 
   it('should get alerts filtered for read and message fields', () => {
-    Alerts(app, [FakeAuthMiddleware(['samplegw', 'testgw'])()], { alertProvider });
-    const stub = sinon.stub(alertProvider, 'getPagedAlerts')
+    Alerts(app, [FakeAuthMiddleware(['samplegw', 'testgw'])()], { alertProvider: mockupAlertProvider });
+    const stub = sinon.stub(mockupAlertProvider, 'getPagedAlerts')
       .returns(Promise.resolve({
           list: [{
             gateway: 'samplegw',
@@ -141,8 +141,8 @@ describe('Alerts API endpoints', () => {
   });
 
   it('should responds 204 for not owned gateways', (done) => {
-    Alerts(app, [FakeAuthMiddleware(['samplegw', 'testgw'])()], { alertProvider });
-    const stub = sinon.stub(alertProvider, 'getPagedAlerts')
+    Alerts(app, [FakeAuthMiddleware(['samplegw', 'testgw'])()], { alertProvider: mockupAlertProvider });
+    const stub = sinon.stub(mockupAlertProvider, 'getPagedAlerts')
       .returns(Promise.resolve({ list: [], hasNext: false, lastId: 0 }),
       );
 
@@ -158,8 +158,8 @@ describe('Alerts API endpoints', () => {
   });
 
   it('should use default pageSize if query pageSize is more than max', () => {
-    Alerts(app, [FakeAuthMiddleware(['samplegw', 'testgw'])()], { alertProvider });
-    const stub = sinon.stub(alertProvider, 'getPagedAlerts')
+    Alerts(app, [FakeAuthMiddleware(['samplegw', 'testgw'])()], { alertProvider: mockupAlertProvider });
+    const stub = sinon.stub(mockupAlertProvider, 'getPagedAlerts')
       .returns(Promise.resolve({
           list: [{
             gateway: 'samplegw',
@@ -188,7 +188,7 @@ describe('Alerts API endpoints', () => {
   });
 
   it('should toggle read field', (done) => {
-    const stub = sinon.stub(alertProvider, 'getAlertById')
+    const stub = sinon.stub(mockupAlertProvider, 'getAlertById')
       .returns(Promise.resolve({
         gateway: 'samplegw',
         date: new Date(),
@@ -198,11 +198,11 @@ describe('Alerts API endpoints', () => {
         id: '58c7b3e46b835bf90cfdffeb',
       }));
 
-    const stubUpdate = sinon.stub(alertProvider, 'updateById').returns({
+    const stubUpdate = sinon.stub(mockupAlertProvider, 'updateById').returns({
       status: true,
     });
 
-    Alerts(app, [FakeAuthMiddleware(['samplegw'])()], { alertProvider });
+    Alerts(app, [FakeAuthMiddleware(['samplegw'])()], { alertProvider: mockupAlertProvider });
 
     request
       .put('/api/alerts/58c7b3e46b835bf90cfdffeb/read')
@@ -217,7 +217,7 @@ describe('Alerts API endpoints', () => {
   });
 
   it('should delete alert identified by id', (done) => {
-    const stubGet = sinon.stub(alertProvider, 'getAlertById')
+    const stubGet = sinon.stub(mockupAlertProvider, 'getAlertById')
       .returns(Promise.resolve({
         gateway: 'samplegw',
         date: new Date(),
@@ -227,9 +227,9 @@ describe('Alerts API endpoints', () => {
         id: '58c7b3e46b835bf90cfdffeb',
       }));
 
-    const stubDelete = sinon.stub(alertProvider, 'deleteById').returns(true);
+    const stubDelete = sinon.stub(mockupAlertProvider, 'deleteById').returns(true);
 
-    Alerts(app, [FakeAuthMiddleware(['samplegw'])()], { alertProvider });
+    Alerts(app, [FakeAuthMiddleware(['samplegw'])()], { alertProvider: mockupAlertProvider });
 
     request
       .delete('/api/alerts/58c7b3e46b835bf90cfdffeb')
@@ -244,7 +244,7 @@ describe('Alerts API endpoints', () => {
   });
 
   it('should return 403 trying to delete an alert of a wrong gateway', (done) => {
-    const stubGet = sinon.stub(alertProvider, 'getAlertById')
+    const stubGet = sinon.stub(mockupAlertProvider, 'getAlertById')
       .returns(Promise.resolve({
         gateway: 'test',
         date: new Date(),
@@ -254,7 +254,7 @@ describe('Alerts API endpoints', () => {
         id: '58c7b3e46b835bf90cfdffeb',
       }));
 
-    Alerts(app, [FakeAuthMiddleware(['samplegw'])()], { alertProvider });
+    Alerts(app, [FakeAuthMiddleware(['samplegw'])()], { alertProvider: mockupAlertProvider });
 
     request
       .delete('/api/alerts/58c7b3e46b835bf90cfdffeb')

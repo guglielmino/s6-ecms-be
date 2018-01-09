@@ -9,8 +9,6 @@ import { FakeAuthMiddleware } from '../../../test-helper';
 import HourlyStats from './';
 import contentNegotiation from '../../../middleware/content-negotiation-middleware';
 
-import { HourlyStatsProvider } from '../../../../data/mongodb';
-
 chai.should();
 const expect = chai.expect;
 
@@ -34,11 +32,11 @@ describe('HourlyStats API endpoints', () => {
     app.use(contentNegotiation());
 
     request = supertest(app);
-    const db = {
-      collection: () => {
-      },
+
+    hourlyStatsProvider = {
+      getHourlyStat: () => { },
+      getHourlyStatByDevice: () => {},
     };
-    hourlyStatsProvider = HourlyStatsProvider(db);
   });
 
   it('should get hourly stats for a given gateway', (done) => {

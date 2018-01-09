@@ -8,8 +8,6 @@ import bodyParser from 'body-parser';
 import { FakeAuthMiddleware } from '../../test-helper';
 import Gateways from './index';
 
-import { GatewaysProvider } from '../../../data/mongodb/index';
-
 chai.should();
 const expect = chai.expect;
 
@@ -32,11 +30,11 @@ describe('Gateway API endpoints', () => {
     app.use(bodyParser.json());
     request = supertest(app);
 
-    const db = {
-      collection: () => {
-      }
-    };
-    gatewayProvider = GatewaysProvider(db);
+    gatewayProvider = {
+      getGateway: () => {},
+      getGateways: () => {},
+      updateByGatewayCode: () => {},
+    }
   });
 
   it('should returns requested gateway', (done) => {
@@ -87,7 +85,7 @@ describe('Gateway API endpoints', () => {
     sinon.stub(gatewayProvider, 'updateByGatewayCode')
       .returns(Promise.resolve({ status: true, id: 'aaasaaa' }));
 
-    Gateways(app, [FakeAuthMiddleware(['samplegw'])()], { gatewayProvider });      
+    Gateways(app, [FakeAuthMiddleware(['samplegw'])()], { gatewayProvider });
 
     request
       .patch('/api/gateways/samplegw')

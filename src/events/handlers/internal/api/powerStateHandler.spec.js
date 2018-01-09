@@ -7,8 +7,6 @@ import helper from '../../processor_tests_helper.spec';
 helper('./powerStateProcessor');
 import payloadFactory from '../../factory/payloadFactory';
 
-import { DevicesProvider } from '../../../../data/mongodb/index';
-
 chai.should();
 const expect = chai.expect;
 
@@ -22,11 +20,9 @@ describe('Power Handler', () => {
   };
 
   beforeEach(() => {
-    const db = {
-      collection: () => {
-      }
+    deviceProvider = {
+      findByDeviceId: () => {}
     };
-    deviceProvider = DevicesProvider(db);
     pnub = {};
     subject = new PowerStateHandler(deviceProvider, pnub);
 

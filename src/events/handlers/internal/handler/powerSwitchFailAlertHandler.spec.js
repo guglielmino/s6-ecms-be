@@ -2,7 +2,6 @@ import chai from 'chai';
 import sinon from 'sinon';
 import * as consts from '../../../../../consts';
 import PowerSwitchFailAlertHandler from './powerSwitchFailAlertHandler';
-import { AlertsProvider, DevicesProvider } from '../../../../data/mongodb/index';
 import logger from '../../../../common/logger';
 
 chai.should();
@@ -16,14 +15,9 @@ describe('PowerSwitchFailAlertHandler', () => {
   let stubLogger;
 
   beforeEach(() => {
-    const db = {
-      collection: () => {
-      }
-    };
-
     stubLogger = sinon.stub(logger, 'log');
-    alertProvider = AlertsProvider(db);
-    devicesProvider = DevicesProvider(db);
+    alertProvider = { add: () => {} };
+    devicesProvider = { findByDeviceId: () => {}};
     subject = PowerSwitchFailAlertHandler(alertProvider, devicesProvider, socket);
   });
 

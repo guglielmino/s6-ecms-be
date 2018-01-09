@@ -4,8 +4,6 @@ import logger from '../../../../../common/logger';
 
 import DeviceValuesHandler from './deviceValuesHandler';
 
-import { DeviceValuesProvider } from '../../../../../data/mongodb/index';
-
 chai.should();
 const expect = chai.expect;
 
@@ -17,12 +15,9 @@ describe('HourlyStatHandler', () => {
   beforeEach(() => {
     sinon.stub(logger, 'log');
 
-    const db = {
-      collection: () => {
-      },
+    deviceValuesProvider = {
+      updateDeviceValues: () => {},
     };
-
-    deviceValuesProvider = DeviceValuesProvider(db);
     subject = new DeviceValuesHandler(deviceValuesProvider);
   });
 

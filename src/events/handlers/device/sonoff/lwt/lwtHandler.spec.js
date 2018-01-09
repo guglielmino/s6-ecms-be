@@ -1,7 +1,6 @@
 import chai from 'chai';
 import sinon from 'sinon';
 import LwtHandler from './lwtHandler';
-import { DevicesProvider } from '../../../../../data/mongodb/index';
 import logger from '../../../../../common/logger';
 import * as consts from '../../../../../../consts';
 
@@ -15,14 +14,13 @@ describe('LwtHandler', () => {
   let stubbedLog;
 
   beforeEach(() => {
-    const db = {
-      collection: () => {
-      },
-    };
     emitter = {};
     emitter.emit = sinon.spy();
     stubbedLog = sinon.stub(logger, 'log');
-    deviceProvider = DevicesProvider(db);
+    deviceProvider = {
+      updateByDeviceId: () => {},
+      findByDeviceId: () => {},
+    };
     subject = new LwtHandler(deviceProvider, emitter);
   });
 

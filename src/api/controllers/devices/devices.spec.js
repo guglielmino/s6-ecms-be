@@ -8,8 +8,6 @@ import mockery from 'mockery';
 import contentNegotiation from '../../middleware/content-negotiation-middleware';
 import { FakeAuthMiddleware } from '../../test-helper';
 
-import { DevicesProvider, DeviceValuesProvider } from '../../../data/mongodb';
-
 chai.should();
 const expect = chai.expect;
 
@@ -41,11 +39,15 @@ describe('Devices API endpoints', () => {
     app.use(contentNegotiation());
     request = supertest(app);
 
-    const db = {
-      collection: () => { }
+    deviceProvider = {
+      getDevices: () => {},
+      findByDeviceId: () => {},
+      updateByDeviceId: () => {},
     };
-    deviceProvider = DevicesProvider(db);
-    deviceValuesProvider = DeviceValuesProvider(db);
+    deviceValuesProvider = {
+      getDeviceValues: () => {},
+
+    };
   });
 
   after(() => {

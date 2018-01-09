@@ -6,7 +6,6 @@ import express from 'express';
 import GatewayAuth from '../../middleware/gateway-auth-middleware';
 import Events from './';
 
-import { EventsProvider } from '../../../data/mongodb';
 import { FakeAuthMiddleware } from '../../test-helper';
 
 chai.should();
@@ -20,11 +19,7 @@ describe('Events API endpoints', () => {
   beforeEach(() => {
     app = express();
     request = supertest(app);
-    const db = {
-      collection: () => {
-      },
-    };
-    eventProvider = EventsProvider(db);
+    eventProvider = { getLastEvent: () => {} };
   });
 
   it('should call post for a result event', (done) => {
@@ -59,7 +54,6 @@ describe('Events API endpoints', () => {
         if (err) {
           done(err);
         } else {
-          console.log(eventProvider.getLastEvent.args);
           eventProvider.getLastEvent.calledWith('TESTGW', ['TYPE', 'TYPE1'], '123').should.equal(true);
           done();
         }

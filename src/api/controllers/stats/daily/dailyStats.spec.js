@@ -9,8 +9,6 @@ import { FakeAuthMiddleware } from '../../../test-helper';
 import contentNegotiation from '../../../middleware/content-negotiation-middleware';
 import DailyStats from './';
 
-import { DailyStatsProvider } from '../../../../data/mongodb';
-
 chai.should();
 const expect = chai.expect;
 
@@ -46,7 +44,9 @@ describe('DailyStats API endpoints', () => {
       collection: () => {
       }
     };
-    dailyStatsProvider = DailyStatsProvider(db);
+    dailyStatsProvider = {
+      getDailyStat: () => {},
+    };
   });
 
   it('should returns daily stats for the given gateway', (done) => {

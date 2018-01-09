@@ -1,8 +1,6 @@
 import chai from 'chai';
 import sinon from 'sinon';
 import DeviceHandler from './deviceHandler';
-import {DevicesProvider} from '../../../../../data/mongodb/index';
-
 import helper from '../../../processor_tests_helper.spec';
 
 helper('./deviceProcessor');
@@ -15,11 +13,9 @@ describe('DeviceHandler', () => {
   let deviceProvider;
 
   beforeEach(() => {
-    const db = {
-      collection: () => {
-      },
+    deviceProvider = {
+      updateByDeviceId: () => {},
     };
-    deviceProvider = DevicesProvider(db);
     subject = new DeviceHandler(deviceProvider);
   });
 
