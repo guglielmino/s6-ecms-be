@@ -46,40 +46,36 @@ const PowerAlertHandler = (deviceProvider, alertProvider, socket) => {
 
 
   return {
-    process: ({ deviceId, power }) => {
-      logger.log('debug', `energy alert processor ${JSON.stringify({ deviceId, power })}`);
+    process: ({ deviceId }) => {
+      logger.log('debug', `energy alert processor ${JSON.stringify({ deviceId })}`);
 
       return new Promise((resolve, reject) => {
-        if (power < 0.1) {
-          getDevice(deviceId)
-            .then((device) => {
-              if (device) {
-                if (device.status && device.status.power === 'on') {
-                  const alertKey = makeAlertKey(device);
-                  getAlert(alertKey)
-                    .then((alert) => {
-                      let alarmObj = {};
-                      if (needsNewAlert(alert, new Date(), ALERT_DELAY_SEC)) {
-                        alarmObj = createAlert(device, alertKey);
-                      } else {
-                        alarmObj = Object.assign(alert, { lastUpdate: new Date() });
-                      }
-                      alertProvider.update(alarmObj, alarmObj);
-                      socket.emit(device.gateway, WS_DEVICE_ALARM, alarmObj);
-                      resolve();
-                    });
-                }
-              } else {
-                logger.log('error', `Energy event for unknown device : ${JSON.stringify({ deviceId, power })}`);
+        getDevice(deviceId)
+          .then((device) => {
+            if (device) {
+              if (device.status && device.status.power === 'on') {
+                const alertKey = makeAlertKey(device);
+                getAlert(alertKey)
+                  .then((alert) => {
+                    let alarmObj = {};
+                    if (needsNewAlert(alert, new Date(), ALERT_DELAY_SEC)) {
+                      alarmObj = createAlert(device, alertKey);
+                    } else {
+                      alarmObj = Object.assign(alert, { lastUpdate: new Date() });
+                    }
+                    alertProvider.update(alarmObj, alarmObj);
+                    socket.emit(device.gateway, WS_DEVICE_ALARM, alarmObj);
+                    resolve();
+                  });
               }
-            })
-            .catch((err) => {
-              logger.log('error', err);
-              reject(err);
-            });
-        } else {
-          resolve();
-        }
+            } else {
+              logger.log('error', `Energy event for unknown device : ${JSON.stringify({ deviceId })}`);
+            }
+          })
+          .catch((err) => {
+            logger.log('error', err);
+            reject(err);
+          });
       });
     },
   };
