@@ -2,7 +2,6 @@ import chai from 'chai';
 import sinon from 'sinon';
 
 import UpdateOnlineStatusHandler from './updateOnlineStatusHandler';
-import { DevicesProvider } from '../../../../../data/mongodb/index';
 
 import logger from '../../../../../common/logger';
 
@@ -23,11 +22,10 @@ describe('UpdateOnlineStatusHandler', () => {
   });
 
   beforeEach(() => {
-    const db = {
-      collection: () => {
-      }
+    deviceProvider = {
+      updateByDeviceId: () => {},
+      findByDeviceId: () => {},
     };
-    deviceProvider = DevicesProvider(db);
     subject = new UpdateOnlineStatusHandler(deviceProvider);
   });
 

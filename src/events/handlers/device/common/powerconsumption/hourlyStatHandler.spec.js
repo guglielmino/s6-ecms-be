@@ -7,8 +7,6 @@ import helper from '../../../processor_tests_helper.spec';
 
 helper('./hourlyStatProcessor');
 
-import { HourlyStatsProvider } from '../../../../../data/mongodb/index';
-
 chai.should();
 const expect = chai.expect;
 
@@ -19,12 +17,9 @@ describe('HourlyStatHandler', () => {
 
   beforeEach(() => {
 
-    const db = {
-      collection: () => {
-      },
+    hourlyStatsProvider = {
+      updateHourlyStat: () => {},
     };
-
-    hourlyStatsProvider = HourlyStatsProvider(db);
     subject = new HourlyStatHandler(hourlyStatsProvider);
   });
 

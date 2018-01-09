@@ -10,8 +10,6 @@ import PowerStateHandler from '../../events/handlers/internal/api/powerStateHand
 
 import ApiFirmwareUpdateRules from './apiRules';
 
-import { DevicesProvider } from '../../data/mongodb/index';
-
 chai.should();
 const expect = chai.expect();
 
@@ -23,11 +21,7 @@ describe('API generated event rules', () => {
 
   beforeEach(() => {
 
-    const db = {
-      collection: () => { },
-    };
-
-    const deviceProvider = DevicesProvider(db);
+    const deviceProvider = {};
     const pnub = {};
     firmwareUpdateHandler = FirmwareUpdateHandler();
     powerStateHandler = PowerStateHandler(deviceProvider, pnub);

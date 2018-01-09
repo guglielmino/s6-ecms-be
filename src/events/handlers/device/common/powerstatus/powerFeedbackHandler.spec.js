@@ -4,8 +4,6 @@ import sinon from 'sinon';
 import helper from '../../../processor_tests_helper.spec';
 
 helper('./powerFeedbackProcessor');
-import { DevicesProvider } from '../../../../../data/mongodb/index';
-
 import PowerFeedbackHandler from './powerFeedbackHandler';
 
 chai.should();
@@ -17,11 +15,11 @@ describe('PowerFeedbackHandler', () => {
   let socket;
 
   beforeEach(() => {
-    const db = {
-      collection: () => {
-      },
+
+    deviceProvider = {
+      findByDeviceId: () => {},
+      update: () => {},
     };
-    deviceProvider = DevicesProvider(db);
     socket = {};
     subject = new PowerFeedbackHandler(deviceProvider, socket);
   });

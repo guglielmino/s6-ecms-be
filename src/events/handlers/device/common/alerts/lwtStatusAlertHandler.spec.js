@@ -2,7 +2,6 @@ import chai from 'chai';
 import sinon from 'sinon';
 import LwtStatusAlertHandler from './lwtStatusAlertHandler';
 import logger from '../../../../../common/logger';
-import { AlertsProvider } from '../../../../../data/mongodb/index';
 
 chai.should();
 const expect = chai.expect;
@@ -16,11 +15,10 @@ describe('lwt status alert handler', () => {
 
   before(() => {
     loggerStub = sinon.stub(logger, 'log');
-    const db = {
-      collection: () => {
-      },
+
+    alertProvider = {
+      add: () => {},
     };
-    alertProvider = AlertsProvider(db);
     socket = {};
     socket.emit = sinon.spy();
     subject = new LwtStatusAlertHandler(alertProvider, socket);

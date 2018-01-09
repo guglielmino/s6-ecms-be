@@ -1,7 +1,6 @@
 import chai from 'chai';
 import sinon from 'sinon';
 import FirmwareUpdateHandler from './firmwareUpdateHandler';
-import { DevicesProvider } from '../../../../data/mongodb/index';
 import PayloadFactory from '../../factory/payloadFactory';
 
 chai.should();
@@ -21,11 +20,9 @@ describe('FirmwareUpdate Handler', () => {
   let createFirmwarePayload;
 
   beforeEach(() => {
-    const db = {
-      collection: () => {
-      }
+    deviceProvider = {
+      findByDeviceId: () => {},
     };
-    deviceProvider = DevicesProvider(db);
     subject = new FirmwareUpdateHandler(deviceProvider, pnub);
     createFirmwarePayload = sinon.stub(PayloadFactory.prototype, 'createFirmwareUpdatePayload').returns(fakePayload);
   });

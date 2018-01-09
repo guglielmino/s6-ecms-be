@@ -5,8 +5,6 @@ import PowerAlertHandler, { needsNewAlert, makeAlertKey }  from './powerAlertHan
 import helper from '../../../processor_tests_helper.spec';
 helper('./energyAlertProcessor');
 
-import { AlertsProvider, DevicesProvider } from '../../../../../data/mongodb/index';
-
 chai.should();
 const expect = chai.expect;
 
@@ -23,8 +21,13 @@ describe('PowerAlertHandler', () => {
         collection: () => {
         },
       };
-      deviceProvider = DevicesProvider(db);
-      alertProvider = AlertsProvider(db);
+      deviceProvider = {
+        findByDeviceId: () => {},
+      };
+      alertProvider = {
+        getLastAlertByKey: () => {},
+        update: () => {}
+      };
       socket = {};
       subject = new PowerAlertHandler(deviceProvider, alertProvider, socket);
     });
