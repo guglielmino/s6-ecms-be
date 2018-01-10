@@ -1,3 +1,13 @@
+<a name="2.12.2"></a>
+## [2.12.2](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.12.1...v2.12.2) (2018-01-10)
+
+
+### Bug Fixes
+
+* correct gitlab-ci.yml file ([2eb0ccc](https://gitlab.com/smart-office-iot/iot-project-server/commit/2eb0ccc))
+
+
+
 <a name="2.12.1"></a>
 ## [2.12.1](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.12.0...v2.12.1) (2018-01-10)
 
