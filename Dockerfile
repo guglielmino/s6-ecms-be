@@ -3,6 +3,9 @@
 #FROM node:6
 FROM mhart/alpine-node:8
 
+RUN apk add --update git && \
+  rm -rf /tmp/* /var/cache/apk/*
+
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 COPY package.json /usr/src/app
