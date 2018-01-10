@@ -1,3 +1,13 @@
+<a name="2.12.3"></a>
+## [2.12.3](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.12.2...v2.12.3) (2018-01-10)
+
+
+### Bug Fixes
+
+* fix dockerfile to install git in container ([1a93105](https://gitlab.com/smart-office-iot/iot-project-server/commit/1a93105))
+
+
+
 <a name="2.12.2"></a>
 ## [2.12.2](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.12.1...v2.12.2) (2018-01-10)
 
