@@ -3,7 +3,7 @@
 #FROM node:6
 FROM mhart/alpine-node:8
 
-RUN apk add --update git && \
+RUN apk add --update git openssh && \
   rm -rf /tmp/* /var/cache/apk/*
 
 RUN mkdir -p /usr/src/app
