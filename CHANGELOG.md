@@ -1,3 +1,13 @@
+<a name="2.12.4"></a>
+## [2.12.4](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.12.3...v2.12.4) (2018-01-10)
+
+
+### Bug Fixes
+
+* fix dockerfile to install openssh in container ([f167ee8](https://gitlab.com/smart-office-iot/iot-project-server/commit/f167ee8))
+
+
+
 <a name="2.12.3"></a>
 ## [2.12.3](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.12.2...v2.12.3) (2018-01-10)
 
