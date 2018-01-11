@@ -1,5 +1,6 @@
 image: docker
 
+
 services:
   - docker:dind
 
@@ -12,6 +13,7 @@ build:
     - master
   script:
     - export IMG_VERSION=`cat package.json |grep version|cut -d ':' -f 2| sed 's/[" ,]//g'`
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
     - docker build --build-arg=sshKey="${SSH_PRIVATE_KEY}" --build-arg=hosts="${SSH_KNOWN_HOSTS}" -t registry.gitlab.com/smart-office-iot/iot-project-server:${IMG_VERSION} .
     - docker build --build-arg=sshKey="${SSH_PRIVATE_KEY}" --build-arg=hosts="${SSH_KNOWN_HOSTS}" -t registry.gitlab.com/smart-office-iot/iot-project-server:latest .
 
