@@ -3,7 +3,17 @@
 #FROM node:6
 FROM mhart/alpine-node:8
 
-RUN apk add --update git openssh && \
+ARG sshKey
+ARG hosts
+
+RUN mkdir -p ~/.ssh && \
+    echo "$sshKey" > ~/.ssh/id_rsa && \
+    chmod 400 ~/.ssh/id_rsa
+
+RUN echo "$hosts" > ~/.ssh/known_hosts && \
+    chmod 644 ~/.ssh/known_hosts
+
+RUN apk add --update git openssh  && \
   rm -rf /tmp/* /var/cache/apk/*
 
 RUN mkdir -p /usr/src/app
