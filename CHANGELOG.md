@@ -1,3 +1,13 @@
+<a name="2.12.5"></a>
+## [2.12.5](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.12.4...v2.12.5) (2018-01-11)
+
+
+### Bug Fixes
+
+* change gitlab-ci.yml file to read known host from secret variable ([3cd7090](https://gitlab.com/smart-office-iot/iot-project-server/commit/3cd7090))
+
+
+
 <a name="2.12.4"></a>
 ## [2.12.4](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.12.3...v2.12.4) (2018-01-10)
 
