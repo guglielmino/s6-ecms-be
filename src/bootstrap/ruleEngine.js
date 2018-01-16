@@ -9,7 +9,7 @@ import PowerFeedbackHandler from '../events/handlers/device/common/powerstatus/p
 import PowerStateHandler from '../events/handlers/internal/api/powerStateHandler';
 import PowerStateAlertHandler from '../events/handlers/internal/api/powerStateAlertHandler';
 import PowerSwitchFailAlertHandler from '../events/handlers/internal/handler/powerSwitchFailAlertHandler';
-import LwtHandler from '../events/handlers/device/sonoff/lwt/lwtHandler';
+import LwtHandler from '../events/handlers/device/common/lwt/lwtHandler';
 import LwtStatusAlertHandler from '../events/handlers/device/common/alerts/lwtStatusAlertHandler';
 import FirmwareUpdateHandler from '../events/handlers/internal/api/firmwareUpdateHandler';
 import HourlyStatHandler from '../events/handlers/device/common/powerconsumption/hourlyStatHandler';
