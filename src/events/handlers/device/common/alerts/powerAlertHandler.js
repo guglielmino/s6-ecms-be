@@ -1,6 +1,6 @@
 import logger from '../../../../../common/logger';
 import { WS_DEVICE_ALARM } from '../../../socketConsts';
-import { ALERT_CRITICAL } from '../../../../../common/alertConsts';
+import { levels, types } from '../../../../../common/alertConsts';
 import AlertBuilder from '../../../builders/alertBuilder';
 
 // When same alert (same device and gateway) is received in less than
@@ -38,7 +38,8 @@ const PowerAlertHandler = (deviceProvider, alertProvider, socket) => {
   const createAlert = (device, alertKey) => {
     const alarmBuilder = new AlertBuilder(device.gateway, device.deviceId,
       `${device.name} could be broken, power is 0 while state is on`);
-    alarmBuilder.setLevel(ALERT_CRITICAL);
+    alarmBuilder.setLevel(levels.ALERT_CRITICAL);
+    alarmBuilder.setType(types.ALERT_TYPE_DEVICE_BROKEN);
     alarmBuilder.setKey(alertKey);
 
     return alarmBuilder.build();

@@ -1,5 +1,7 @@
 import chai from 'chai';
 import sinon from 'sinon';
+import { levels, types } from '../../../common/alertConsts';
+
 
 chai.should();
 const expect = chai.expect;
@@ -16,8 +18,10 @@ describe('Alert builder', () => {
     alert.gateway.should.be.eq('sample_gateway');
     alert.deviceId.should.be.eq('00:11:22:33:44:55');
     alert.message.should.be.eq('an alert');
-    alert.level.should.be.eq('info');
+    alert.level.should.be.eq(levels.ALERT_INFO);
     alert.read.should.be.false;
+    alert.open.should.be.true;
+    alert.type.should.be.eq(types.ALERT_TYPE_UNKNOWN);
     alert.date.should.be.an('Date');
     expect(alert.key).to.be.undefined;
   });
@@ -85,4 +89,13 @@ describe('Alert builder', () => {
 
     alert.key.should.be.eq('a key');
   });
+
+  it('should change type field', () => {
+    const alertBuilder = new AlertBuilder('sample_gateway', '00:11:22:33:44:55', 'an alert');
+
+    alertBuilder.setType('a type')
+    const alert = alertBuilder.build();
+
+    alert.type.should.be.eq('a type');
+  })
 });

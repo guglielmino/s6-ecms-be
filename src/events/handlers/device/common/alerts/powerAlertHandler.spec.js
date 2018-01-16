@@ -79,6 +79,8 @@ describe('PowerAlertHandler', () => {
               deviceId: '00:11:22:33:44:55',
               message: 'lamp_test could be broken, power is 0 while state is on',
               read: false,
+              open: true,
+              type: 'Device broken',
               level: 'critical',
               key: 'alert:energy:TESTGW:00:11:22:33:44:55',
             })).should.be.true;
