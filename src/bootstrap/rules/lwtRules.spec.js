@@ -4,8 +4,9 @@ import chai from 'chai';
 import EventsRuleEngine from '../../services/eventsRuleEngine';
 import LwtHandler from '../../events/handlers/device/common/lwt/lwtHandler';
 import LwtStatusAlertHandler from '../../events/handlers/device/common/alerts/lwtStatusAlertHandler';
-import LwtOnlineAlertHandler from '../../events/handlers/device/common/alerts/lwtOnlineAlertHandler';
+import CloseAlertHandler from '../../events/handlers/device/common/alerts/closeAlertHandler';
 import LwtRules from './lwtRules';
+import { types } from '../../common/alertConsts';
 
 chai.should();
 
@@ -13,24 +14,24 @@ describe('LWT Rules', () => {
   let ruleEngine;
   let lwtHandler;
   let lwtStatusAlertHandler;
-  let lwtOnlineAlertHandler;
+  let closeAlertHandler;
   let socket;
 
   beforeEach(() => {
     lwtHandler = LwtHandler();
     lwtStatusAlertHandler = LwtStatusAlertHandler();
-    lwtOnlineAlertHandler = LwtOnlineAlertHandler();
+    closeAlertHandler = CloseAlertHandler();
 
     sinon.stub(lwtHandler);
     sinon.stub(lwtStatusAlertHandler);
-    sinon.stub(lwtOnlineAlertHandler);
+    sinon.stub(closeAlertHandler);
     socket = {};
     socket.emit = sinon.spy();
 
     ruleEngine = new EventsRuleEngine();
     LwtRules(ruleEngine, {
       lwtHandler,
-      lwtOnlineAlertHandler,
+      closeAlertHandler,
       lwtStatusAlertHandler,
     });
   });
@@ -91,10 +92,10 @@ describe('LWT Rules', () => {
       lwtStatusAlertHandler.process
         .calledOnce.should.be.true;
 
-      lwtOnlineAlertHandler.process.called.should.be.false;
+      closeAlertHandler.process.called.should.be.false;
     });
 
-    it('should call process of lwt online handler if device status is ONLINE', () => {
+    it('should call close last offline alert if device status is online', () => {
       const message = {
         type: 'AE_LWT_ALERT',
         status: 'Online',
@@ -108,8 +109,10 @@ describe('LWT Rules', () => {
       ruleEngine.handle(message);
 
       lwtStatusAlertHandler.process.called.should.be.false;
-      lwtOnlineAlertHandler.process
+      closeAlertHandler.process
         .called.should.be.true;
+
+      closeAlertHandler.process.calledWith(sinon.match({ type: types.ALERT_TYPE_DEVICE_STATUS })).should.be.true;
     });
   });
 

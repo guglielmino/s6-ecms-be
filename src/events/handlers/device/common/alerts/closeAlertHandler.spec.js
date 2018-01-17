@@ -1,7 +1,7 @@
 import chai from 'chai';
 import sinon from 'sinon';
 import logger from '../../../../../common/logger';
-import LwtOnlineAlertHandler from './lwtOnlineAlertHandler';
+import CloseAlertHandler from './closeAlertHandler';
 import * as consts from '../../../../../common/alertConsts';
 
 chai.should();
@@ -49,7 +49,7 @@ describe('Lwt online alert handler', () => {
       },
     }));
 
-    subject = new LwtOnlineAlertHandler(deviceProvider, alertProvider);
+    subject = new CloseAlertHandler(deviceProvider, alertProvider);
   });
 
   afterEach(() => {
@@ -58,9 +58,10 @@ describe('Lwt online alert handler', () => {
     stubbedLog.restore();
   });
 
-  it('should close last alert related to device status', (done) => {
+  it('should close last alert related to type passed', (done) => {
     const event = {
       deviceId: 'esp32_0F0A74',
+      type: 'test',
     };
 
     subject.process(event).then(() => {
@@ -94,13 +95,14 @@ describe('Lwt online alert handler', () => {
   it('should create alert key', (done) => {
     const event = {
       deviceId: 'esp32_0F0A74',
+      type: 'test',
     };
     const stubAlertKey = sinon.stub(consts, 'alertKey');
 
     subject.process(event).then(() => {
       stubAlertKey.calledOnce.should.be.true;
 
-      stubAlertKey.calledWith(consts.types.ALERT_TYPE_DEVICE_STATUS, 'VG59', 'esp32_0F0A74')
+      stubAlertKey.calledWith('test', 'VG59', 'esp32_0F0A74')
         .should.be.true;
 
       stubAlertKey.restore();
