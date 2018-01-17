@@ -17,9 +17,9 @@ const PowerSwitchFailAlertHandler = (alertProvider, devicesProvider, socket) => 
       devicesProvider.findByDeviceId(deviceId).then((dev) => {
         if (dev) {
           const alarmBuilder = new AlertBuilder(gateway, deviceId,
-            `${dev.description || dev.name} doesn't respond to turn ${requestStatus}`);
+            `${dev.description || dev.name} doesn't respond to turn ${requestStatus}`,
+            types.ALERT_TYPE_POWER_SWITCH_FAIL);
           alarmBuilder.setLevel(levels.ALERT_CRITICAL);
-          alarmBuilder.setType(types.ALERT_TYPE_POWER_SWITCH_FAIL);
 
           const alarmObj = alarmBuilder.build();
 

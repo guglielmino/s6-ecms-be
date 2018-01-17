@@ -11,7 +11,7 @@ import AlertBuilder from './alertBuilder';
 describe('Alert builder', () => {
 
   it('should create the alert object with default fields', () => {
-    const alertBuilder = new AlertBuilder('sample_gateway', '00:11:22:33:44:55', 'an alert');
+    const alertBuilder = new AlertBuilder('sample_gateway', '00:11:22:33:44:55', 'an alert', 'type');
 
     const alert = alertBuilder.build();
 
@@ -21,9 +21,9 @@ describe('Alert builder', () => {
     alert.level.should.be.eq(levels.ALERT_INFO);
     alert.read.should.be.false;
     alert.open.should.be.true;
-    alert.type.should.be.eq(types.ALERT_TYPE_UNKNOWN);
+    alert.type.should.be.eq('type');
     alert.date.should.be.an('Date');
-    expect(alert.key).to.be.undefined;
+    alert.key.should.be.eq('alert:type:sample_gateway:00:11:22:33:44:55');
   });
 
   it('should change gateway fileld', () => {

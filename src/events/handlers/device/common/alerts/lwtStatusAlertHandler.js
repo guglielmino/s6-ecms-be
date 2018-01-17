@@ -7,9 +7,9 @@ const LwtStatusAlertHandler = (alertProvider, socket) => ({
   process: ({ status, device }) => new Promise((resolve, reject) => {
     logger.log('debug', `lwt alert processor ${JSON.stringify({ device, status })}`);
 
-    const builder = new AlertBuilder(device.gateway, device.deviceId, `${device.description || device.name} is ${status.toUpperCase()}`);
+    const builder = new AlertBuilder(device.gateway, device.deviceId, `${device.description || device.name} is ${status.toUpperCase()}`,
+      types.ALERT_TYPE_DEVICE_STATUS);
     builder.setLevel(levels.ALERT_INFO);
-    builder.setType(types.ALERT_TYPE_DEVICE_OFFLINE);
 
     const alert = builder.build();
     alertProvider.add(alert).then(() => {

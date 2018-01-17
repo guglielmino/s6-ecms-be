@@ -54,13 +54,17 @@ describe('PowerSwitchFailAlertHandler', () => {
           .calledOnce.should.be.true;
 
         alertProvider.add
-          .calledWith(sinon.match({
+          .calledWith({
+            gateway: 'TEST_GW',
             deviceId: '13:32:22:34:55:12',
-            level: 'critical',
             message: 'test dev doesn\'t respond to turn off',
+            type: 'Power_switch_fail',
+            key: 'alert:Power_switch_fail:TEST_GW:13:32:22:34:55:12',
+            date: sinon.match.date,
+            read: false,
             open: true,
-            type: 'Power switch fail',
-          }))
+            level: 'critical',
+          })
           .should.be.true;
 
         socket.emit

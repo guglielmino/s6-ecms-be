@@ -6,12 +6,16 @@ import { STATUS_OFFLINE, STATUS_ONLINE } from '../../common/lwtConsts';
 
 const LwtRules = (ruleEngine, {
   lwtHandler,
+  lwtOnlineAlertHandler,
   lwtStatusAlertHandler,
 }) => {
+  /* Sonoff */
   ruleEngine.add({
     predicate: msg => msg.Type === consts.EVENT_TYPE_LWT,
     fn: msg => lwtHandler.process(SONLwtToHandler(msg)),
   });
+
+  /* Alerts */
   ruleEngine.add({
     predicate: msg => (msg.type === consts.APPEVENT_TYPE_LWT_ALERT &&
       msg.status === STATUS_OFFLINE),
@@ -20,8 +24,10 @@ const LwtRules = (ruleEngine, {
   ruleEngine.add({
     predicate: msg => (msg.type === consts.APPEVENT_TYPE_LWT_ALERT &&
       msg.status === STATUS_ONLINE),
-    fn: msg => msg,
+    fn: msg => lwtOnlineAlertHandler.process(lwtAPPEventToHandler(msg)),
   });
+
+  /* S6 Fresnel device */
   ruleEngine.add({
     predicate: msg => msg.Type === consts.EVENT_TYPE_FRESNEL_LWT,
     fn: msg => lwtHandler.process(S6LwtToHandler(msg)),

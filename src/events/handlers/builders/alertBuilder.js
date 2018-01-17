@@ -1,14 +1,15 @@
-import { levels, types } from '../../../common/alertConsts';
+import { levels, alertKey } from '../../../common/alertConsts';
 
-function AlertBuilder(gateway, deviceId, message) {
+function AlertBuilder(gateway, deviceId, message, type) {
   this.alert = {
     gateway,
     deviceId,
     message,
+    type,
+    key: alertKey(type, gateway, deviceId),
     date: new Date(),
     read: false,
     open: true,
-    type: types.ALERT_TYPE_UNKNOWN,
     level: levels.ALERT_INFO,
   };
 }
