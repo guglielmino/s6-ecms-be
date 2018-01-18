@@ -42,7 +42,7 @@ describe('Devices API endpoints', () => {
     deviceProvider = {
       getDevices: () => {},
       findByDeviceId: () => {},
-      updateByDeviceId: () => {},
+      update: () => {},
     };
     deviceValuesProvider = {
       getDeviceValues: () => {},
@@ -267,7 +267,7 @@ describe('Devices API endpoints', () => {
         }),
       );
 
-    sinon.stub(deviceProvider, 'updateByDeviceId')
+    sinon.stub(deviceProvider, 'update')
       .returns(Promise.resolve({ status: true, id: 'aaasaaa' }));
 
     Devices(app, [FakeAuthMiddleware(['samplegw'])()], { deviceProvider });
@@ -279,8 +279,8 @@ describe('Devices API endpoints', () => {
         if (err) {
           done(err);
         } else {
-          deviceProvider.updateByDeviceId
-            .calledWith('11:22:33:44:55:66', sinon.match({ description: 'new descripion' }))
+          deviceProvider.update
+            .calledWith(sinon.match({deviceId: '11:22:33:44:55:66'}), sinon.match({ description: 'new descripion' }))
             .should.be.true;
           done();
         }
@@ -299,7 +299,7 @@ describe('Devices API endpoints', () => {
         }),
       );
 
-    sinon.stub(deviceProvider, 'updateByDeviceId')
+    sinon.stub(deviceProvider, 'update')
       .returns(Promise.resolve({ status: true, id: 'aaasaaa' }));
 
     Devices(app, [FakeAuthMiddleware(['samplegw'])()], { deviceProvider });
@@ -311,8 +311,8 @@ describe('Devices API endpoints', () => {
         if (err) {
           done(err);
         } else {
-          deviceProvider.updateByDeviceId
-            .calledWith('11:22:33:44:55:66', sinon.match({ tags: ['new tag'] }))
+          deviceProvider.update
+            .calledWith(sinon.match({deviceId: '11:22:33:44:55:66'}), sinon.match({ tags: ['new tag'] }))
             .should.be.true;
           done();
         }
@@ -332,7 +332,7 @@ describe('Devices API endpoints', () => {
         }),
       );
 
-    sinon.stub(deviceProvider, 'updateByDeviceId')
+    sinon.stub(deviceProvider, 'update')
       .returns(Promise.resolve({ status: true, id: 'aaasaaa' }));
 
     Devices(app, [FakeAuthMiddleware(['samplegw'])()], { deviceProvider });

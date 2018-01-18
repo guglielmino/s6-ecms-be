@@ -3,18 +3,6 @@ import { WS_DEVICE_ALARM } from '../../../socketConsts';
 import { levels, types, alertKey } from '../../../../../common/alertConsts';
 import AlertBuilder from '../../../builders/alertBuilder';
 
-// When same alert (same device and gateway) is received in less than
-// ALERT_DELAY_SEC old alert is updated. Else a new one is created
-const ALERT_DELAY_SEC = 900;
-
-
-const needsNewAlert = (alert, now, alertDelay) => {
-  if (alert) {
-    return (((now - alert.lastUpdate) / 1000) > alertDelay);
-  }
-  return true;
-};
-
 /**
  * Process energy event checking if Power is 0 but device
  * power status is on. In that case lamp could have problem
@@ -55,10 +43,10 @@ const PowerAlertHandler = (deviceProvider, alertProvider, socket) => {
                 getAlert(key)
                   .then((alert) => {
                     let alarmObj = {};
-                    if (needsNewAlert(alert, new Date(), ALERT_DELAY_SEC)) {
+                    if (!alert) {
                       alarmObj = createAlert(device);
                     } else {
-                      alarmObj = Object.assign(alert, { lastUpdate: new Date() });
+                      alarmObj = { ...alert, lastUpdate: new Date() };
                     }
                     alertProvider.update(alarmObj, alarmObj);
                     socket.emit(device.gateway, WS_DEVICE_ALARM, alarmObj);
@@ -79,5 +67,3 @@ const PowerAlertHandler = (deviceProvider, alertProvider, socket) => {
 };
 
 export default PowerAlertHandler;
-// Note: exported for testing, using a build tool could be exported only when running tests
-export { needsNewAlert };
