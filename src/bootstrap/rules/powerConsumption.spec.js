@@ -8,8 +8,10 @@ import UpdateOnlineStatusHandler from '../../events/handlers/device/common/onlin
 import HourlyStatHandler from '../../events/handlers/device/common/powerconsumption/hourlyStatHandler';
 import DailyStatHandler from '../../events/handlers/device/common/powerconsumption/dailyStatHandler';
 import PowerAlertHandler from '../../events/handlers/device/common/alerts/powerAlertHandler';
+import CloseAlertHandler from '../../events/handlers/device/common/alerts/closeAlertHandler';
 
 import PowerConsumptionRules from './powerConsumption';
+import { types } from '../../common/alertConsts';
 
 chai.should();
 const expect = chai.expect();
@@ -20,17 +22,20 @@ describe('Power Consumption rules', () => {
   let dailyStatHandler;
   let updateOnlineStatusHandler;
   let powerAlertHandler;
+  let closeAlertHandler;
 
   beforeEach(() => {
     hourlyStatHandler = HourlyStatHandler();
     dailyStatHandler = DailyStatHandler();
     updateOnlineStatusHandler = UpdateOnlineStatusHandler();
     powerAlertHandler = PowerAlertHandler();
+    closeAlertHandler = CloseAlertHandler();
 
     sinon.stub(hourlyStatHandler);
     sinon.stub(dailyStatHandler);
     sinon.stub(updateOnlineStatusHandler);
     sinon.stub(powerAlertHandler);
+    sinon.stub(closeAlertHandler);
 
     ruleEngine = new EventsRuleEngine();
     PowerConsumptionRules(ruleEngine, {
@@ -38,6 +43,7 @@ describe('Power Consumption rules', () => {
       dailyStatHandler,
       updateOnlineStatusHandler,
       powerAlertHandler,
+      closeAlertHandler,
     });
   });
 
@@ -89,7 +95,7 @@ describe('Power Consumption rules', () => {
         .calledWith({ deviceId: '00:11:22:33:44:55' });
     });
 
-    it('Should call powerAlertHandler\'s process passing deviceId', () => {
+    it('Should call powerAlertHandler\'s process passing deviceId if power < 0.1', () => {
       const event =
         {
           GatewayId: 'CASAFG',
@@ -107,8 +113,67 @@ describe('Power Consumption rules', () => {
       powerAlertHandler.process
         .calledOnce.should.be.true;
       powerAlertHandler.process
-        .calledWith({ deviceId: '00:11:22:33:44:55' });
-    })
+        .calledWith(sinon.match({ deviceId: '00:11:22:33:44:55' })).should.be.true;
+    });
+
+    it('Should NOT call powerAlertHandler\'s process passing deviceId if power > 0.1', () => {
+      const event =
+        {
+          GatewayId: 'CASAFG',
+          Type: 'FRESNEL_POWER_CONSUME',
+          Payload: {
+            GatewayId: 'VG59',
+            deviceId: '00:11:22:33:44:55',
+            timestamp: '2017-08-27T07:56:23.642Z',
+            value: 2,
+          },
+        };
+
+      ruleEngine.handle(event);
+
+      powerAlertHandler.process
+        .calledOnce.should.be.false;
+    });
+
+    it('Should call closeAlertHandler process if power is >= 0.1', () => {
+      const event =
+        {
+          GatewayId: 'CASAFG',
+          Type: 'FRESNEL_POWER_CONSUME',
+          Payload: {
+            GatewayId: 'VG59',
+            deviceId: '00:11:22:33:44:55',
+            timestamp: '2017-08-27T07:56:23.642Z',
+            value: 2,
+          },
+        };
+
+      ruleEngine.handle(event);
+
+      closeAlertHandler.process
+        .calledOnce.should.be.true;
+      closeAlertHandler.process
+        .calledWith(sinon.match({ deviceId: '00:11:22:33:44:55', type: types.ALERT_TYPE_DEVICE_BROKEN })).should.be.true;
+    });
+
+    it('Should NOT call closeAlertHandler process if power is < 0.1', () => {
+      const event =
+        {
+          GatewayId: 'CASAFG',
+          Type: 'FRESNEL_POWER_CONSUME',
+          Payload: {
+            GatewayId: 'VG59',
+            deviceId: '00:11:22:33:44:55',
+            timestamp: '2017-08-27T07:56:23.642Z',
+            value: 0.05,
+          },
+        };
+
+      ruleEngine.handle(event);
+
+      closeAlertHandler.process
+        .calledOnce.should.be.false;
+    });
   });
 
   context('Sonoff device', () => {

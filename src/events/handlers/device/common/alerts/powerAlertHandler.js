@@ -1,22 +1,7 @@
 import logger from '../../../../../common/logger';
 import { WS_DEVICE_ALARM } from '../../../socketConsts';
-import { ALERT_CRITICAL } from '../../../../../common/alertConsts';
+import { levels, types, alertKey } from '../../../../../common/alertConsts';
 import AlertBuilder from '../../../builders/alertBuilder';
-
-// When same alert (same device and gateway) is received in less than
-// ALERT_DELAY_SEC old alert is updated. Else a new one is created
-const ALERT_DELAY_SEC = 900;
-
-
-const needsNewAlert = (alert, now, alertDelay) => {
-  if (alert) {
-    return (((now - alert.lastUpdate) / 1000) > alertDelay);
-  }
-  return true;
-};
-
-const makeAlertKey = device => (`alert:energy:${device.gateway}:${device.deviceId}`);
-
 
 /**
  * Process energy event checking if Power is 0 but device
@@ -35,11 +20,10 @@ const PowerAlertHandler = (deviceProvider, alertProvider, socket) => {
       .getLastAlertByKey(key)
   );
 
-  const createAlert = (device, alertKey) => {
+  const createAlert = (device) => {
     const alarmBuilder = new AlertBuilder(device.gateway, device.deviceId,
-      `${device.name} could be broken, power is 0 while state is on`);
-    alarmBuilder.setLevel(ALERT_CRITICAL);
-    alarmBuilder.setKey(alertKey);
+      `${device.name} could be broken, power is 0 while state is on`, types.ALERT_TYPE_DEVICE_BROKEN);
+    alarmBuilder.setLevel(levels.ALERT_CRITICAL);
 
     return alarmBuilder.build();
   };
@@ -54,14 +38,15 @@ const PowerAlertHandler = (deviceProvider, alertProvider, socket) => {
           .then((device) => {
             if (device) {
               if (device.status && device.status.power === 'on') {
-                const alertKey = makeAlertKey(device);
-                getAlert(alertKey)
+                const { gateway } = device;
+                const key = alertKey(types.ALERT_TYPE_DEVICE_BROKEN, gateway, deviceId);
+                getAlert(key)
                   .then((alert) => {
                     let alarmObj = {};
-                    if (needsNewAlert(alert, new Date(), ALERT_DELAY_SEC)) {
-                      alarmObj = createAlert(device, alertKey);
+                    if (!alert) {
+                      alarmObj = createAlert(device);
                     } else {
-                      alarmObj = Object.assign(alert, { lastUpdate: new Date() });
+                      alarmObj = { ...alert, lastUpdate: new Date() };
                     }
                     alertProvider.update(alarmObj, alarmObj);
                     socket.emit(device.gateway, WS_DEVICE_ALARM, alarmObj);
@@ -82,5 +67,3 @@ const PowerAlertHandler = (deviceProvider, alertProvider, socket) => {
 };
 
 export default PowerAlertHandler;
-// Note: exported for testing, using a build tool could be exported only when running tests
-export { needsNewAlert, makeAlertKey };

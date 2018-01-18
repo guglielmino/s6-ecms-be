@@ -121,7 +121,7 @@ export default function (app, middlewares, { deviceProvider, deviceValuesProvide
 
         const newObj = jsonpatch.applyOperation(dev, req.body).newDocument;
         return deviceProvider
-          .updateByDeviceId(deviceId, newObj)
+          .update(dev, newObj)
           .then(() => Promise.resolve(200));
       })
       .then(status => res.sendStatus(status))

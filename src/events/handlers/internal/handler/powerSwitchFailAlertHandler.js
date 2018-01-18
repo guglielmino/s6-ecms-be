@@ -1,6 +1,6 @@
 import logger from '../../../../common/logger';
 import { WS_DEVICE_ALARM } from '../../socketConsts';
-import { ALERT_CRITICAL } from '../../../../common/alertConsts';
+import { levels, types } from '../../../../common/alertConsts';
 import AlertBuilder from '../../builders/alertBuilder';
 
 /**
@@ -17,8 +17,9 @@ const PowerSwitchFailAlertHandler = (alertProvider, devicesProvider, socket) => 
       devicesProvider.findByDeviceId(deviceId).then((dev) => {
         if (dev) {
           const alarmBuilder = new AlertBuilder(gateway, deviceId,
-            `${dev.description || dev.name} doesn't respond to turn ${requestStatus}`);
-          alarmBuilder.setLevel(ALERT_CRITICAL);
+            `${dev.description || dev.name} doesn't respond to turn ${requestStatus}`,
+            types.ALERT_TYPE_POWER_SWITCH_FAIL);
+          alarmBuilder.setLevel(levels.ALERT_CRITICAL);
 
           const alarmObj = alarmBuilder.build();
 
