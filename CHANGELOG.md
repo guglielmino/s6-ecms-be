@@ -1,3 +1,14 @@
+<a name="2.13.3"></a>
+## [2.13.3](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.13.2...v2.13.3) (2018-01-19)
+
+
+### Bug Fixes
+
+* Fix close alert handler parameter ([5780eb1](https://gitlab.com/smart-office-iot/iot-project-server/commit/5780eb1))
+* Fix device provider name in close alert handler ([1c0b6e7](https://gitlab.com/smart-office-iot/iot-project-server/commit/1c0b6e7))
+
+
+
 <a name="2.13.2"></a>
 ## [2.13.2](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.13.1...v2.13.2) (2018-01-19)
 
