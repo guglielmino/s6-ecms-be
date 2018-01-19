@@ -17,7 +17,7 @@ describe('PowerSwitchFailAlertHandler', () => {
   beforeEach(() => {
     stubLogger = sinon.stub(logger, 'log');
     alertProvider = { add: () => {} };
-    devicesProvider = { findByDeviceId: () => {}};
+    devicesProvider = { findByDeviceId: () => {} };
     subject = PowerSwitchFailAlertHandler(alertProvider, devicesProvider, socket);
   });
 
@@ -54,7 +54,17 @@ describe('PowerSwitchFailAlertHandler', () => {
           .calledOnce.should.be.true;
 
         alertProvider.add
-          .calledWith(sinon.match({ deviceId: '13:32:22:34:55:12', level: 'critical', message: 'test dev doesn\'t respond to turn off' }))
+          .calledWith({
+            gateway: 'TEST_GW',
+            deviceId: '13:32:22:34:55:12',
+            message: 'test dev doesn\'t respond to turn off',
+            type: 'Power_switch_fail',
+            key: 'alert:Power_switch_fail:TEST_GW:13:32:22:34:55:12',
+            date: sinon.match.date,
+            read: false,
+            open: true,
+            level: 'critical',
+          })
           .should.be.true;
 
         socket.emit

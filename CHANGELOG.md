@@ -1,3 +1,22 @@
+<a name="2.13.0"></a>
+# [2.13.0](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.12.6...v2.13.0) (2018-01-19)
+
+
+### Bug Fixes
+
+* docker login ([dda9cf1](https://gitlab.com/smart-office-iot/iot-project-server/commit/dda9cf1))
+* Fix patch method for devices API ([fb17737](https://gitlab.com/smart-office-iot/iot-project-server/commit/fb17737))
+
+
+### Features
+
+* Add generic handler to close alert used in power and lwt rules ([05cf970](https://gitlab.com/smart-office-iot/iot-project-server/commit/05cf970))
+* Create alert only for Offline LWT messages ([cf87cb1](https://gitlab.com/smart-office-iot/iot-project-server/commit/cf87cb1))
+* Introducing alert's types ([417fa92](https://gitlab.com/smart-office-iot/iot-project-server/commit/417fa92))
+* Lwt online alert close last offline alert ([31fb4e9](https://gitlab.com/smart-office-iot/iot-project-server/commit/31fb4e9))
+
+
+
 <a name="2.12.6"></a>
 ## [2.12.6](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.12.5...v2.12.6) (2018-01-11)
 

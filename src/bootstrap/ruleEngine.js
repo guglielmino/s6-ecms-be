@@ -9,7 +9,8 @@ import PowerFeedbackHandler from '../events/handlers/device/common/powerstatus/p
 import PowerStateHandler from '../events/handlers/internal/api/powerStateHandler';
 import PowerStateAlertHandler from '../events/handlers/internal/api/powerStateAlertHandler';
 import PowerSwitchFailAlertHandler from '../events/handlers/internal/handler/powerSwitchFailAlertHandler';
-import LwtHandler from '../events/handlers/device/sonoff/lwt/lwtHandler';
+import LwtHandler from '../events/handlers/device/common/lwt/lwtHandler';
+import CloseAlertHandler from '../events/handlers/device/common/alerts/closeAlertHandler';
 import LwtStatusAlertHandler from '../events/handlers/device/common/alerts/lwtStatusAlertHandler';
 import FirmwareUpdateHandler from '../events/handlers/internal/api/firmwareUpdateHandler';
 import HourlyStatHandler from '../events/handlers/device/common/powerconsumption/hourlyStatHandler';
@@ -42,6 +43,7 @@ const BootstapRuleEngine = (providers, pnub, socket, emitter) => {
   const powerSwitchFailAlertHandler = PowerSwitchFailAlertHandler(providers.alertProvider,
     providers.deviceProvider, socket);
   const lwtHandler = LwtHandler(providers.deviceProvider, emitter);
+  const closeAlertHandler = CloseAlertHandler(providers.device, providers.alertProvider);
   const lwtStatusAlertHandler = LwtStatusAlertHandler(providers.alertProvider, socket);
   const firmwareUpdateHandler = FirmwareUpdateHandler(providers.deviceProvider, pnub);
   const deviceValuesHandler = DeviceValuesHandler(providers.deviceValuesProvider);
@@ -81,6 +83,7 @@ const BootstapRuleEngine = (providers, pnub, socket, emitter) => {
   /* -- LWT event processing -- */
   LwtRules(ruleEngine, {
     lwtHandler,
+    closeAlertHandler,
     lwtStatusAlertHandler,
   });
 

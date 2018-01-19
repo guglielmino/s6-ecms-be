@@ -38,7 +38,7 @@ describe('lwt status alert handler', () => {
 
     subject.process(event).then(() => {
       addAlertStub.called.should.be.true;
-      addAlertStub.calledWith(sinon.match({ gateway: 'gw1', level: 'info', message: 'device test is ONLINE', deviceId: event.device.deviceId })).should.be.true;
+      addAlertStub.calledWith(sinon.match({ gateway: 'gw1', level: 'info', message: 'device test is ONLINE', deviceId: event.device.deviceId, type: 'Device offline' })).should.be.true;
       socket.emit.called.should.be.true;
     });
   });

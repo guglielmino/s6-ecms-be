@@ -82,6 +82,7 @@ export default function (app, middlewares, { alertProvider }) {
       read,
       gateways: gws,
       level,
+      open: true,
     };
 
     alertProvider
