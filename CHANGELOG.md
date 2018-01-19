@@ -1,3 +1,8 @@
+<a name="2.13.1"></a>
+## [2.13.1](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.13.0...v2.13.1) (2018-01-19)
+
+
+
 <a name="2.13.0"></a>
 # [2.13.0](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.12.6...v2.13.0) (2018-01-19)
 
