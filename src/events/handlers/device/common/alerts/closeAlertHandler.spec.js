@@ -60,7 +60,9 @@ describe('Lwt online alert handler', () => {
 
   it('should close last alert related to type passed', (done) => {
     const event = {
-      deviceId: 'esp32_0F0A74',
+      device: {
+        deviceId: 'esp32_0F0A74',
+      },
       type: 'test',
     };
 
@@ -94,7 +96,9 @@ describe('Lwt online alert handler', () => {
 
   it('should create alert key', (done) => {
     const event = {
-      deviceId: 'esp32_0F0A74',
+      device:{
+        deviceId: 'esp32_0F0A74',
+      },
       type: 'test',
     };
     const stubAlertKey = sinon.stub(consts, 'alertKey');

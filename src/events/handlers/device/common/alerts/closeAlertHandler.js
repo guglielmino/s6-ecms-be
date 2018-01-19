@@ -2,12 +2,12 @@ import { alertKey } from '../../../../../common/alertConsts';
 import logger from '../../../../../common/logger';
 
 const CloseAlertHandler = (deviceProvider, alertProvider) => ({
-  process: ({ deviceId, type }) => {
-    logger.log('debug', `online alert processor ${JSON.stringify({ deviceId })}`);
+  process: ({ device, type }) => {
+    logger.log('info', `close alert processor ${JSON.stringify(device.deviceId)}`);
     return new Promise((resolve, reject) => {
-      deviceProvider.findByDeviceId(deviceId).then((device) => {
-        if (device) {
-          const key = alertKey(type, device.gateway, deviceId);
+      deviceProvider.findByDeviceId(device.deviceId).then((dev) => {
+        if (dev) {
+          const key = alertKey(type, dev.gateway, dev.deviceId);
           alertProvider.getLastAlertByKey(key).then((alert) => {
             if (alert) {
               const closedAlert = { ...alert, open: false };
@@ -16,7 +16,7 @@ const CloseAlertHandler = (deviceProvider, alertProvider) => ({
             }
           });
         } else {
-          logger.log('error', `Lwt alert online event for unknown device : ${JSON.stringify({ deviceId })}`);
+          logger.log('error', `Lwt alert online event for unknown device : ${JSON.stringify(device.deviceId)}`);
         }
       }).catch((err) => {
         logger.log('error', err);
