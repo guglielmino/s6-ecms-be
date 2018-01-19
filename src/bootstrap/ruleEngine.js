@@ -62,6 +62,7 @@ const BootstapRuleEngine = (providers, pnub, socket, emitter) => {
     dailyStatHandler,
     updateOnlineStatusHandler,
     powerAlertHandler,
+    closeAlertHandler,
   });
 
   DailyConsumptionRules(ruleEngine, { dailyStatHandler });
