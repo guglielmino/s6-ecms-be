@@ -1,7 +1,7 @@
 import * as consts from '../../../consts';
-import { types } from '../../common/alertConsts';
 
 import S6FInstaPowerToHourly from '../../events/mapper/toHandlers/s6fresnel/S6FInstaPowerToHourly';
+import S6InstaPowerToAlert from '../../events/mapper/toHandlers/s6fresnel/S6InstaPowerToAlert';
 import SONInstaPowerToHourly from '../../events/mapper/toHandlers/sonoff/SONInstaPowerToHourly';
 import SONDailyConsumeToDaily from '../../events/mapper/toHandlers/sonoff/SONDailyConsumeToDaily';
 
@@ -35,10 +35,7 @@ const PowerConsumptionRules = (ruleEngine, {
     predicate: msg => msg.Type === consts.EVENT_TYPE_FRESNEL_POWER_CONSUME &&
       msg.Payload.value >= 0.1,
     fn: (msg) => {
-      closeAlertHandler.process({
-        ...S6FInstaPowerToHourly(msg),
-        type: types.ALERT_TYPE_DEVICE_BROKEN,
-      });
+      closeAlertHandler.process(S6InstaPowerToAlert(msg));
     },
   });
 

@@ -6,7 +6,7 @@ import * as consts from '../../../../../common/alertConsts';
 
 chai.should();
 
-describe('Lwt online alert handler', () => {
+describe('Close alert handler', () => {
   let subject;
   let deviceProvider;
   let alertProvider;
@@ -96,9 +96,8 @@ describe('Lwt online alert handler', () => {
 
   it('should create alert key', (done) => {
     const event = {
-      device:{
-        deviceId: 'esp32_0F0A74',
-      },
+      deviceId: 'esp32_0F0A74',
+
       type: 'test',
     };
     const stubAlertKey = sinon.stub(consts, 'alertKey');
