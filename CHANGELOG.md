@@ -1,3 +1,13 @@
+<a name="2.13.2"></a>
+## [2.13.2](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.13.1...v2.13.2) (2018-01-19)
+
+
+### Bug Fixes
+
+* Pass close alert handler to power consumption event handler ([2fbf025](https://gitlab.com/smart-office-iot/iot-project-server/commit/2fbf025))
+
+
+
 <a name="2.13.1"></a>
 ## [2.13.1](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.13.0...v2.13.1) (2018-01-19)
 
