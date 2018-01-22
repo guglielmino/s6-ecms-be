@@ -3,14 +3,14 @@ import logger from '../../../../../common/logger';
 
 const CloseAlertHandler = (deviceProvider, alertProvider) => ({
   process: ({ deviceId, type }) => {
-    logger.log('info', `online alert processor ${JSON.stringify({ deviceId })}`);
+    logger.log('info', `close alert processor ${JSON.stringify({ deviceId })}`);
     return new Promise((resolve, reject) => {
       deviceProvider.findByDeviceId(deviceId).then((device) => {
         if (device) {
           const key = alertKey(type, device.gateway, deviceId);
           alertProvider.getLastAlertByKey(key).then((alert) => {
             if (alert) {
-              const closedAlert = { ...alert, open: false };
+              const closedAlert = { ...alert, open: false, lastUpdate: new Date() };
               alertProvider.update(alert, closedAlert);
               resolve();
             }
