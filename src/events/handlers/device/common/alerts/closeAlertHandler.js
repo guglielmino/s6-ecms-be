@@ -3,7 +3,7 @@ import logger from '../../../../../common/logger';
 
 const CloseAlertHandler = (deviceProvider, alertProvider) => ({
   process: ({ deviceId, type }) => {
-    logger.log('info', `close alert processor ${JSON.stringify({ deviceId })}`);
+    logger.log('debug', `close alert processor ${JSON.stringify({ deviceId })}`);
     return new Promise((resolve, reject) => {
       deviceProvider.findByDeviceId(deviceId).then((device) => {
         if (device) {

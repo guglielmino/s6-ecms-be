@@ -68,8 +68,9 @@ describe('S6 Fresnel info message mapper', () => {
     result.payload.name.should.be.eq('lampada ingresso');
     result.payload.description.should.be.eq('lampada ingresso');
     result.payload.swVersion.should.be.eq('0.0.1');
+    result.payload.groups.should.be.deep.eq(['room1']);
     Object.keys(result).length.should.be.eq(2);
-    Object.keys(result.payload).length.should.be.eq(9);
+    Object.keys(result.payload).length.should.be.eq(10);
   });
 
 });
