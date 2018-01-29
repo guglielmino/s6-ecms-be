@@ -20,8 +20,7 @@ const PowerStateAlertHandler = () => ({
           gateway,
           deviceId,
           requestStatus: param,
-        },
-        2000); // TODO: make it a param ...
+        });
       resolve();
     });
   },

@@ -19,9 +19,10 @@ function navigateList(predicate, action) {
   }
 }
 
-function DelayedQueue() {
+function DelayedQueue(delay) {
   this.first = null;
   this.last = null;
+  this.delay = delay;
 
   this.observable = new Rx.Subject();
 
@@ -55,9 +56,9 @@ DelayedQueue.prototype.forEach = function forEach(fn) {
     });
 };
 
-DelayedQueue.prototype.add = function insert(item, delay) {
+DelayedQueue.prototype.add = function insert(item) {
   const expire = new Date();
-  expire.setMilliseconds(expire.getMilliseconds() + delay);
+  expire.setMilliseconds(expire.getMilliseconds() + this.delay);
 
   const node = new Node({ item, expire });
   if (this.first === null) {
