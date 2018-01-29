@@ -21,7 +21,7 @@ const PowerStateAlertHandler = () => ({
           deviceId,
           requestStatus: param,
         },
-        700); // TODO: make it a param ...
+        2000); // TODO: make it a param ...
       resolve();
     });
   },
