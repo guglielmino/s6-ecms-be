@@ -1,8 +1,8 @@
 const S6InfoToDeviceGroups = e => ({
-  code: e.Payload.location,
+  code: e.Payload.group,
   payload: {
     gateway: e.GatewayId,
-    description: e.Payload.location,
+    description: e.Payload.group,
     created: new Date(),
   },
 });

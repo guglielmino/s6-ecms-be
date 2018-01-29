@@ -11,8 +11,8 @@ const S6InfoToDevice = e => ({
     swVersion: e.Payload.version,
     deviceType: e.Payload.appName,
     deviceId: e.Payload.deviceId || '00:00:00:00:00:00',
-    group: e.Payload.location,
-    commands: makeCommands(e.Payload.location, e.Payload.deviceId),
+    group: e.Payload.group,
+    commands: makeCommands(e.Payload.group, e.Payload.deviceId),
     created: new Date(),
   },
 });

@@ -16,7 +16,7 @@ describe('S6 Fresnel info message to device groups mapper', () => {
         deviceId: '00:11:22:33:44:55',
         appName: 'S6 Fresnel Module',
         version: '0.0.1',
-        location: 'room1',
+        group: 'room1',
         name: 'lampada ingresso',
       },
     };

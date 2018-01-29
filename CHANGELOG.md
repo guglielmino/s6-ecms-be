@@ -1,5 +1,5 @@
-<a name="2.16.0"></a>
-# [2.16.0](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.15.0...v2.16.0) (2018-01-29)
+<a name="2.16.1"></a>
+## [2.16.1](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.15.0...v2.16.1) (2018-01-29)
 
 
 

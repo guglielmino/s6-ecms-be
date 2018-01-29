@@ -41,7 +41,7 @@ describe('Device Info rules', () => {
           version: '1.1.0',
           appName: 'S6 fresnel',
           deviceId: '00:00:00:00:00:02',
-          location: 'location',
+          group: 'group',
           created: new Date(),
         },
       };
@@ -57,8 +57,8 @@ describe('Device Info rules', () => {
           swVersion: '1.1.0',
           deviceType: 'S6 fresnel',
           deviceId: '00:00:00:00:00:02',
-          group: 'location',
-          commands: { power: 'mqtt:building/location/devices/00:00:00:00:00:02/power' },
+          group: 'group',
+          commands: { power: 'mqtt:building/group/devices/00:00:00:00:00:02/power' },
           created: sinon.match.date,
         },
       }).should.be.true;
@@ -74,7 +74,7 @@ describe('Device Info rules', () => {
           version: '1.1.0',
           appName: 'S6 fresnel',
           deviceId: '00:00:00:00:00:02',
-          location: 'location',
+          group: 'group',
           created: new Date(),
         },
       };
@@ -82,10 +82,10 @@ describe('Device Info rules', () => {
 
       deviceGroupsHandler.process.calledOnce.should.be.true;
       deviceGroupsHandler.process.calledWith({
-        code: 'location',
+        code: 'group',
         payload: {
           gateway: 'gw',
-          description: 'location',
+          description: 'group',
           created: sinon.match.date,
         },
       }).should.be.true;
