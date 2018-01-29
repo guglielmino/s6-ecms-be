@@ -1,3 +1,19 @@
+<a name="2.15.0"></a>
+# [2.15.0](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.14.0...v2.15.0) (2018-01-29)
+
+
+### Bug Fixes
+
+* Close alert handler set lastUpdate field in alert document ([a02b556](https://gitlab.com/smart-office-iot/iot-project-server/commit/a02b556))
+
+
+### Features
+
+* Add endpoints to get and modify device groups ([5d5f0f1](https://gitlab.com/smart-office-iot/iot-project-server/commit/5d5f0f1))
+* Add handler to create device groups when info message is received ([c6c1bbb](https://gitlab.com/smart-office-iot/iot-project-server/commit/c6c1bbb))
+
+
+
 <a name="2.14.0"></a>
 # [2.14.0](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.13.3...v2.14.0) (2018-01-19)
 

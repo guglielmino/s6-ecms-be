@@ -5,6 +5,7 @@ import EventsRuleEngine from '../services/eventsRuleEngine';
 import EventHandler from '../events/handlers/device/common/eventHandler';
 import DeviceHandler from '../events/handlers/device/common/info/deviceHandler';
 import DeviceValuesHandler from '../events/handlers/device/common/values/deviceValuesHandler';
+import DeviceGroupsHandler from '../events/handlers/device/common/info/deviceGroupsHandler';
 import PowerFeedbackHandler from '../events/handlers/device/common/powerstatus/powerFeedbackHandler';
 import PowerStateHandler from '../events/handlers/internal/api/powerStateHandler';
 import PowerStateAlertHandler from '../events/handlers/internal/api/powerStateAlertHandler';
@@ -47,6 +48,7 @@ const BootstapRuleEngine = (providers, pnub, socket, emitter) => {
   const lwtStatusAlertHandler = LwtStatusAlertHandler(providers.alertProvider, socket);
   const firmwareUpdateHandler = FirmwareUpdateHandler(providers.deviceProvider, pnub);
   const deviceValuesHandler = DeviceValuesHandler(providers.deviceValuesProvider);
+  const deviceGroupsHandler = DeviceGroupsHandler(providers.deviceGroupsProvider);
 
   const ruleEngine = new EventsRuleEngine();
 
@@ -68,7 +70,10 @@ const BootstapRuleEngine = (providers, pnub, socket, emitter) => {
   DailyConsumptionRules(ruleEngine, { dailyStatHandler });
 
   /* -- Info event processing -- */
-  DeviceInfoRules(ruleEngine, { deviceHandler });
+  DeviceInfoRules(ruleEngine, {
+    deviceHandler,
+    deviceGroupsHandler,
+  });
 
   /* -- Values from device event processing -- */
   DeviceValuesRules(ruleEngine, { deviceValuesHandler });
