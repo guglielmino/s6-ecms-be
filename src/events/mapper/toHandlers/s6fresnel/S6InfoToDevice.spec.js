@@ -34,7 +34,7 @@ describe('S6 Fresnel info message mapper', () => {
         deviceId: '00:11:22:33:44:55',
         appName: 'S6 Fresnel Module',
         version: '0.0.1',
-        location: 'room1',
+        group: 'room1',
         name: 'lampada ingresso',
       },
     };
@@ -55,7 +55,7 @@ describe('S6 Fresnel info message mapper', () => {
         deviceId: '00:11:22:33:44:55',
         appName: 'S6 Fresnel Module',
         version: '0.0.1',
-        location: 'room1',
+        group: 'room1',
         name: 'lampada ingresso',
       },
     };
