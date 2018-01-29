@@ -10,7 +10,7 @@ describe('DelayedQueue', () => {
   let clock;
 
   beforeEach(() => {
-    subject = new DelayedQueue();
+    subject = new DelayedQueue(500);
   });
 
   context('item add/remove handling', () => {
@@ -45,7 +45,7 @@ describe('DelayedQueue', () => {
     });
 
     it('should delete item when timeout expire', () => {
-      subject.add({ name: 'an item' }, 500);
+      subject.add({ name: 'an item' });
       subject.isEmpty().should.be.false;
       clock.tick(1000);
       subject.isEmpty().should.be.true;
@@ -56,7 +56,7 @@ describe('DelayedQueue', () => {
 
       subject.setCallback(callback);
 
-      subject.add({ name: 'test expiring item' }, 500);
+      subject.add({ name: 'test expiring item' });
       clock.tick(1000);
 
       callback.calledOnce
@@ -73,10 +73,11 @@ describe('DelayedQueue', () => {
 
       subject.setCallback(cbSpy);
 
-      subject.add({ name: 'an expiring item' }, 200);
-      subject.add({ name: 'NOT an expiring item' }, 20000);
+      subject.add({ name: 'an expiring item' });
 
       clock.tick(1000);
+      subject.add({ name: 'NOT an expiring item' });
+
       subject.remove(item => item.name === 'NOT an expiring item');
 
       cbSpy.calledOnce.should.be.true;
@@ -93,7 +94,7 @@ describe('DelayedQueue', () => {
 
       subject.setCallback(cbSpy);
 
-      subject.add({ name: 'an expiring item' }, 500);
+      subject.add({ name: 'an expiring item' });
 
       clock.tick(1000);
 
