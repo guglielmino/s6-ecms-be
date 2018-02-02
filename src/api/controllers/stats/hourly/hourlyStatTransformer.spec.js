@@ -29,7 +29,7 @@ describe('hourly stat transformer', () => {
     const res = transformHourlyStat({
       _id: { date, deviceId: '11:22:33:44' },
       power: 12.4,
-      device: [{ name: 'test', deviceId: '11:22:33:44' }],
+      device: [{ description: 'test', deviceId: '11:22:33:44' }],
     });
 
     res.date.should.be.eq(date);

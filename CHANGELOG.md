@@ -1,3 +1,15 @@
+<a name="2.16.2"></a>
+## [2.16.2](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.16.1...v2.16.2) (2018-02-02)
+
+
+### Bug Fixes
+
+* Hourly stats report with device description instead of device name ([f3178fe](https://gitlab.com/smart-office-iot/iot-project-server/commit/f3178fe))
+* Lwt alert handler update OFFLINE alert if there is a previous alert for same device and gateway ([0f7d1f4](https://gitlab.com/smart-office-iot/iot-project-server/commit/0f7d1f4))
+* Renaming location to group in info payload ([06ea3b0](https://gitlab.com/smart-office-iot/iot-project-server/commit/06ea3b0))
+
+
+
 <a name="2.16.1"></a>
 ## [2.16.1](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.15.0...v2.16.1) (2018-01-29)
 

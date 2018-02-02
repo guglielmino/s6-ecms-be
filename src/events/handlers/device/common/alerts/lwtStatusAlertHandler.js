@@ -1,6 +1,6 @@
 import logger from '../../../../../common/logger';
 import { WS_DEVICE_ALARM } from '../../../socketConsts';
-import { levels, types } from '../../../../../common/alertConsts';
+import { levels, types, alertKey } from '../../../../../common/alertConsts';
 import AlertBuilder from '../../../builders/alertBuilder';
 
 const LwtStatusAlertHandler = (alertProvider, socket) => ({
@@ -11,14 +11,23 @@ const LwtStatusAlertHandler = (alertProvider, socket) => ({
       types.ALERT_TYPE_DEVICE_STATUS);
     builder.setLevel(levels.ALERT_INFO);
 
-    const alert = builder.build();
-    alertProvider.add(alert).then(() => {
-      socket.emit(device.gateway, WS_DEVICE_ALARM, alert);
+    const key = alertKey(types.ALERT_TYPE_DEVICE_STATUS, device.gateway, device.deviceId);
+
+    alertProvider.getLastAlertByKey(key).then((alert) => {
+      let alertObj = {};
+      if (!alert) {
+        alertObj = builder.build();
+      } else {
+        alertObj = { ...alert, lastUpdate: new Date() };
+      }
+      alertProvider.update(alertObj, alertObj);
+      socket.emit(device.gateway, WS_DEVICE_ALARM, alertObj);
       resolve();
-    }).catch((err) => {
-      logger.log('error', err);
-      reject(err);
-    });
+    })
+      .catch((err) => {
+        logger.log('error', err);
+        reject(err);
+      });
   }),
 });
 

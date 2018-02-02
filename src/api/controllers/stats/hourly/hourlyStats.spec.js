@@ -47,7 +47,7 @@ describe('HourlyStats API endpoints', () => {
         [{
           _id: { date, deviceId: '11:22:33:44:55:66' },
           gateway: 'test_gateway1',
-          device: [{ deviceId: '11:22:33:44:55:66', name: 'test device' }],
+          device: [{ deviceId: '11:22:33:44:55:66', description: 'test device' }],
           power: 20,
         }]),
     );
