@@ -1,6 +1,7 @@
 import chai from 'chai';
 import sinon from 'sinon';
 import PowerAlertHandler from './powerAlertHandler';
+import AlertBuilder from '../../../builders/alertBuilder';
 import * as alertConsts from '../../../../../common/alertConsts';
 
 import helper from '../../../processor_tests_helper.spec';
@@ -55,7 +56,7 @@ describe('PowerAlertHandler', () => {
       sinon.stub(deviceProvider, 'findByDeviceId').returns(Promise.resolve(fakeDevice));
 
       sinon.stub(alertProvider, 'getLastAlertByKey')
-       .returns(Promise.resolve(null));
+        .returns(Promise.resolve(null));
 
       socket.emit = sinon.stub();
 
@@ -84,6 +85,7 @@ describe('PowerAlertHandler', () => {
         .returns(Promise.resolve({
           gateway: 'TESTGW',
           name: 'lamp_test',
+          description: 'DESCRIPTION SHOULD BE USED',
           swVersion: '1.2.3',
           deviceType: 'Sonoff Pow Module',
           deviceId: '00:11:22:33:44:55',
@@ -115,7 +117,7 @@ describe('PowerAlertHandler', () => {
             .calledWith(sinon.match({
               gateway: 'TESTGW',
               deviceId: '00:11:22:33:44:55',
-              message: 'lamp_test could be broken, power is 0 while state is on',
+              message: 'DESCRIPTION SHOULD BE USED could be broken, power is 0 while state is on',
               read: false,
               open: true,
               type: 'Device_broken',
@@ -177,7 +179,7 @@ describe('PowerAlertHandler', () => {
             .calledOnce.should.be.true;
 
           alertProvider.update
-            .calledWith(sinon.match({},{
+            .calledWith(sinon.match({}, {
               gateway: 'VG59',
               deviceId: '5C:CF:7F:A0:16:46',
               message: 'LAMP60 is OFFLINE',

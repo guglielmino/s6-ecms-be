@@ -17,12 +17,14 @@ export default function (app) {
 
   const options = {
     swaggerDefinition,
-    apis: ['./src/api/alerts/index.js',
+    apis: [
+      './src/api/alerts/index.js',
       './src/api/devices/index.js',
       './src/api/events/index.js',
       './src/api/gateways/index.js',
       './src/api/stats/hourly/index.js',
-      './src/api/stats/daily/index.js'],
+      './src/api/stats/daily/index.js',
+      './src/api/deviceGroups/index.js'],
   };
 
   const swaggerSpec = swaggerJSDoc(options);
