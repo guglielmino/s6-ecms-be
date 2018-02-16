@@ -11,8 +11,9 @@ import Devices from './controllers/devices';
 import DeviceGroups from './controllers/deviceGroups';
 import Alerts from './controllers/alerts';
 import Email from './controllers/email';
+import Users from './controllers/users';
 
-module.exports = (app, providers) => {
+export default function (app, providers) {
   const AuthCheck = JwtCheck(config.auth0);
 
   const gatewayAuthValidator = (gateway, token) => providers
@@ -35,4 +36,5 @@ module.exports = (app, providers) => {
   DeviceGroups(app, [AuthCheck()], providers);
   Alerts(app, [AuthCheck()], providers);
   Email(app, [AuthCheck()]);
-};
+  Users(app, [AuthCheck()], providers);
+}

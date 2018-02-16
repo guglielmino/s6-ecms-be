@@ -22,7 +22,7 @@ const PowerAlertHandler = (deviceProvider, alertProvider, socket) => {
 
   const createAlert = (device) => {
     const alarmBuilder = new AlertBuilder(device.gateway, device.deviceId,
-      `${device.name} could be broken, power is 0 while state is on`, types.ALERT_TYPE_DEVICE_BROKEN);
+      `${device.description || device.name} could be broken, power is 0 while state is on`, types.ALERT_TYPE_DEVICE_BROKEN);
     alarmBuilder.setLevel(levels.ALERT_CRITICAL);
 
     return alarmBuilder.build();

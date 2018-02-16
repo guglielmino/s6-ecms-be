@@ -21,7 +21,7 @@ import routes from './src/api/routes';
 import api from './src/api';
 
 
-connectDatabase(config.mongo)
+connectDatabase(config.mongo, config.redis)
   .then((providers) => {
     const pnub = pubnubHub(config.pubnub);
 
