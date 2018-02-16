@@ -1,3 +1,15 @@
+<a name="3.0.0"></a>
+# [3.0.0](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.16.2...v3.0.0) (2018-02-16)
+
+
+### Features
+
+* Add transformer to filter fields of auth0 user ([d8c82fb](https://gitlab.com/smart-office-iot/iot-project-server/commit/d8c82fb))
+* Connect to redis db used to store user settings ([bad88f6](https://gitlab.com/smart-office-iot/iot-project-server/commit/bad88f6))
+* Endpoint to update user based on userId ([44775ec](https://gitlab.com/smart-office-iot/iot-project-server/commit/44775ec))
+
+
+
 <a name="2.16.2"></a>
 ## [2.16.2](https://gitlab.com/smart-office-iot/iot-project-server/compare/v2.16.1...v2.16.2) (2018-02-02)
 
