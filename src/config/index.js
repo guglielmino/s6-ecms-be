@@ -10,6 +10,8 @@ require('dotenv').config();
   'AUTH0_SECRET',
   'AUTH0_CLIENTID',
   'AUTH0_DOMAIN',
+  'REDIS_HOST',
+  'REDIS_PORT',
 ].forEach((name) => {
   if (!process.env[name]) {
     throw new Error(`Environment variable ${name} is missing`);
@@ -37,6 +39,10 @@ const config = {
   },
   mongo: {
     uri: process.env.MONGO_URI,
+  },
+  redis: {
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT,
   },
   auth0: {
     secret: process.env.AUTH0_SECRET,
