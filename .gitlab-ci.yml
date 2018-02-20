@@ -12,10 +12,13 @@ build:
   only:
     - master
   script:
-    - export IMG_VERSION=`cat package.json |grep version|cut -d ':' -f 2| sed 's/[" ,]//g'`
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
-    - docker build --build-arg=sshKey="${SSH_PRIVATE_KEY}" --build-arg=hosts="${SSH_KNOWN_HOSTS}" -t registry.gitlab.com/smart-office-iot/iot-project-server:${IMG_VERSION} .
-    - docker build --build-arg=sshKey="${SSH_PRIVATE_KEY}" --build-arg=hosts="${SSH_KNOWN_HOSTS}" -t registry.gitlab.com/smart-office-iot/iot-project-server:latest .
+    - export IMG_VERSION=`cat package.json |grep \"version\"|cut -d ':' -f 2| sed 's/[" ,]//g'`
+    - export CI_PROJECT_NAMESPACE=`echo $CI_PROJECT_NAMESPACE | tr '[A-Z]' '[a-z]'`
+    - export CI_PROJECT_NAME=`echo $CI_PROJECT_NAME | tr '[A-Z]' '[a-z]'`
 
-    - docker push registry.gitlab.com/smart-office-iot/iot-project-server:${IMG_VERSION}
-    - docker push registry.gitlab.com/smart-office-iot/iot-project-server:latest
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+    - docker build --build-arg=sshKey="${SSH_PRIVATE_KEY}" --build-arg=hosts="${SSH_KNOWN_HOSTS}" -t registry.gitlab.com/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:${IMG_VERSION} .
+    - docker build --build-arg=sshKey="${SSH_PRIVATE_KEY}" --build-arg=hosts="${SSH_KNOWN_HOSTS}" -t registry.gitlab.com/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:latest .
+
+    - docker push registry.gitlab.com/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:${IMG_VERSION}
+    - docker push registry.gitlab.com/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:latest
