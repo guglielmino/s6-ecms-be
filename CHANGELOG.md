@@ -1,5 +1,5 @@
-<a name="3.1.0"></a>
-# [3.1.0](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.0.0...v3.1.0) (2018-02-20)
+<a name="3.1.1"></a>
+## [3.1.1](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.0.0...v3.1.1) (2018-02-21)
 
 
 
