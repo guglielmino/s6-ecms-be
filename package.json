@@ -75,7 +75,7 @@
     "lodash": "^4.17.4",
     "mongodb": "^2.2.20",
     "pnp-email-service": "^0.1.7",
-    "pubnub": "^4.3.3",
+    "pubnub": "^4.20.2",
     "react": "^15.4.1",
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.2",
