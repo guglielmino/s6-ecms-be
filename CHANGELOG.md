@@ -1,3 +1,13 @@
+<a name="3.2.0"></a>
+# [3.2.0](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.1.1...v3.2.0) (2018-03-07)
+
+
+### Bug Fixes
+
+* Reopen Offline alert in lwtStatusAlertHandler ([8b9f37a](https://gitlab.com/SmartSix/s6-ecms-be/commit/8b9f37a))
+
+
+
 <a name="3.1.1"></a>
 ## [3.1.1](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.0.0...v3.1.1) (2018-02-21)
 
