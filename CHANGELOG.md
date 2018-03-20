@@ -1,3 +1,8 @@
+<a name="3.2.1"></a>
+## [3.2.1](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.2.0...v3.2.1) (2018-03-20)
+
+
+
 <a name="3.2.0"></a>
 # [3.2.0](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.1.1...v3.2.0) (2018-03-07)
 

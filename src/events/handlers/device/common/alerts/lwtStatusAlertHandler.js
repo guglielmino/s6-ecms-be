@@ -18,7 +18,7 @@ const LwtStatusAlertHandler = (alertProvider, socket) => ({
       if (!alert) {
         alertObj = builder.build();
       } else {
-        alertObj = { ...alert, lastUpdate: new Date(), open: true };
+        alertObj = { ...alert, lastUpdate: new Date(), open: true, read: false };
       }
       alertProvider.update(alertObj, alertObj);
       socket.emit(device.gateway, WS_DEVICE_ALARM, alertObj);
