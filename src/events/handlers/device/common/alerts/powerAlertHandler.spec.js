@@ -161,8 +161,8 @@ describe('PowerAlertHandler', () => {
           deviceId: '5C:CF:7F:A0:16:46',
           message: 'LAMP60 is OFFLINE',
           date: new Date(),
-          read: false,
-          open: true,
+          read: true,
+          open: false,
           level: 'info',
         }));
 
