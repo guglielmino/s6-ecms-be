@@ -15,7 +15,12 @@ const PowerFeedbackHandler = (deviceProvider, socket) => ({
       deviceProvider
         .findByDeviceId(deviceId)
         .then((res) => {
-          const updatedObj = { ...res, status: { ...res.status, power: powerStatus } };
+          const updatedObj = { ...res,
+            status: { ...res.status,
+              power: { ...res.status.power,
+                [powerStatus.relayIndex]: powerStatus.status,
+              } } };
+
           // Remove device from delayed queue
           // (used for alerting if response doesn't come in a defined delay)
           sharedDelayedQueue.remove(item => item.deviceId === res.deviceId);

@@ -45,8 +45,11 @@ describe('PowerFeedbackHandler', () => {
     socket.emit = sinon.stub();
 
     const event = {
-      powerStatus: 'off',
       deviceId: '00:11:22:33:44:55',
+      powerStatus: {
+        relayIndex: 'Relay0',
+        status: 'on',
+      },
     };
 
     subject.process(event)
@@ -57,7 +60,7 @@ describe('PowerFeedbackHandler', () => {
           .should.be.true;
 
         deviceProvider
-          .update.calledWith(sinon.match.any, sinon.match({status: {power: 'off', online: false}}))
+          .update.calledWith(sinon.match.any, sinon.match({ status: { power: { Relay0: 'on' }, online: false } }))
           .should.be.true;
         done();
       })
@@ -76,7 +79,10 @@ describe('PowerFeedbackHandler', () => {
           power: 'mqtt:building/room1/events/00:11:22:33:44:55/power',
         },
         status: {
-          power: 'on',
+          power: {
+            Relay0: 'on',
+            Relay2: 'off',
+          },
           online: false,
         },
         created: new Date(),
@@ -87,7 +93,10 @@ describe('PowerFeedbackHandler', () => {
 
     const event = {
       deviceId: '00:11:22:33:44:55',
-      powerStatus: 'off',
+      powerStatus: {
+        relayIndex: 'Relay2',
+        status: 'on',
+      },
     };
 
     subject.process(event)
@@ -98,10 +107,17 @@ describe('PowerFeedbackHandler', () => {
           .should.be.true;
 
         deviceProvider
-          .update.calledWith(sinon.match.any, sinon.match({status: {power: 'off', online: false}}))
+          .update.calledWith(sinon.match.any, sinon.match({
+          status: {
+            power: { Relay0: 'on', Relay2: 'on' },
+            online: false,
+          },
+        }))
           .should.be.true;
         done();
       })
       .catch(err => done(err));
-  });
-});
+  })
+  ;
+})
+;
