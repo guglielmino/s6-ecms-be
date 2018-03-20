@@ -46,7 +46,7 @@ const PowerAlertHandler = (deviceProvider, alertProvider, socket) => {
                     if (!alert) {
                       alarmObj = createAlert(device);
                     } else {
-                      alarmObj = { ...alert, lastUpdate: new Date() };
+                      alarmObj = { ...alert, lastUpdate: new Date(), open: true, read: false };
                     }
                     alertProvider.update(alarmObj, alarmObj);
                     socket.emit(device.gateway, WS_DEVICE_ALARM, alarmObj);
