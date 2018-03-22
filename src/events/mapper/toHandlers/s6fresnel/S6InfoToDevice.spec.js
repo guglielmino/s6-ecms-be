@@ -56,6 +56,7 @@ describe('S6 Fresnel info message mapper', () => {
         appName: 'S6 Fresnel Module',
         version: '0.0.1',
         group: 'room1',
+        features: ['Relay1', 'Relay2'],
         name: 'lampada ingresso',
       },
     };
@@ -69,8 +70,9 @@ describe('S6 Fresnel info message mapper', () => {
     result.payload.description.should.be.eq('lampada ingresso');
     result.payload.swVersion.should.be.eq('0.0.1');
     result.payload.group.should.be.eq('room1');
+    result.payload.features.should.be.deep.eq(['Relay1', 'Relay2'])
     Object.keys(result).length.should.be.eq(2);
-    Object.keys(result.payload).length.should.be.eq(9);
+    Object.keys(result.payload).length.should.be.eq(10);
   });
 
 });
