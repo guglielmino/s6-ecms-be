@@ -48,7 +48,7 @@ describe('PowerFeedbackHandler', () => {
       deviceId: '00:11:22:33:44:55',
       powerStatus: {
         relayIndex: 'Relay0',
-        status: 'on',
+        power: 'on',
       },
     };
 
@@ -95,7 +95,7 @@ describe('PowerFeedbackHandler', () => {
       deviceId: '00:11:22:33:44:55',
       powerStatus: {
         relayIndex: 'Relay2',
-        status: 'on',
+        power: 'on',
       },
     };
 

@@ -24,7 +24,7 @@ describe('S6 Fresnel power feedback status message mapper', () => {
     const mapped = S6StatusToHandler(rawPayload);
     mapped.deviceId.should.be.eq('00:11:22:33:44:55');
     mapped.powerStatus.relayIndex.should.be.eq('Relay2');
-    mapped.powerStatus.status.should.be.eq('on');
+    mapped.powerStatus.power.should.be.eq('on');
   });
 
   it('should map to Relay0 if receive a Payload in old format (without relay index)', () => {
@@ -42,7 +42,7 @@ describe('S6 Fresnel power feedback status message mapper', () => {
     const mapped = S6StatusToHandler(rawPayload);
     mapped.deviceId.should.be.eq('00:11:22:33:44:55');
     mapped.powerStatus.relayIndex.should.be.eq('Relay0');
-    mapped.powerStatus.status.should.be.eq('off');
+    mapped.powerStatus.power.should.be.eq('off');
   });
 
 

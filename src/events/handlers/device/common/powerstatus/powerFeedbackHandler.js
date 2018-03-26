@@ -18,7 +18,7 @@ const PowerFeedbackHandler = (deviceProvider, socket) => ({
           const updatedObj = { ...res,
             status: { ...res.status,
               power: { ...res.status.power,
-                [powerStatus.relayIndex]: powerStatus.status,
+                [powerStatus.relayIndex]: powerStatus.power,
               } } };
 
           // Remove device from delayed queue
