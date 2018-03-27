@@ -1,6 +1,9 @@
 const S6StatusToHandler = e => ({
   deviceId: e.Payload.deviceId,
-  powerStatus: e.Payload.status,
+  powerStatus: {
+    relayIndex: `Relay${e.Payload.status.relay_idx || 0}`,
+    power: e.Payload.status.power || e.Payload.status,
+  },
 });
 
 export default S6StatusToHandler;

@@ -58,6 +58,7 @@ describe('Device Info rules', () => {
           deviceType: 'S6 fresnel',
           deviceId: '00:00:00:00:00:02',
           group: 'group',
+          features: [],
           commands: { power: 'mqtt:building/group/devices/00:00:00:00:00:02/power' },
           created: sinon.match.date,
         },
