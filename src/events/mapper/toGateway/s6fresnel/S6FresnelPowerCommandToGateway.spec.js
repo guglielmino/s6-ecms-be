@@ -10,11 +10,36 @@ describe('S6 Fresnel power command to gateway', () => {
         power: 'mqtt:test',
       },
     };
-    const value = '1';
+    const value = {
+      power: 'on',
+      relayIdx: 1,
+    };
 
     const result = S6FresnelPowerCommandToGateway(fakeDevice, value);
     result.should.have.all.keys('topic', 'value');
     result.topic.should.equal('test');
-    result.value.should.equal(value);
+    result.value.should.deep.equal({
+      relay_idx: 1,
+      op: 'on',
+    });
+  });
+
+  it('should send command to relay 0 if not specified', () => {
+    const fakeDevice = {
+      commands: {
+        power: 'mqtt:test',
+      },
+    };
+    const value = {
+      power: 'off',
+    };
+
+    const result = S6FresnelPowerCommandToGateway(fakeDevice, value);
+    result.should.have.all.keys('topic', 'value');
+    result.topic.should.equal('test');
+    result.value.should.deep.equal({
+      relay_idx: 0,
+      op: 'off',
+    });
   });
 });
