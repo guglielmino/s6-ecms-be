@@ -1,3 +1,22 @@
+<a name="3.3.0"></a>
+# [3.3.0](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.2.1...v3.3.0) (2018-03-27)
+
+
+### Bug Fixes
+
+* Fix PowerFeedbackHandler to manage old format of device's power ([a250518](https://gitlab.com/SmartSix/s6-ecms-be/commit/a250518))
+* Fix update power alert with field open:true and read:false ([173b553](https://gitlab.com/SmartSix/s6-ecms-be/commit/173b553))
+
+
+### Features
+
+* Add feature mapping to device transformer ([a6e97bf](https://gitlab.com/SmartSix/s6-ecms-be/commit/a6e97bf))
+* Handling device power feedback with relay index ([0872d51](https://gitlab.com/SmartSix/s6-ecms-be/commit/0872d51))
+* Update device info mapper to map feature list to payload ([b0896d8](https://gitlab.com/SmartSix/s6-ecms-be/commit/b0896d8))
+* Update powerswitch payload mapper to handle relay index ([c1248d7](https://gitlab.com/SmartSix/s6-ecms-be/commit/c1248d7))
+
+
+
 <a name="3.2.1"></a>
 ## [3.2.1](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.2.0...v3.2.1) (2018-03-20)
 
