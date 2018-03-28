@@ -14,10 +14,8 @@ describe('S6 Fresnel power feedback status message mapper', () => {
         Payload: {
           topic: 'building/room1/events/00:11:22:33:44:55/power',
           deviceId: '00:11:22:33:44:55',
-          status: {
-            relay_idx: 2,
-            power: 'on',
-          },
+          relay_idx: 2,
+          status: 'on',
         },
       };
 

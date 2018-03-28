@@ -1,8 +1,8 @@
 const S6StatusToHandler = e => ({
   deviceId: e.Payload.deviceId,
   powerStatus: {
-    relayIndex: `Relay${e.Payload.status.relay_idx || 0}`,
-    power: e.Payload.status.power || e.Payload.status,
+    relayIndex: `Relay${e.Payload.relay_idx || 0}`,
+    power: e.Payload.status || 'off',
   },
 });
 
