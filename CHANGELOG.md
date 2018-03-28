@@ -1,3 +1,13 @@
+<a name="3.3.3"></a>
+## [3.3.3](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.3.2...v3.3.3) (2018-03-28)
+
+
+### Bug Fixes
+
+* Fix payload mapper of power feedback message ([955ea63](https://gitlab.com/SmartSix/s6-ecms-be/commit/955ea63))
+
+
+
 <a name="3.3.2"></a>
 ## [3.3.2](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.3.1...v3.3.2) (2018-03-28)
 
