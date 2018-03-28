@@ -1,3 +1,13 @@
+<a name="3.3.1"></a>
+## [3.3.1](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.3.0...v3.3.1) (2018-03-28)
+
+
+### Bug Fixes
+
+* Fix power alert handling to manage relay index ([a7db32f](https://gitlab.com/SmartSix/s6-ecms-be/commit/a7db32f))
+
+
+
 <a name="3.3.0"></a>
 # [3.3.0](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.2.1...v3.3.0) (2018-03-27)
 
