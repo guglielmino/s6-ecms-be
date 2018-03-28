@@ -18,10 +18,10 @@ describe('S6 Fresnel power command to gateway', () => {
     const result = S6FresnelPowerCommandToGateway(fakeDevice, value);
     result.should.have.all.keys('topic', 'value');
     result.topic.should.equal('test');
-    result.value.should.deep.equal({
+    result.value.should.deep.equal(JSON.stringify({
       relay_idx: 1,
       op: 'on',
-    });
+    }));
   });
 
   it('should send command to relay 0 if not specified', () => {
@@ -37,9 +37,9 @@ describe('S6 Fresnel power command to gateway', () => {
     const result = S6FresnelPowerCommandToGateway(fakeDevice, value);
     result.should.have.all.keys('topic', 'value');
     result.topic.should.equal('test');
-    result.value.should.deep.equal({
+    result.value.should.deep.equal(JSON.stringify({
       relay_idx: 0,
       op: 'off',
-    });
+    }));
   });
 });
