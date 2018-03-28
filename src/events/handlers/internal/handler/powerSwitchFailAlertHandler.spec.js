@@ -43,7 +43,10 @@ describe('PowerSwitchFailAlertHandler', () => {
       type: consts.APPEVENT_TYPE_POWER_ALERT,
       deviceId: '13:32:22:34:55:12',
       gateway: 'TEST_GW',
-      requestStatus: 'off',
+      requestStatus: {
+        power: 'off',
+        relayIdx: 1,
+      },
     })
       .then(() => {
 
@@ -57,7 +60,7 @@ describe('PowerSwitchFailAlertHandler', () => {
           .calledWith({
             gateway: 'TEST_GW',
             deviceId: '13:32:22:34:55:12',
-            message: 'test dev doesn\'t respond to turn off',
+            message: 'test dev doesn\'t respond to turn off on relay 1',
             type: 'Power_switch_fail',
             key: 'alert:Power_switch_fail:TEST_GW:13:32:22:34:55:12',
             date: sinon.match.date,
