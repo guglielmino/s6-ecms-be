@@ -1,3 +1,13 @@
+<a name="3.3.2"></a>
+## [3.3.2](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.3.1...v3.3.2) (2018-03-28)
+
+
+### Bug Fixes
+
+* Fix power switch payload ([705171d](https://gitlab.com/SmartSix/s6-ecms-be/commit/705171d))
+
+
+
 <a name="3.3.1"></a>
 ## [3.3.1](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.3.0...v3.3.1) (2018-03-28)
 
