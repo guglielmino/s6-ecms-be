@@ -154,6 +154,33 @@ describe('Device values rules', () => {
       }).should.be.true;
   });
 
+  it('should call devicevalues handler with correct payload for power consume measurement', () => {
+    const msg = {
+      Type: 'FRESNEL_POWER_CONSUME',
+      GatewayId: 'TESTGW',
+      Payload: {
+        value: '25',
+        unit: 'W',
+        deviceId: '123',
+        timestamp: '2018-05-30T07:56:23.642Z',
+      },
+    };
+    ruleEngine.handle(msg);
+
+    deviceValuesHandler.process
+      .calledOnce.should.be.true;
+
+    deviceValuesHandler.process
+      .calledWith({
+        timestamp: '2018-05-30T07:56:23.642Z',
+        gateway: 'TESTGW',
+        deviceId: '123',
+        value: '25',
+        type: 'FRESNEL_POWER_CONSUME',
+        unit: 'W',
+      }).should.be.true;
+  });
+
   it('should not call device values handler if event type is not recognized', () =>{
     const msg = {
       Type: 'OTHER_EVENT',
