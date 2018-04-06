@@ -1,3 +1,13 @@
+<a name="3.4.0"></a>
+# [3.4.0](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.3.3...v3.4.0) (2018-04-06)
+
+
+### Features
+
+* Add power consume data to deviceValues table ([d3b11fc](https://gitlab.com/SmartSix/s6-ecms-be/commit/d3b11fc))
+
+
+
 <a name="3.3.3"></a>
 ## [3.3.3](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.3.2...v3.3.3) (2018-03-28)
 
