@@ -25,6 +25,10 @@ const DeviceValuesRules = (ruleEngine, {
     predicate: msg => msg.Type === consts.EVENT_TYPE_FRESNEL_VOLTAGE,
     fn: msg => deviceValuesHandler.process(S6FValuesToHandler(msg)),
   });
+  ruleEngine.add({
+    predicate: msg => msg.Type === consts.EVENT_TYPE_FRESNEL_POWER_CONSUME,
+    fn: msg => deviceValuesHandler.process(S6FValuesToHandler(msg)),
+  });
 };
 
 export default DeviceValuesRules;
