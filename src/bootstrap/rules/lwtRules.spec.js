@@ -75,6 +75,25 @@ describe('LWT Rules', () => {
     });
   });
 
+  context('S6 Fresnel device with Type from Topic', () => {
+    it('Should call \'process\' of every handler for a LWT message by S6 fresnel devices', () => {
+      const event = {
+        GatewayId: 'TESTGW',
+        Type: 'events_lwt',
+        Payload: {
+          Topic: 'tele/lamp3/LWT',
+          status: 'Online',
+          deviceId: '12:22:44:1a:d6:fa',
+        },
+      };
+
+      ruleEngine.handle(event);
+
+      lwtHandler.process
+        .calledOnce.should.be.true;
+    });
+  });
+
   context('Lwt alerts', () => {
     it('should call process of lwt alert handler if device status is OFFLINE', () => {
       const message = {

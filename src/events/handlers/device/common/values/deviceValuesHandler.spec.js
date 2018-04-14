@@ -26,7 +26,7 @@ describe('HourlyStatHandler', () => {
       gateway: 'CASAFG',
       deviceId: '00:11:22:33:44:55',
       timestamp: '2017-08-27T07:56:23.642Z',
-      value: 6,
+      value: 223.56,
       unit: 'V',
       type: 'VOLTAGE',
     };
@@ -37,7 +37,7 @@ describe('HourlyStatHandler', () => {
     subject.process(event)
       .then(() => {
         providerStub
-          .calledWith(sinon.match({ unit: 'V', type: 'VOLTAGE', value: 6, gateway: 'CASAFG', deviceId: '00:11:22:33:44:55' }))
+          .calledWith(sinon.match({ unit: 'V', type: 'VOLTAGE', value: 223.56, gateway: 'CASAFG', deviceId: '00:11:22:33:44:55' }))
           .should.be.true;
         done();
       })

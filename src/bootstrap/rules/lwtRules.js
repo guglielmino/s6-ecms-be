@@ -31,7 +31,8 @@ const LwtRules = (ruleEngine, {
 
   /* S6 Fresnel device */
   ruleEngine.add({
-    predicate: msg => msg.Type === consts.EVENT_TYPE_FRESNEL_LWT,
+    predicate: msg => msg.Type === consts.EVENT_TYPE_FRESNEL_LWT ||
+      msg.Type === consts.EVENT_TYPE_TOPIC_LWT,
     fn: msg => lwtHandler.process(S6LwtToHandler(msg)),
   });
 };
