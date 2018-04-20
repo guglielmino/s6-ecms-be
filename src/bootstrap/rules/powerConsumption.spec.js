@@ -176,6 +176,135 @@ describe('Power Consumption rules', () => {
     });
   });
 
+  context('S6 Fresnel device with Type from Topic', () => {
+    it('Should call hourlyStatHandler\'s process passing right values', () => {
+      const event =
+        {
+          GatewayId: 'CASAFG',
+          Type: 'sensors_power',
+          Payload: {
+            GatewayId: 'VG59',
+            deviceId: '00:11:22:33:44:55',
+            timestamp: '2017-08-27T07:56:23.642Z',
+            value: 23.2,
+          },
+        };
+
+      ruleEngine.handle(event);
+
+      hourlyStatHandler.process
+        .calledOnce.should.be.true;
+      hourlyStatHandler.process
+        .calledWith({
+          GatewayId: 'VG59',
+          deviceId: '00:11:22:33:44:55',
+          timestamp: '2017-08-27T07:56:23.642Z',
+          value: 23.2,
+        });
+    });
+
+    it('Should call updateStatuHandler\'s process passing deviceId', () => {
+      const event =
+        {
+          GatewayId: 'CASAFG',
+          Type: 'sensors_power',
+          Payload: {
+            GatewayId: 'VG59',
+            deviceId: '00:11:22:33:44:55',
+            timestamp: '2017-08-27T07:56:23.642Z',
+            value: 23.2
+          },
+        };
+
+      ruleEngine.handle(event);
+
+      updateOnlineStatusHandler.process
+        .calledOnce.should.be.true;
+      updateOnlineStatusHandler.process
+        .calledWith({ deviceId: '00:11:22:33:44:55' });
+    });
+
+    it('Should call powerAlertHandler\'s process passing deviceId if power < 0.1', () => {
+      const event =
+        {
+          GatewayId: 'CASAFG',
+          Type: 'sensors_power',
+          Payload: {
+            GatewayId: 'VG59',
+            deviceId: '00:11:22:33:44:55',
+            timestamp: '2017-08-27T07:56:23.642Z',
+            value: 0.0,
+          },
+        };
+
+      ruleEngine.handle(event);
+
+      powerAlertHandler.process
+        .calledOnce.should.be.true;
+      powerAlertHandler.process
+        .calledWith(sinon.match({ deviceId: '00:11:22:33:44:55' })).should.be.true;
+    });
+
+    it('Should NOT call powerAlertHandler\'s process passing deviceId if power > 0.1', () => {
+      const event =
+        {
+          GatewayId: 'CASAFG',
+          Type: 'sensors_power',
+          Payload: {
+            GatewayId: 'VG59',
+            deviceId: '00:11:22:33:44:55',
+            timestamp: '2017-08-27T07:56:23.642Z',
+            value: 2,
+          },
+        };
+
+      ruleEngine.handle(event);
+
+      powerAlertHandler.process
+        .calledOnce.should.be.false;
+    });
+
+    it('Should call closeAlertHandler process if power is >= 0.1', () => {
+      const event =
+        {
+          GatewayId: 'CASAFG',
+          Type: 'sensors_power',
+          Payload: {
+            GatewayId: 'VG59',
+            deviceId: '00:11:22:33:44:55',
+            timestamp: '2017-08-27T07:56:23.642Z',
+            value: 2,
+          },
+        };
+
+      ruleEngine.handle(event);
+
+      closeAlertHandler.process
+        .calledOnce.should.be.true;
+      closeAlertHandler.process
+        .calledWith(sinon.match({ deviceId: '00:11:22:33:44:55', type: types.ALERT_TYPE_DEVICE_BROKEN })).should.be.true;
+    });
+
+    it('Should NOT call closeAlertHandler process if power is < 0.1', () => {
+      const event =
+        {
+          GatewayId: 'CASAFG',
+          Type: 'sensors_power',
+          Payload: {
+            GatewayId: 'VG59',
+            deviceId: '00:11:22:33:44:55',
+            timestamp: '2017-08-27T07:56:23.642Z',
+            value: 0.05,
+          },
+        };
+
+      ruleEngine.handle(event);
+
+      closeAlertHandler.process
+        .calledOnce.should.be.false;
+    });
+  });
+
   context('Sonoff device', () => {
     it('Should call hourlyStatHandler\'s process passing right values', () => {
 

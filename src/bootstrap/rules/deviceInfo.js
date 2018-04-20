@@ -14,7 +14,7 @@ const DeviceInfoRules = (ruleEngine, {
   });
 
   ruleEngine.add({
-    predicate: msg => msg.Type === consts.EVENT_TYPE_FRESNEL_INFO,
+    predicate: msg => msg.Type === consts.EVENT_TYPE_FRESNEL_INFO || consts.EVENT_TYPE_TOPIC_INFO,
     fn: (msg) => {
       deviceHandler.process(S6InfoToDevice(msg));
       deviceGroupsHandler.process(S6InfoToDeviceGroups(msg));

@@ -48,6 +48,29 @@ describe('Power feedback rules', () => {
     });
   });
 
+  context('S6 Fresnel device with Type from Topic', () => {
+    it('Should call deviceHandler\'s process passing right values', () => {
+      const event = {
+        GatewayId: 'CASAFG',
+        Type: 'events_power',
+        Payload: {
+          topic: 'building/room1/events/00:11:22:33:44:55/power',
+          deviceId: '00:11:22:33:44:55',
+          status: 'on',
+        },
+      };
+
+      ruleEngine.handle(event);
+
+      powerFeedbackHandler.process
+        .calledOnce.should.be.true;
+      powerFeedbackHandler.process
+        .calledWith()
+        .should.be.true;
+
+    });
+  });
+
   context('Sonoff device', () => {
     it('Should call deviceHandler\'s process passing right values', () => {
       const event = {

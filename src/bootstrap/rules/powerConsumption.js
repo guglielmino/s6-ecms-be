@@ -14,7 +14,8 @@ const PowerConsumptionRules = (ruleEngine, {
 }) => {
   // S6 Instant power message
   ruleEngine.add({
-    predicate: msg => msg.Type === consts.EVENT_TYPE_FRESNEL_POWER_CONSUME,
+    predicate: msg => msg.Type === consts.EVENT_TYPE_FRESNEL_POWER_CONSUME ||
+      msg.Type === consts.EVENT_TYPE_TOPIC_POWER_CONSUME,
     fn: (msg) => {
       hourlyStatHandler.process(S6FInstaPowerToHourly(msg));
       updateOnlineStatusHandler.process(S6FInstaPowerToHourly(msg));
@@ -23,7 +24,8 @@ const PowerConsumptionRules = (ruleEngine, {
 
   // S6 Alert if power < 0.1
   ruleEngine.add({
-    predicate: msg => msg.Type === consts.EVENT_TYPE_FRESNEL_POWER_CONSUME &&
+    predicate: msg => (msg.Type === consts.EVENT_TYPE_FRESNEL_POWER_CONSUME ||
+      msg.Type === consts.EVENT_TYPE_TOPIC_POWER_CONSUME) &&
       msg.Payload.value < 0.1,
     fn: (msg) => {
       powerAlertHandler.process(S6FInstaPowerToHourly(msg));
@@ -32,7 +34,8 @@ const PowerConsumptionRules = (ruleEngine, {
 
   // Close power Alert if power >= 0.1
   ruleEngine.add({
-    predicate: msg => msg.Type === consts.EVENT_TYPE_FRESNEL_POWER_CONSUME &&
+    predicate: msg => (msg.Type === consts.EVENT_TYPE_FRESNEL_POWER_CONSUME ||
+      msg.Type === consts.EVENT_TYPE_TOPIC_POWER_CONSUME) &&
       msg.Payload.value >= 0.1,
     fn: (msg) => {
       closeAlertHandler.process(S6InstaPowerToAlert(msg));

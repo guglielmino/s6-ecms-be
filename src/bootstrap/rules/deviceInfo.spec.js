@@ -93,12 +93,66 @@ describe('Device Info rules', () => {
     });
   });
 
-  context('Sonoff device', () => {
+  context('S6 Fresnel device with Type From Topic', () => {
     it('Should call deviceHandler\'s process passing right values', () => {
+      const msg = {
+        Type: 'events_info',
+        GatewayId: 'gw',
+        Payload: {
+          name: 'test',
+          description: 'desc',
+          version: '1.1.0',
+          appName: 'S6 fresnel',
+          deviceId: '00:00:00:00:00:02',
+          group: 'group',
+          created: new Date(),
+        },
+      };
+      ruleEngine.handle(msg);
 
-
+      deviceHandler.process.calledOnce.should.be.true;
+      deviceHandler.process.calledWith({
+        deviceId: '00:00:00:00:00:02',
+        payload: {
+          name: 'test',
+          description: 'test',
+          gateway: 'gw',
+          swVersion: '1.1.0',
+          deviceType: 'S6 fresnel',
+          deviceId: '00:00:00:00:00:02',
+          group: 'group',
+          features: [],
+          commands: { power: 'mqtt:building/group/devices/00:00:00:00:00:02/power' },
+          created: sinon.match.date,
+        },
+      }).should.be.true;
     });
 
+    it('Should call deviceGroupsHandlers\' process', () => {
+      const msg = {
+        Type: 'events_info',
+        GatewayId: 'gw',
+        Payload: {
+          name: 'test',
+          description: 'desc',
+          version: '1.1.0',
+          appName: 'S6 fresnel',
+          deviceId: '00:00:00:00:00:02',
+          group: 'group',
+          created: new Date(),
+        },
+      };
+      ruleEngine.handle(msg);
 
-  });
+      deviceGroupsHandler.process.calledOnce.should.be.true;
+      deviceGroupsHandler.process.calledWith({
+        code: 'group',
+        payload: {
+          gateway: 'gw',
+          description: 'group',
+          created: sinon.match.date,
+        },
+      }).should.be.true;
+    });
+  })
 });

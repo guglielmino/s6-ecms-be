@@ -6,7 +6,8 @@ const PowerFeedbackRules = (ruleEngine, {
   powerFeedbackHandler,
 }) => {
   ruleEngine.add({
-    predicate: msg => msg.Type === consts.EVENT_TYPE_FRESNEL_POWER_FEEDBACK,
+    predicate: msg => msg.Type === consts.EVENT_TYPE_FRESNEL_POWER_FEEDBACK ||
+      msg.Type === consts.EVENT_TYPE_TOPIC_POWER_FEEDBACK,
     fn: msg => powerFeedbackHandler.process(S6StatusToHandler(msg)),
   });
 
