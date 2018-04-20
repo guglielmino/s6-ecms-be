@@ -1,3 +1,13 @@
+<a name="3.5.0"></a>
+# [3.5.0](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.4.0...v3.5.0) (2018-04-20)
+
+
+### Features
+
+* Add support for message types taken from topic (Gateway app manage these types by convenction) ([33d0c7b](https://gitlab.com/SmartSix/s6-ecms-be/commit/33d0c7b))
+
+
+
 <a name="3.4.0"></a>
 # [3.4.0](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.3.3...v3.4.0) (2018-04-06)
 
