@@ -1,3 +1,13 @@
+<a name="3.5.1"></a>
+## [3.5.1](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.5.0...v3.5.1) (2018-04-27)
+
+
+### Bug Fixes
+
+* Fix message test in device info rule ([14c0fac](https://gitlab.com/SmartSix/s6-ecms-be/commit/14c0fac))
+
+
+
 <a name="3.5.0"></a>
 # [3.5.0](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.4.0...v3.5.0) (2018-04-20)
 
