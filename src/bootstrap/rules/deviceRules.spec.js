@@ -6,7 +6,7 @@ import EventsRuleEngine from '../../services/eventsRuleEngine';
 import DeviceHandler from '../../events/handlers/device/common/info/deviceHandler';
 import DeviceGroupsHandler from '../../events/handlers/device/common/info/deviceGroupsHandler';
 
-import DeviceInfoRules from './deviceInfo';
+import DeviceInfoRules from './deviceRulse';
 
 chai.should();
 const expect = chai.expect();
