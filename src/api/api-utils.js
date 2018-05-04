@@ -30,6 +30,7 @@ const createCsvElements = (data) => {
 const getHourlyDates = (date) => {
   const todayHours = [];
   date.setUTCHours(0);
+  todayHours.push(new Date(date));
   while (date.getUTCHours() < 23) {
     date.setUTCHours(date.getUTCHours() + 1);
     todayHours.push(new Date(date));
