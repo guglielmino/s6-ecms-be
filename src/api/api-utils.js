@@ -1,6 +1,6 @@
 const getDate = (req) => {
   let date = new Date();
-  const queryDate = req.query.date || req.query.fromDate;
+  const queryDate = req.query.date;
   if (queryDate) {
     date = new Date(queryDate) || date;
   }
@@ -39,10 +39,23 @@ const getHourlyDates = (date) => {
   return todayHours;
 };
 
+const getHoursBetweenDates = (dateFrom, dateTo) => {
+  const hours = [];
+  const from = new Date(dateFrom);
+  const to = dateTo.setUTCHours(dateTo.getUTCHours() - 1);
+  hours.push(new Date(from));
+  while (from < to) {
+    from.setUTCHours(from.getUTCHours() + 1);
+    hours.push(new Date(from));
+  }
+  return hours;
+};
+
 export {
   getDate,
   getOverlapped,
   createCsvElements,
   getGroupField,
   getHourlyDates,
+  getHoursBetweenDates,
 }; // eslint-disable-line import/prefer-default-export

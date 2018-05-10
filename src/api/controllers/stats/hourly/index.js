@@ -1,7 +1,7 @@
 import express from 'express';
 import * as _ from 'lodash';
 import logger from '../../../../common/logger';
-import { getDate, getOverlapped, getGroupField, getHourlyDates } from '../../../api-utils';
+import { getDate, getOverlapped, getGroupField, getHourlyDates, getHoursBetweenDates } from '../../../api-utils';
 import { transformHourlyStat } from './hourlyStatTransformer';
 
 
@@ -49,14 +49,18 @@ export default function (app, middlewares, { hourlyStatsProvider }) {
    */
   router.get('/', middlewares, (req, res) => {
     const date = getDate(req);
+    const fromDate = req.query.fromDate;
+    const toDate = req.query.toDate;
     const ownedGws = req.user.app_metadata.gateways;
     const reqGateways = req.query.gw;
     const group = getGroupField(req);
 
     const gws = getOverlapped(ownedGws, reqGateways);
 
+    const hours = fromDate ? getHoursBetweenDates(fromDate, toDate) : getHourlyDates(date);
+
     hourlyStatsProvider
-      .getHourlyStat(getHourlyDates(date), gws, group)
+      .getHourlyStat(hours, gws, group)
       .then((stat) => {
         if (stat.length === 0) {
           res.sendStatus(204);
