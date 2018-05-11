@@ -42,7 +42,7 @@ const getHourlyDates = (date) => {
 const getHoursBetweenDates = (dateFrom, dateTo) => {
   const hours = [];
   const from = new Date(dateFrom);
-  const to = dateTo.setUTCHours(dateTo.getUTCHours() - 1);
+  const to = new Date(dateTo);
   hours.push(new Date(from));
   while (from < to) {
     from.setUTCHours(from.getUTCHours() + 1);
