@@ -1,9 +1,9 @@
 import EventsRuleEngine from '../services/eventsRuleEngine';
 
-
 // Handlers
 import EventHandler from '../events/handlers/device/common/eventHandler';
 import DeviceHandler from '../events/handlers/device/common/info/deviceHandler';
+import DeviceCrontabHandler from '../events/handlers/device/common/crontab/deviceCrontabHandler';
 import DeviceValuesHandler from '../events/handlers/device/common/values/deviceValuesHandler';
 import DeviceGroupsHandler from '../events/handlers/device/common/info/deviceGroupsHandler';
 import PowerFeedbackHandler from '../events/handlers/device/common/powerstatus/powerFeedbackHandler';
@@ -18,11 +18,10 @@ import HourlyStatHandler from '../events/handlers/device/common/powerconsumption
 import DailyStatHandler from '../events/handlers/device/common/powerconsumption/dailyStatHandler';
 import UpdateOnlineStatusHandler from '../events/handlers/device/common/onlineStatus/updateOnlineStatusHandler';
 
-
 // Rules
 import PowerConsumptionRules from './rules/powerConsumption';
 import DailyConsumptionRules from './rules/dailyConsumptionRules';
-import DeviceInfoRules from './rules/deviceInfo';
+import DeviceRules from './rules/deviceRulse';
 import DeviceValuesRules from './rules/deviceValuesRules';
 import PowerAlertHandler from '../events/handlers/device/common/alerts/powerAlertHandler';
 import ApiRules from './rules/apiRules';
@@ -38,6 +37,7 @@ const BootstapRuleEngine = (providers, pnub, socket, emitter) => {
     providers.alertProvider, socket);
   const updateOnlineStatusHandler = UpdateOnlineStatusHandler(providers.deviceProvider);
   const deviceHandler = DeviceHandler(providers.deviceProvider);
+  const deviceCrontabHandler = DeviceCrontabHandler(providers.deviceProvider);
   const powerFeedbackHandler = PowerFeedbackHandler(providers.deviceProvider, socket);
   const powerStateHandler = PowerStateHandler(providers.deviceProvider, pnub);
   const powerStateAlertHandler = PowerStateAlertHandler();
@@ -70,9 +70,10 @@ const BootstapRuleEngine = (providers, pnub, socket, emitter) => {
   DailyConsumptionRules(ruleEngine, { dailyStatHandler });
 
   /* -- Info event processing -- */
-  DeviceInfoRules(ruleEngine, {
+  DeviceRules(ruleEngine, {
     deviceHandler,
     deviceGroupsHandler,
+    deviceCrontabHandler,
   });
 
   /* -- Values from device event processing -- */

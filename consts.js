@@ -30,6 +30,7 @@ export const EVENT_TYPE_TOPIC_CURRENT_CONSUME = 'sensors_current';
 export const EVENT_TYPE_TOPIC_REACTIVE_POWER_CONSUME = 'sensors_reactivepower';
 export const EVENT_TYPE_TOPIC_DAILY_CONSUME = 'sensors_dailyKwh';
 export const EVENT_TYPE_TOPIC_LWT = 'events_lwt';
+export const EVENT_TYPE_TOPIC_CRONTAB = 'events_crontab';
 
 
 // List of events allowed from PubNub (
