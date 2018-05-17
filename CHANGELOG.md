@@ -1,3 +1,13 @@
+<a name="3.6.0"></a>
+# [3.6.0](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.5.1...v3.6.0) (2018-05-17)
+
+
+### Features
+
+* Add publish to MQTT device crontab at startup ([45da21e](https://gitlab.com/SmartSix/s6-ecms-be/commit/45da21e))
+
+
+
 <a name="3.5.1"></a>
 ## [3.5.1](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.5.0...v3.5.1) (2018-04-27)
 
