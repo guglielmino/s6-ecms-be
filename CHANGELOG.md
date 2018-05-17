@@ -1,10 +1,27 @@
+<a name="3.7.0"></a>
+# [3.7.0](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.6.0...v3.7.0) (2018-05-17)
+
+
+### Features
+
+* Modofy device api to get values from dates ([3b8b472](https://gitlab.com/SmartSix/s6-ecms-be/commit/3b8b472))
+
+
+
 <a name="3.6.0"></a>
 # [3.6.0](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.5.1...v3.6.0) (2018-05-17)
+
+
+### Bug Fixes
+
+* Fix missing midnight in hourly statistics ([3171958](https://gitlab.com/SmartSix/s6-ecms-be/commit/3171958))
+* Fix wrong hour in getHoursBetweenDates function ([8ab78e0](https://gitlab.com/SmartSix/s6-ecms-be/commit/8ab78e0))
 
 
 ### Features
 
 * Add publish to MQTT device crontab at startup ([45da21e](https://gitlab.com/SmartSix/s6-ecms-be/commit/45da21e))
+* Endpoint providing hourly stats accepts fromDate e toDate parameters ([21a3aa9](https://gitlab.com/SmartSix/s6-ecms-be/commit/21a3aa9))
 
 
 
