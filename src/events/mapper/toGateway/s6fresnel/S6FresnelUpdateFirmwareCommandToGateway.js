@@ -8,7 +8,7 @@ const S6FresnelUpdateFirmwareCommandToGateway = dev => ({
       url: `${config.devices.s6fresnelotaurl}/fw.zip`,
       commit_timeout: '300',
     },
-    src: 'topic/for/feedback',
+    src: 'local/update/feedback',
   }),
 });
 
