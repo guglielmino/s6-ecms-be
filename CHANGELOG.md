@@ -1,3 +1,13 @@
+<a name="3.8.0"></a>
+# [3.8.0](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.7.0...v3.8.0) (2018-05-24)
+
+
+### Features
+
+* Modify update firmware command feedback topic ([d5b5587](https://gitlab.com/SmartSix/s6-ecms-be/commit/d5b5587))
+
+
+
 <a name="3.7.0"></a>
 # [3.7.0](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.6.0...v3.7.0) (2018-05-17)
 
