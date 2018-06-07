@@ -1,13 +1,21 @@
 {
   "name": "server",
-  "version": "3.8.0",
+  "version": "4.0.0",
   "description": "",
   "main": "app.js",
+  "nyc": {
+    "require": [
+      "babel-register"
+    ],
+    "sourceMap": false,
+    "instrument": false
+  },
   "scripts": {
     "start": "babel-node app.js",
     "lint": "eslint ./ --cache --ignore-pattern .gitignore --ignore-pattern *.spec.js --ignore-pattern *.e2e.js",
     "dev": "nodemon --exec npm run start -- app.js",
     "test": "mocha --compilers js:babel-core/register --recursive 'src/**/*.spec.js'",
+    "test:coverage": "cross-env NODE_ENV=test nyc mocha --compilers js:babel-core/register --recursive 'src/**/*.spec.js'",
     "test:e2e": "mocha --compilers js:babel-core/register --recursive 'src/**/*.e2e.js'",
     "test:watch": "npm run test -- --watch",
     "validate-commit": "validate-commit-msg",
@@ -53,6 +61,7 @@
     ],
     "plugins": [
       [
+        "istanbul",
         "transform-runtime",
         {
           "polyfill": false,
@@ -93,6 +102,7 @@
     "babel-cli": "^6.18.0",
     "babel-core": "^6.21.0",
     "babel-eslint": "^7.1.1",
+    "babel-plugin-istanbul": "^4.1.6",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-react": "^6.16.0",
@@ -100,14 +110,17 @@
     "chai": "^3.5.0",
     "commitizen": "^2.9.6",
     "conventional-changelog-cli": "^1.3.1",
+    "cross-env": "^5.1.6",
     "eslint": "^3.16.1",
     "eslint-config-airbnb-base": "^11.1.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jasmine": "^2.2.0",
+    "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
     "mockery": "2.1.0",
     "node-mocks-http": "^1.6.4",
     "nodemon": "^1.11.0",
+    "nyc": "^11.8.0",
     "rewire": "^2.5.2",
     "sinon": "^1.17.7",
     "supertest": "^3.0.0",

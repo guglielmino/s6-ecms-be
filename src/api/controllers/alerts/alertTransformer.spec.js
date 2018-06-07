@@ -31,6 +31,51 @@ describe('alert transformer', () => {
     expect(result.level).to.equal(ALERT_INFO);
   });
 
+  it('should map lastUpdate to date field', () => {
+    const fakeDate = new Date();
+    let otherDate = fakeDate;
+    otherDate = new Date(otherDate.setDate(otherDate.getDate() + 1));
+
+    const result = transformAlert({
+      _id: '590105c698aa4e001af6b149',
+      gateway: 'VG59',
+      date: fakeDate,
+      lastUpdate: otherDate,
+      deviceId: '5C:CF:7F:A0:16:46',
+      message: '5C:CF:7F:A0:16:46 doesn\'t respond to turn on',
+      read: false,
+      level: ALERT_INFO,
+    });
+    expect(result.id).to.equal('590105c698aa4e001af6b149');
+    expect(result.gateway).to.equal('VG59');
+    expect(result.date).to.equal(otherDate);
+    expect(result.deviceId).to.equal('5C:CF:7F:A0:16:46');
+    expect(result.message).to.equal('5C:CF:7F:A0:16:46 doesn\'t respond to turn on');
+    expect(result.read).to.equal(false);
+    expect(result.level).to.equal(ALERT_INFO);
+  });
+
+  it('should map creationDate to date field if there isn\'t lastUpdate', () => {
+    const fakeDate = new Date();
+
+    const result = transformAlert({
+      _id: '590105c698aa4e001af6b149',
+      gateway: 'VG59',
+      date: fakeDate,
+      deviceId: '5C:CF:7F:A0:16:46',
+      message: '5C:CF:7F:A0:16:46 doesn\'t respond to turn on',
+      read: false,
+      level: ALERT_INFO,
+    });
+    expect(result.id).to.equal('590105c698aa4e001af6b149');
+    expect(result.gateway).to.equal('VG59');
+    expect(result.date).to.equal(fakeDate);
+    expect(result.deviceId).to.equal('5C:CF:7F:A0:16:46');
+    expect(result.message).to.equal('5C:CF:7F:A0:16:46 doesn\'t respond to turn on');
+    expect(result.read).to.equal(false);
+    expect(result.level).to.equal(ALERT_INFO);
+  });
+
   it('should map to ALERT_CRITICAL if level is unspecified', () => {
     const fakeDate = new Date();
 

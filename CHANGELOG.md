@@ -1,3 +1,14 @@
+<a name="4.0.0"></a>
+# [4.0.0](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.8.0...v4.0.0) (2018-06-07)
+
+
+### Features
+
+* Add istanbul tool to check code coverage ([97d45c2](https://gitlab.com/SmartSix/s6-ecms-be/commit/97d45c2))
+* Return lastupdate date in alert list ([4cdd762](https://gitlab.com/SmartSix/s6-ecms-be/commit/4cdd762))
+
+
+
 <a name="3.8.0"></a>
 # [3.8.0](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.7.0...v3.8.0) (2018-05-24)
 
