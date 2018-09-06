@@ -2,7 +2,7 @@ import { ALERT_CRITICAL } from '../../../common/alertConsts';
 
 const transformAlert = alert => ({
   gateway: alert.gateway,
-  date: alert.date,
+  date: alert.lastUpdate || alert.date,
   deviceId: alert.deviceId,
   message: alert.message,
   read: alert.read,

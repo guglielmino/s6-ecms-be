@@ -1,3 +1,51 @@
+<a name="4.0.0"></a>
+# [4.0.0](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.8.0...v4.0.0) (2018-06-07)
+
+
+### Features
+
+* Add istanbul tool to check code coverage ([97d45c2](https://gitlab.com/SmartSix/s6-ecms-be/commit/97d45c2))
+* Return lastupdate date in alert list ([4cdd762](https://gitlab.com/SmartSix/s6-ecms-be/commit/4cdd762))
+
+
+
+<a name="3.8.0"></a>
+# [3.8.0](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.7.0...v3.8.0) (2018-05-24)
+
+
+### Features
+
+* Modify update firmware command feedback topic ([d5b5587](https://gitlab.com/SmartSix/s6-ecms-be/commit/d5b5587))
+
+
+
+<a name="3.7.0"></a>
+# [3.7.0](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.6.0...v3.7.0) (2018-05-17)
+
+
+### Features
+
+* Modofy device api to get values from dates ([3b8b472](https://gitlab.com/SmartSix/s6-ecms-be/commit/3b8b472))
+
+
+
+<a name="3.6.0"></a>
+# [3.6.0](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.5.1...v3.6.0) (2018-05-17)
+
+
+### Bug Fixes
+
+* Fix missing midnight in hourly statistics ([3171958](https://gitlab.com/SmartSix/s6-ecms-be/commit/3171958))
+* Fix wrong hour in getHoursBetweenDates function ([8ab78e0](https://gitlab.com/SmartSix/s6-ecms-be/commit/8ab78e0))
+
+
+### Features
+
+* Add publish to MQTT device crontab at startup ([45da21e](https://gitlab.com/SmartSix/s6-ecms-be/commit/45da21e))
+* Endpoint providing hourly stats accepts fromDate e toDate parameters ([21a3aa9](https://gitlab.com/SmartSix/s6-ecms-be/commit/21a3aa9))
+
+
+
 <a name="3.5.1"></a>
 ## [3.5.1](https://gitlab.com/SmartSix/s6-ecms-be/compare/v3.5.0...v3.5.1) (2018-04-27)
 

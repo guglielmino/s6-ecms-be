@@ -34,7 +34,7 @@ describe('Device Info rules', () => {
     it('Should call deviceHandler\'s process passing right values', () => {
       const msg = {
         Type: 'FRESNEL_INFO',
-        GatewayId: 'gw',
+        GatewayId: 'GW',
         Payload: {
           name: 'test',
           description: 'desc',
@@ -53,13 +53,13 @@ describe('Device Info rules', () => {
         payload: {
           name: 'test',
           description: 'test',
-          gateway: 'gw',
+          gateway: 'GW',
           swVersion: '1.1.0',
           deviceType: 'S6 fresnel',
           deviceId: '00:00:00:00:00:02',
           group: 'group',
           features: [],
-          commands: { power: 'mqtt:building/group/devices/00:00:00:00:00:02/power' },
+          commands: { power: 'mqtt:GW/group/devices/00:00:00:00:00:02/power' },
           created: sinon.match.date,
         },
       }).should.be.true;
@@ -97,7 +97,7 @@ describe('Device Info rules', () => {
     it('Should call deviceHandler\'s process passing right values', () => {
       const msg = {
         Type: 'events_info',
-        GatewayId: 'gw',
+        GatewayId: 'GW',
         Payload: {
           name: 'test',
           description: 'desc',
@@ -116,13 +116,13 @@ describe('Device Info rules', () => {
         payload: {
           name: 'test',
           description: 'test',
-          gateway: 'gw',
+          gateway: 'GW',
           swVersion: '1.1.0',
           deviceType: 'S6 fresnel',
           deviceId: '00:00:00:00:00:02',
           group: 'group',
           features: [],
-          commands: { power: 'mqtt:building/group/devices/00:00:00:00:00:02/power' },
+          commands: { power: 'mqtt:GW/group/devices/00:00:00:00:00:02/power' },
           created: sinon.match.date,
         },
       }).should.be.true;

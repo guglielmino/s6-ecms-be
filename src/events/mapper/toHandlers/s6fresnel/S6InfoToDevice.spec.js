@@ -45,6 +45,46 @@ describe('S6 Fresnel info message mapper', () => {
     result.payload.commands.power.should.be.eq('mqtt:building/room1/devices/00:11:22:33:44:55/power');
   });
 
+  it('should create commands.power key with gatewayId as topic root', () => {
+    const rawPayload = {
+      GatewayId: 'CASAFG',
+      Type: 'events_info',
+      Payload: {
+        topic: 'CASAFG/room1/events/esp32_03B674/info',
+        deviceId: 'esp32_03B674',
+        appName: 'S6 Fresnel Module',
+        version: 'esp32_03B674',
+        group: 'room1',
+        name: 'noname',
+      },
+    };
+
+    const result = S6InfoToDevice(rawPayload);
+
+    Object.keys(result.payload.commands).length.should.be.eq(1);
+    result.payload.commands.power.should.be.eq('mqtt:CASAFG/room1/devices/esp32_03B674/power');
+  });
+
+  it('should create commands.power key with \'building\' as topic root if topic starts with building (retrocompatibility)', () => {
+    const rawPayload = {
+      GatewayId: 'CASAFG',
+      Type: 'events_info',
+      Payload: {
+        topic: 'building/room1/events/esp32_03B674/info',
+        deviceId: 'esp32_03B674',
+        appName: 'S6 Fresnel Module',
+        version: '0.0.1',
+        group: 'room1',
+        name: 'lampada ingresso',
+      },
+    };
+
+    const result = S6InfoToDevice(rawPayload);
+
+    Object.keys(result.payload.commands).length.should.be.eq(1);
+    result.payload.commands.power.should.be.eq('mqtt:building/room1/devices/esp32_03B674/power');
+  });
+
 
   it('should map all required fields in result object Payload', () => {
     const rawPayload = {
@@ -74,5 +114,7 @@ describe('S6 Fresnel info message mapper', () => {
     Object.keys(result).length.should.be.eq(2);
     Object.keys(result.payload).length.should.be.eq(10);
   });
+
+
 
 });

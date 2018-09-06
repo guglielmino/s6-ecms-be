@@ -48,12 +48,13 @@ export default function (app, middlewares, { dailyStatsProvider }) {
    */
   router.get('/', middlewares, (req, res) => {
     const date = getDate(req);
+    const fromDate = req.query.fromDate;
     const toDate = req.query.toDate;
     const ownedGws = req.user.app_metadata.gateways;
     const reqGateways = req.query.gw;
 
     const gws = getOverlapped(ownedGws, reqGateways);
-    const filterDate = toDate ? [date, new Date(toDate)] : date;
+    const filterDate = toDate ? [new Date(fromDate), new Date(toDate)] : date;
     dailyStatsProvider
       .getDailyStat(filterDate, gws)
       .then((stat) => {

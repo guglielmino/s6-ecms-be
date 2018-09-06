@@ -18,7 +18,7 @@ describe('S6 Fresnel power command to gateway', () => {
         url: `${config.devices.s6fresnelotaurl}/fw.zip`,
         commit_timeout: '300',
       },
-      src: 'topic/for/feedback',
+      src: 'local/update/feedback',
     });
 
     const result = S6FresnelUpdateFirmwareCommandToGateway(fakeDevice);
