@@ -69,7 +69,8 @@ export default function (app, middlewares, { alertProvider }) {
    *             $ref: '#/definitions/Alert'
    */
   router.get('/', middlewares, (req, res) => {
-    const ownedGws = req.user.app_metadata.gateways;
+    const appMetadata = req.user['https://ecms.smartsix.it/app_metadata'];
+    const ownedGws = appMetadata.gateways;
     const reqGateways = req.query.gw;
     const text = req.query.text;
     const read = req.query.read;
@@ -118,7 +119,8 @@ export default function (app, middlewares, { alertProvider }) {
    *         description: Ok
    */
   router.delete('/:alertId', middlewares, (req, res) => {
-    const ownedGws = req.user.app_metadata.gateways;
+    const appMetadata = req.user['https://ecms.smartsix.it/app_metadata'];
+    const ownedGws = appMetadata.gateways;
     const alertId = req.params.alertId;
 
     alertProvider

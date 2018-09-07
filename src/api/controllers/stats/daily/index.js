@@ -50,7 +50,8 @@ export default function (app, middlewares, { dailyStatsProvider }) {
     const date = getDate(req);
     const fromDate = req.query.fromDate;
     const toDate = req.query.toDate;
-    const ownedGws = req.user.app_metadata.gateways;
+    const appMetdata = req.user['https://ecms.smartsix.it/app_metadata'];
+    const ownedGws = appMetdata.gateways;
     const reqGateways = req.query.gw;
 
     const gws = getOverlapped(ownedGws, reqGateways);

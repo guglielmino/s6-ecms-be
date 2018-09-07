@@ -51,7 +51,8 @@ export default function (app, middlewares, { gatewayProvider }) {
    *           $ref: '#/definitions/Gateway'
    */
   router.get('/:gateway', middlewares, (req, res) => {
-    const gateways = req.user.app_metadata.gateways;
+    const appMetadata = req.user['https://ecms.smartsix.it/app_metadata'];
+    const gateways = appMetadata.gateways;
     const reqGateway = req.params.gateway;
 
     if (gateways.indexOf(reqGateway) === -1) {
@@ -71,7 +72,8 @@ export default function (app, middlewares, { gatewayProvider }) {
   });
 
   router.patch('/:gateway', _.concat(middlewares, validate(gatewayPatchValidator)), (req, res) => {
-    const ownedGateways = req.user.app_metadata.gateways;
+    const appMetadata = req.user['https://ecms.smartsix.it/app_metadata'];
+    const ownedGateways = appMetadata.gateways;
     const gateway = req.params.gateway;
 
     if (ownedGateways.indexOf(gateway) === -1) {
