@@ -55,7 +55,8 @@ export default function (app, middlewares, { deviceGroupsProvider }) {
    *             $ref: '#/definitions/DeviceGroup'
    */
   router.get('/', middlewares, (req, res) => {
-    const ownedGws = req.user.app_metadata.gateways;
+    const appMetadata = req.user['https://ecms.smartsix.it/app_metadata'];
+    const ownedGws = appMetadata.gateways;
     const reqGateways = req.query.gw;
 
     const gws = getOverlapped(ownedGws, reqGateways);
@@ -101,7 +102,8 @@ export default function (app, middlewares, { deviceGroupsProvider }) {
    */
 
   router.patch('/:deviceGroupCode', _.concat(middlewares, validate(deviceGroupsPatchValidator)), (req, res) => {
-    const ownedGws = req.user.app_metadata.gateways;
+    const appMetadata = req.user['https://ecms.smartsix.it/app_metadata'];
+    const ownedGws = appMetadata.gateways;
     const deviceGroupCode = req.params.deviceGroupCode;
 
     deviceGroupsProvider

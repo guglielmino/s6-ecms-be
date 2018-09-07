@@ -51,7 +51,8 @@ export default function (app, middlewares, { hourlyStatsProvider }) {
     const date = getDate(req);
     const fromDate = req.query.fromDate;
     const toDate = req.query.toDate;
-    const ownedGws = req.user.app_metadata.gateways;
+    const appMetadata = req.user['https://ecms.smartsix.it/app_metadata'];
+    const ownedGws = appMetadata.gateways;
     const reqGateways = req.query.gw;
     const group = getGroupField(req);
 
@@ -82,7 +83,8 @@ export default function (app, middlewares, { hourlyStatsProvider }) {
     const deviceId = req.params.deviceId;
     const date = req.query.date;
     const reqGateways = req.query.gw;
-    const ownedGws = req.user.app_metadata.gateways;
+    const appMetadata = req.user['https://ecms.smartsix.it/app_metadata'];
+    const ownedGws = appMetadata.gateways;
 
     const gws = getOverlapped(ownedGws, reqGateways);
 

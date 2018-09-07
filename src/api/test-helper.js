@@ -8,7 +8,7 @@
  */
 const FakeAuthMiddleware = userGateways => () => (req, res, next) => {
   req.user = { // eslint-disable-line no-param-reassign
-    app_metadata: {
+    ['https://ecms.smartsix.it/app_metadata']: {   // eslint-disable-line no-useless-computed-key
       gateways: userGateways,
     },
   };

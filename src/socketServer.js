@@ -15,7 +15,8 @@ const socketServer = (server) => {
       const user = socket.decoded_token;
 
       // Each user gateway is used as room name and subscribed.
-      user.app_metadata.gateways
+      const appMetadata = user['https://ecms.smartsix.it/app_metadata'];
+      appMetadata.gateways
         .forEach((gateway) => {
           socket.join(gateway, err => (err ? logger.log('error', err) : null));
         });

@@ -61,7 +61,8 @@ export default function (app, middlewares, { deviceProvider, deviceValuesProvide
    *             $ref: '#/definitions/Device'
    */
   router.get('/', middlewares, (req, res) => {
-    const ownedGws = req.user.app_metadata.gateways;
+    const appMetadata = req.user['https://ecms.smartsix.it/app_metadata'];
+    const ownedGws = appMetadata.gateways;
     const limit = req.query.limit;
     const reqGateways = req.query.gw;
 
@@ -106,7 +107,8 @@ export default function (app, middlewares, { deviceProvider, deviceValuesProvide
 
 
   router.patch('/:deviceId', _.concat(middlewares, validate(devicePatchValidator)), (req, res) => {
-    const ownedGws = req.user.app_metadata.gateways;
+    const appMetadata = req.user['https://ecms.smartsix.it/app_metadata'];
+    const ownedGws = appMetadata.gateways;
     const deviceId = req.params.deviceId;
 
     deviceProvider
@@ -150,7 +152,8 @@ export default function (app, middlewares, { deviceProvider, deviceValuesProvide
    *           $ref: '#/definitions/Device'
    */
   router.get('/:deviceId', middlewares, (req, res) => {
-    const ownedGws = req.user.app_metadata.gateways;
+    const appMetadata = req.user['https://ecms.smartsix.it/app_metadata'];
+    const ownedGws = appMetadata.gateways;
     const deviceId = req.params.deviceId;
 
     deviceProvider
@@ -204,8 +207,9 @@ export default function (app, middlewares, { deviceProvider, deviceValuesProvide
    *         description: done
    */
   router.post('/:deviceId/command', _.concat(middlewares, validate(deviceCommandValidator)), (req, res) => {
+    const appMetadata = req.user['https://ecms.smartsix.it/app_metadata'];
     const reqDevice = req.params.deviceId;
-    const ownedGws = req.user.app_metadata.gateways;
+    const ownedGws = appMetadata.gateways;
 
     if (ownedGws.indexOf(req.body.gateway) === -1) {
       res.sendStatus(403);
