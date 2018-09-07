@@ -1,6 +1,6 @@
 import config from '../config';
 import JwtCheck from './middleware/auth-check-middleware';
-import RoleCheck from './middleware/roles-middleware';          // eslint-disable-line no-unused-vars
+import RoleCheck from './middleware/roles-middleware'; // eslint-disable-line no-unused-vars
 import GatewayAuth from './middleware/gateway-auth-middleware';
 
 import Events from './controllers/events';
@@ -16,13 +16,13 @@ import Users from './controllers/users';
 export default function (app, providers) {
   const AuthCheck = JwtCheck(config.auth0);
 
-  const gatewayAuthValidator = (gateway, token) => providers
-      .gatewayProvider
+  const gatewayAuthValidator = (gateway, token) =>
+    providers.gatewayProvider
       .getGateway(gateway)
       .then((gw) => {
         if (gw && gw.authKey) {
           return Promise.resolve(gw.authKey === token);
-        } else {  // eslint-disable-line no-else-return
+        } else { // eslint-disable-line no-else-return
           return Promise.resolve(false);
         }
       })
